@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Teknoloji Ürünleri</title>
+    <style>
+        /* ==================== RESET VE BASE STILLERI ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* CSS Değişkenleri */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --accent: #ff6b35;
+            --accent-dark: #e64a1f;
+            --border: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-lg: rgba(0, 0, 0, 0.15);
+            --success: #10b981;
+        }
+
+        html[data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --border: #444444;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s;
+        }
+
+        /* ==================== HEADER STILLERI ==================== */
+        header {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 2rem;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .search-bar::before {
+            content: '🔍';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header-action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.25rem;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .header-action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.75rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* Mega Menu */
+        .mega-menu {
+            padding: 0 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .mega-menu-list {
+            display: flex;
+            list-style: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+
+        .mega-menu-item {
+            position: relative;
+        }
+
+        .mega-menu-item > a {
+            display: block;
+            padding: 1rem 0;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            transition: color 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .mega-menu-item > a:hover {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .mega-submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            min-width: 200px;
+            box-shadow: 0 10px 30px var(--shadow-lg);
+            z-index: 1001;
+        }
+
+        .mega-menu-item:hover .mega-submenu {
+            display: block;
+        }
+
+        .mega-submenu a {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .mega-submenu a:hover {
+            color: var(--accent);
+        }
+
+        /* ==================== BREADCRUMB ==================== */
+        .breadcrumb {
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .breadcrumb nav {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* ==================== MAIN CONTAINER ==================== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        /* ==================== SIDEBAR - FİLTRELER ==================== */
+        .sidebar {
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .filter-section {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .filter-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+        }
+
+        .filter-option input {
+            width: 18px;
+            height: 18px;
+            margin-right: 0.75rem;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .price-range {
+            margin-top: 1rem;
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .price-inputs input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        /* ==================== CONTENT AREA ==================== */
+        .content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-toggle button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .view-toggle button.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .sort-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        /* ==================== ÜRÜN GRID ==================== */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .products-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* ==================== ÜRÜN KARTI ==================== */
+        .product-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 1;
+        }
+
+        .product-badge.discount {
+            background: #ef4444;
+        }
+
+        .product-badge.new {
+            background: #3b82f6;
+        }
+
+        .product-info {
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            min-height: 2.6em;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .stars {
+            color: #fbbf24;
+        }
+
+        .review-count {
+            color: var(--text-secondary);
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .current-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .old-price {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+
+        .add-to-cart-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: auto;
+        }
+
+        .add-to-cart-btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ==================== ÜRÜN DETAY MODAL ==================== */
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .detail-image {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .main-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+
+        .thumbnail-gallery {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .thumbnail:hover,
+        .thumbnail.active {
+            border-color: var(--accent);
+        }
+
+        .detail-info h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-rating {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-rating .stars {
+            font-size: 1.25rem;
+        }
+
+        .detail-price {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        .detail-price .current {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Seçenekler */
+        .option-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .option-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .color-option:hover {
+            border-color: var(--text-primary);
+        }
+
+        .color-option.active {
+            border-color: var(--accent);
+        }
+
+        .size-options {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .size-option {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--border);
+            background: var(--bg-primary);
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .size-option:hover {
+            border-color: var(--accent);
+        }
+
+        .size-option.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Quantity ve Action Buttons */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quantity-control {
+            display: flex;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .quantity-control button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg-secondary);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .quantity-control button:hover {
+            background: var(--border);
+        }
+
+        .quantity-control input {
+            width: 60px;
+            border: none;
+            text-align: center;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .detail-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+            border-radius: 5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ==================== SIMILAR PRODUCTS CAROUSEL ==================== */
+        .carousel-section {
+            margin: 3rem 0;
+        }
+
+        .carousel {
+            display: grid;
+            grid-template-columns: repeat(auto-scroll, 280px);
+            gap: 1.5rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 1rem;
+        }
+
+        .carousel-item {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+        }
+
+        /* ==================== CART DROPDOWN ==================== */
+        .cart-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            min-width: 350px;
+            max-height: 500px;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px var(--shadow-lg);
+            padding: 1rem;
+            display: none;
+            z-index: 2000;
+        }
+
+        .cart-dropdown.active {
+            display: block;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .cart-item-image {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-secondary);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .cart-item-price {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .payment-method {
+            width: 50px;
+            height: 35px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                position: static;
+            }
+
+            .filter-section {
+                margin-bottom: 0;
+            }
+
+            .product-detail {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-bar {
+                max-width: 100%;
+                margin: 0;
+            }
+
+            .mega-menu-list {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .mega-menu-item > a {
+                padding: 0.5rem 0;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-buttons {
+                flex-direction: column;
+            }
+
+            .detail-price {
+                font-size: 1rem;
+            }
+
+            .detail-price .current {
+                font-size: 1.5rem;
+            }
+
+            .carousel {
+                grid-template-columns: repeat(auto-scroll, 200px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-actions {
+                gap: 1rem;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .color-options {
+                flex-wrap: wrap;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                padding: 0.75rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<a href="../../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <!-- HEADER -->
+    <header role="banner">
+        <div class="header-top">
+            <a href="#" class="logo" aria-label="TechStore ana sayfa">TechStore</a>
+
+            <!-- Arama Çubuğu -->
+            <div class="search-bar">
+                <input
+                    type="text"
+                    placeholder="Ürün ara..."
+                    aria-label="Ürün ara"
+                >
+            </div>
+
+            <!-- Header İşlemleri -->
+            <div class="header-actions">
+                <button class="header-action-btn" title="Hesabım">👤</button>
+                <button class="header-action-btn" title="Sepetim" id="cartBtn">
+                    🛒
+                    <span class="badge">3</span>
+                </button>
+                <button class="header-action-btn" id="themeToggle" title="Tema değiştir" aria-label="Tema değiştir">🌙</button>
+            </div>
+        </div>
+
+        <!-- Mega Menu Navigation -->
+        <nav class="mega-menu" role="navigation" aria-label="Kategoriler">
+            <ul class="mega-menu-list">
+                <li class="mega-menu-item">
+                    <a href="#all">Tümü</a>
+                </li>
+                <li class="mega-menu-item">
+                    <a href="#laptops">Dizüstü Bilgisayarlar</a>
+                    <div class="mega-submenu">
+                        <a href="#gaming">Oyuncu Dizüstüleri</a>
+                        <a href="#ultrabook">Ultrabook</a>
+                        <a href="#budget">Uygun Fiyat</a>
+                    </div>
+                </li>
+                <li class="mega-menu-item">
+                    <a href="#phones">Akıllı Telefonlar</a>
+                    <div class="mega-submenu">
+                        <a href="#flagship">Amiral Gemisi</a>
+                        <a href="#midrange">Orta Sınıf</a>
+                        <a href="#accessories">Aksesuar</a>
+                    </div>
+                </li>
+                <li class="mega-menu-item">
+                    <a href="#tablets">Tabletler</a>
+                </li>
+                <li class="mega-menu-item">
+                    <a href="#wearables">Giyilebilir Teknoloji</a>
+                </li>
+                <li class="mega-menu-item">
+                    <a href="#audio">Ses Sistemleri</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <nav aria-label="Breadcrumb">
+            <a href="#home">Anasayfa</a>
+            <span> / </span>
+            <a href="#electronics">Elektronik</a>
+            <span> / </span>
+            <span>Dizüstü Bilgisayarlar</span>
+        </nav>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <!-- SIDEBAR - FİLTRELER -->
+        <aside class="sidebar" role="complementary" aria-label="Filtreler">
+            <!-- Kategori Filtresi -->
+            <div class="filter-section">
+                <div class="filter-title">Kategori</div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat1">
+                    <label for="cat1">Dizüstü Bilgisayar</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat2">
+                    <label for="cat2">Masaüstü</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat3">
+                    <label for="cat3">Tablet</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat4">
+                    <label for="cat4">Telefon</label>
+                </div>
+            </div>
+
+            <!-- Fiyat Filtresi -->
+            <div class="filter-section">
+                <div class="filter-title">Fiyat Aralığı</div>
+                <div class="price-range">
+                    <div class="price-inputs">
+                        <input type="number" placeholder="Min" value="0">
+                        <input type="number" placeholder="Max" value="50000">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marka Filtresi -->
+            <div class="filter-section">
+                <div class="filter-title">Marka</div>
+                <div class="filter-option">
+                    <input type="checkbox" id="brand1">
+                    <label for="brand1">Apple</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="brand2">
+                    <label for="brand2">Dell</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="brand3">
+                    <label for="brand3">HP</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="brand4">
+                    <label for="brand4">Lenovo</label>
+                </div>
+            </div>
+
+            <!-- Rating Filtresi -->
+            <div class="filter-section">
+                <div class="filter-title">Puan</div>
+                <div class="filter-option">
+                    <input type="checkbox" id="rating1">
+                    <label for="rating1">⭐⭐⭐⭐⭐ (5 Yıldız)</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="rating2">
+                    <label for="rating2">⭐⭐⭐⭐ ve Üstü</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="rating3">
+                    <label for="rating3">⭐⭐⭐ ve Üstü</label>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENT AREA -->
+        <div class="content">
+            <!-- Content Header -->
+            <div class="content-header">
+                <h1 style="margin: 0; color: var(--text-primary);">Dizüstü Bilgisayarlar</h1>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <select class="sort-select" aria-label="Sırala">
+                        <option>En Popüler</option>
+                        <option>En Düşük Fiyat</option>
+                        <option>En Yüksek Fiyat</option>
+                        <option>En Yeni</option>
+                        <option>En İyi Puanlama</option>
+                    </select>
+                    <div class="view-toggle">
+                        <button class="active" title="Grid görünümü" aria-label="Grid görünümü">⊞</button>
+                        <button title="Liste görünümü" aria-label="Liste görünümü">≡</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ürün Grid -->
+            <div class="products-grid">
+                <!-- Ürün 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        💻
+                        <span class="product-badge discount">-15%</span>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">MacBook Pro 14"</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-count">(245 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺85.000</span>
+                            <span class="old-price">₺100.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+
+                <!-- Ürün 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        💻
+                        <span class="product-badge new">YENİ</span>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Dell XPS 15</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span class="review-count">(156 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺65.000</span>
+                            <span class="old-price">₺70.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+
+                <!-- Ürün 3 -->
+                <div class="product-card">
+                    <div class="product-image">💻</div>
+                    <div class="product-info">
+                        <h3 class="product-name">HP Pavilion 15</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span class="review-count">(89 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺28.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+
+                <!-- Ürün 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        💻
+                        <span class="product-badge discount">-20%</span>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Lenovo ThinkPad X1</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-count">(312 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺48.000</span>
+                            <span class="old-price">₺60.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+
+                <!-- Ürün 5 -->
+                <div class="product-card">
+                    <div class="product-image">💻</div>
+                    <div class="product-info">
+                        <h3 class="product-name">ASUS VivoBook 15</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span class="review-count">(178 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺22.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+
+                <!-- Ürün 6 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        💻
+                        <span class="product-badge new">YENİ</span>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Surface Laptop 5</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-count">(201 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺75.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+
+                <!-- Ürün 7 -->
+                <div class="product-card">
+                    <div class="product-image">💻</div>
+                    <div class="product-info">
+                        <h3 class="product-name">MacBook Air M2</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-count">(289 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺62.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+
+                <!-- Ürün 8 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        💻
+                        <span class="product-badge discount">-10%</span>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Razer Blade 15</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span class="review-count">(134 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺95.000</span>
+                            <span class="old-price">₺105.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+
+                <!-- Ürün 9 -->
+                <div class="product-card">
+                    <div class="product-image">💻</div>
+                    <div class="product-info">
+                        <h3 class="product-name">HP Spectre x360</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-count">(223 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺52.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+
+                <!-- Ürün 10 -->
+                <div class="product-card">
+                    <div class="product-image">💻</div>
+                    <div class="product-info">
+                        <h3 class="product-name">Lenovo IdeaPad</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★☆☆</span>
+                            <span class="review-count">(92 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺19.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+
+                <!-- Ürün 11 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        💻
+                        <span class="product-badge new">YENİ</span>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Dell G15</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★☆</span>
+                            <span class="review-count">(167 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺45.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+
+                <!-- Ürün 12 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        💻
+                        <span class="product-badge discount">-25%</span>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">ASUS ROG Gaming</h3>
+                        <div class="product-rating">
+                            <span class="stars">★★★★★</span>
+                            <span class="review-count">(445 değerlendirme)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price">₺88.000</span>
+                            <span class="old-price">₺118.000</span>
+                        </div>
+                        <button class="add-to-cart-btn">Sepete Ekle</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sayfalama -->
+            <div style="display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem;">
+                <button style="padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--accent); color: white; border-radius: 5px; cursor: pointer;">1</button>
+                <button style="padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-primary); border-radius: 5px; cursor: pointer;">2</button>
+                <button style="padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-primary); border-radius: 5px; cursor: pointer;">3</button>
+                <button style="padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-primary); border-radius: 5px; cursor: pointer;">İleri →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TechStore Hakkında</h3>
+                <ul>
+                    <li><a href="#">Hakkımızda</a></li>
+                    <li><a href="#">Kariyer</a></li>
+                    <li><a href="#">İletişim</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Müşteri Hizmetleri</h3>
+                <ul>
+                    <li><a href="#">Sıkça Sorulan Sorular</a></li>
+                    <li><a href="#">İade İşlemleri</a></li>
+                    <li><a href="#">Kargo Bilgisi</a></li>
+                    <li><a href="#">Ürün Yardımı</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Politikalar</h3>
+                <ul>
+                    <li><a href="#">Gizlilik Politikası</a></li>
+                    <li><a href="#">Kullanım Şartları</a></li>
+                    <li><a href="#">İade Politikası</a></li>
+                    <li><a href="#">Güvenlik</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Ödeme Yöntemleri</h3>
+                <div class="payment-methods">
+                    <div class="payment-method">💳</div>
+                    <div class="payment-method">🏦</div>
+                    <div class="payment-method">🪙</div>
+                    <div class="payment-method">📱</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 TechStore. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <!-- Cart Dropdown (Hidden) -->
+    <div id="cartDropdown" class="cart-dropdown">
+        <div class="cart-item">
+            <div class="cart-item-image">💻</div>
+            <div class="cart-item-info">
+                <div class="cart-item-name">MacBook Pro 14"</div>
+                <div class="cart-item-price">₺85.000 × 1</div>
+            </div>
+        </div>
+        <div class="cart-item">
+            <div class="cart-item-image">💻</div>
+            <div class="cart-item-info">
+                <div class="cart-item-name">Dell XPS 15</div>
+                <div class="cart-item-price">₺65.000 × 1</div>
+            </div>
+        </div>
+        <div class="cart-item">
+            <div class="cart-item-image">💻</div>
+            <div class="cart-item-info">
+                <div class="cart-item-name">HP Pavilion 15</div>
+                <div class="cart-item-price">₺28.000 × 1</div>
+            </div>
+        </div>
+        <div style="padding-top: 1rem; border-top: 1px solid var(--border); margin-top: 1rem;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; font-weight: 700;">
+                <span>Toplam:</span>
+                <span style="color: var(--accent);">₺178.000</span>
+            </div>
+            <button style="width: 100%; padding: 0.75rem; background: var(--accent); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 700;">Ödeme Yap</button>
+        </div>
+    </div>
+
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        // ==================== TEMA TOGGLE ====================
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        const savedTheme = safeStorage('get', 'theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            htmlElement.setAttribute('data-theme', newTheme);
+            safeStorage('set', 'theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // ==================== CART DROPDOWN ====================
+        const cartBtn = document.getElementById('cartBtn');
+        const cartDropdown = document.getElementById('cartDropdown');
+
+        cartBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            cartDropdown.classList.toggle('active');
+        });
+
+        document.addEventListener('click', () => {
+            cartDropdown.classList.remove('active');
+        });
+
+        // ==================== SEPETE EKLE BUTONU ====================
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Ürün sepete başarıyla eklendi!');
+            });
+        });
+
+        // ==================== FİLTRE İŞLEVSELLİĞİ ====================
+        document.querySelectorAll('.filter-option input').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                console.log('Filtre seçildi:', checkbox.id);
+            });
+        });
+    </script>
+</body>
+</html>

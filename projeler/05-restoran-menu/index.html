@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lezzet Durağı - Restoran Menüsü</title>
+    <meta name="description" content="Lezzet Durağı - Geleneksel ve modern mutfağın birleştiği lezzetli yemekleri keşfedin">
+    <style>
+        /* ========== RESET VE TEMEL AYARLAR ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Scroll bar özelleştirmesi */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ========== TEMA DEĞİŞKENLERİ ========== */
+        :root {
+            /* Renk paleti - sıcak tonlar */
+            --primary-color: #d4583f;
+            --primary-dark: #b83a2e;
+            --primary-light: #e07856;
+            --secondary-color: #f4a460;
+            --accent-color: #8b4513;
+
+            /* Açık tema */
+            --bg-primary: #fdf9f3;
+            --bg-secondary: #fff5e6;
+            --bg-tertiary: #f0e6d2;
+            --text-primary: #2d2416;
+            --text-secondary: #5a4a3a;
+            --border-color: #e8dcc8;
+            --shadow: 0 2px 8px rgba(139, 69, 19, 0.15);
+            --shadow-hover: 0 8px 20px rgba(212, 88, 63, 0.2);
+        }
+
+        /* Koyu tema */
+        html[data-theme="dark"] {
+            --primary-color: #e07856;
+            --primary-dark: #ff9871;
+            --primary-light: #ff7f5c;
+            --secondary-color: #ffb380;
+            --accent-color: #d4a574;
+
+            --bg-primary: #1a1410;
+            --bg-secondary: #2d241d;
+            --bg-tertiary: #3d3229;
+            --text-primary: #f5ede3;
+            --text-secondary: #d4c4b0;
+            --border-color: #4a3f35;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 8px 20px rgba(224, 120, 86, 0.3);
+        }
+
+        body {
+            font-family: 'Georgia', 'Garamond', serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== HEADER ========== */
+        header {
+            background-color: var(--bg-secondary);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Logo - CSS ile yapılan şef şapkası */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo::before {
+            content: "👨‍🍳";
+            font-size: 2.5rem;
+        }
+
+        /* Navigasyon - elegant stil */
+        nav {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+
+        /* Elegant underline efekti */
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Tema toggle butonu */
+        .theme-toggle {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* ========== HERO BÖLÜMÜ ========== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><defs><pattern id="p" width="100" height="100"><circle cx="50" cy="50" r="30" fill="white" opacity="0.05"/></pattern></defs><rect fill="none" width="1200" height="400"/><rect fill="url(%23p)" width="1200" height="400"/></svg>');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+            margin-bottom: 0;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Dekoratif elemanlar */
+        .hero::before,
+        .hero::after {
+            content: '🍽️';
+            position: absolute;
+            font-size: 150px;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .hero::before {
+            top: -30px;
+            left: -30px;
+        }
+
+        .hero::after {
+            bottom: -30px;
+            right: -30px;
+            content: '🍽️';
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-family: 'Georgia', serif;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-style: italic;
+        }
+
+        .hero-button {
+            display: inline-block;
+            background: white;
+            color: var(--primary-color);
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 3px solid white;
+            font-size: 1.1rem;
+        }
+
+        .hero-button:hover {
+            background: transparent;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* ========== MENÜ SEKMELERİ ========== */
+        .menu-tabs {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Radio button gizleme (pure CSS tab sistemi için) */
+        .menu-tabs input[type="radio"] {
+            display: none;
+        }
+
+        .tab-label-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            border-bottom: 3px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .tab-label {
+            padding: 0.8rem 1.5rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab-label:hover {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Seçili tab stili */
+        input[type="radio"]:checked + .tab-label {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* Tab içeriği */
+        .tab-content {
+            display: none;
+        }
+
+        /* Seçili tab içeriğini göster */
+        input[type="radio"]:checked + .tab-label + .tab-content {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== MENÜ GRID ========== */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Yemek Kartı */
+        .menu-item {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+
+        /* Badge (Yeni / Popüler) */
+        .badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0 0 10px 0;
+            font-weight: bold;
+            font-size: 0.85rem;
+            z-index: 10;
+        }
+
+        /* Yemek bilgileri */
+        .item-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+        }
+
+        .item-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .item-price {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        /* ========== ŞEF'İN ÖNERİSİ ========== */
+        .chef-special {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border-left: 6px solid var(--primary-color);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-hover);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .chef-special h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .chef-special-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .special-item {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid var(--primary-light);
+            transition: all 0.3s ease;
+        }
+
+        .special-item:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        .special-item-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .special-item-name {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .special-item-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ========== İLETİŞİM BÖLÜMÜ ========== */
+        .contact-section {
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            border-radius: 10px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-section h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            background: var(--bg-primary);
+            padding: 2rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+            text-align: center;
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Harita placeholder */
+        .map-placeholder {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary-color) 100%);
+            height: 300px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            margin-bottom: 2rem;
+        }
+
+        /* ========== REZERVASYON FORMU ========== */
+        .reservation-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            border-radius: 10px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .reservation-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .reservation-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 1rem;
+            background: white;
+            color: var(--primary-color);
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            border-top: 3px solid var(--primary-color);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== RESPONSIVE TASARIM ========== */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .chef-special-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            nav {
+                gap: 1.5rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 0.95rem;
+            }
+
+            .hero {
+                padding: 3rem 1rem;
+                min-height: 350px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .hero::before,
+            .hero::after {
+                font-size: 80px;
+            }
+
+            .menu-tabs {
+                padding: 0 1rem;
+            }
+
+            .tab-label-container {
+                justify-content: center;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .chef-special {
+                padding: 1.5rem;
+            }
+
+            .chef-special h2 {
+                font-size: 1.5rem;
+            }
+
+            .chef-special-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-section {
+                padding: 2rem 1rem;
+            }
+
+            .reservation-section {
+                padding: 2rem 1rem;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.3rem;
+                gap: 0.5rem;
+            }
+
+            .logo::before {
+                font-size: 1.8rem;
+            }
+
+            nav {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .hero {
+                padding: 2rem 1rem;
+                min-height: 250px;
+            }
+
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            .hero::before,
+            .hero::after {
+                font-size: 60px;
+            }
+
+            .item-name {
+                font-size: 1.1rem;
+            }
+
+            .item-price {
+                font-size: 1.5rem;
+            }
+
+            .map-placeholder {
+                height: 200px;
+                font-size: 3rem;
+            }
+
+            .contact-grid {
+                gap: 1rem;
+            }
+
+            .contact-item {
+                padding: 1rem;
+            }
+        }
+
+        /* ========== ERİŞİLEBİLİRLİK ========== */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Focus stilleri */
+        a:focus,
+        button:focus,
+        input:focus,
+        textarea:focus {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+<a href="../../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <!-- Erişilebilirlik: Ana içeriğe atla -->
+    <a href="#main-content" class="skip-link">Ana içeriğe atla</a>
+
+    <!-- ========== HEADER ========== -->
+    <header role="banner">
+        <div class="header-container">
+            <a href="#" class="logo" aria-label="Lezzet Durağı Ana Sayfası">Lezzet Durağı</a>
+            <nav aria-label="Ana navigasyon">
+                <a href="#" aria-current="page">Ana Sayfa</a>
+                <a href="#menu">Menü</a>
+                <a href="#contact">İletişim</a>
+                <a href="#reservation">Rezervasyon</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌙 Koyu Tema</button>
+        </div>
+    </header>
+
+    <!-- ========== HERO BÖLÜMÜ ========== -->
+    <section class="hero" aria-label="Hoş geldiniz bölümü">
+        <div class="hero-content">
+            <h1>Lezzet Durağı</h1>
+            <p>Geleneksel ve modern mutfağın birleştiği, sıcak ve samimi bir atmosferde sunulan lezzetler.</p>
+            <a href="#reservation" class="hero-button">Masa Rezerve Et</a>
+        </div>
+    </section>
+
+    <!-- ========== MENÜ BÖLÜMÜ ========== -->
+    <main id="main-content">
+        <div class="menu-tabs" id="menu" role="tablist" aria-label="Menü kategorileri">
+            <!-- Başlangıçlar Sekmesi -->
+            <div class="menu-tab">
+                <input type="radio" id="tab1" name="menu-tabs" checked>
+                <label for="tab1" class="tab-label">🥗 Başlangıçlar</label>
+                <div class="tab-content">
+                    <div class="menu-grid">
+                        <article class="menu-item">
+                            <span class="badge">Yeni</span>
+                            <div class="item-icon">🥗</div>
+                            <h3 class="item-name">Mevsim Salatası</h3>
+                            <p class="item-description">Taze mevsim sebzeleri, feta peyniri ve zeytinyağ sosuyla sunulan lezzetli bir başlangıç.</p>
+                            <div class="item-price">₺24,90</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🥒</div>
+                            <h3 class="item-name">Leblebi Homası</h3>
+                            <p class="item-description">Leblebi ve tavuk göğsünden yapılan, baharat ağırlıklı geleneksel bir mezze.</p>
+                            <div class="item-price">₺18,50</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <span class="badge">Popüler</span>
+                            <div class="item-icon">🧀</div>
+                            <h3 class="item-name">Peynir Tabağı</h3>
+                            <p class="item-description">Çeşitli peynir çeşitleri, frut turşusu ve taze ekmekle servis edilen bir tasting.</p>
+                            <div class="item-price">₺28,75</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🍤</div>
+                            <h3 class="item-name">Karides Kokteyli</h3>
+                            <p class="item-description">Taze karideslerin yoğurt ve limon sosunda sunulduğu ferahlayan bir başlangıç.</p>
+                            <div class="item-price">₺32,00</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🍅</div>
+                            <h3 class="item-name">Domates Çorbası</h3>
+                            <p class="item-description">El açmasından hazırlanan, kremali ve bol baharatlı köz domates çorbası.</p>
+                            <div class="item-price">₺15,50</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🌶️</div>
+                            <h3 class="item-name">Acılı Hudut</h3>
+                            <p class="item-description">Ceviz, kuru biber ve yoğurttan yapılan Anadolu yapılışına sadık bir önalı.</p>
+                            <div class="item-price">₺16,75</div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ana Yemekler Sekmesi -->
+            <div class="menu-tab">
+                <input type="radio" id="tab2" name="menu-tabs">
+                <label for="tab2" class="tab-label">🍗 Ana Yemekler</label>
+                <div class="tab-content">
+                    <div class="menu-grid">
+                        <article class="menu-item">
+                            <span class="badge">Popüler</span>
+                            <div class="item-icon">🍖</div>
+                            <h3 class="item-name">Kuzu Tandoori</h3>
+                            <p class="item-description">Tarihî tandoori fırında pişirilen, mütercim baharat ağırlıklı çok lezzetli kuzu eti.</p>
+                            <div class="item-price">₺65,00</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <span class="badge">Yeni</span>
+                            <div class="item-icon">🐟</div>
+                            <h3 class="item-name">Levrek Buğulanmış</h3>
+                            <p class="item-description">Taze levrek balığı limon ve sebze ile hafifçe buğulanmış, sağlıklı bir tercih.</p>
+                            <div class="item-price">₺58,50</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🥩</div>
+                            <h3 class="item-name">Biftek Fiyesta</h3>
+                            <p class="item-description">Prime kalitesi sığır etinden yapılan, ızgarada pişirilen muhteşem bir biftek.</p>
+                            <div class="item-price">₺72,00</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🍝</div>
+                            <h3 class="item-name">Makarnalı Tavuk</h3>
+                            <p class="item-description">Taze makarnaya tavuk göğsü, domates ve baharatlı kremalı sos karışımı.</p>
+                            <div class="item-price">₺42,50</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🍲</div>
+                            <h3 class="item-name">Güveç Nimet</h3>
+                            <p class="item-description">Çeşitli etler, sebzeler ve soslar ile beraber kil tencerede pişirilen klasik bir güveç.</p>
+                            <div class="item-price">₺48,75</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🥔</div>
+                            <h3 class="item-name">Patates Dolması</h3>
+                            <p class="item-description">İçi kıyma ve sebzelerle doldurulmuş patatesler, fırında altın rengine kadar pişirilmiş.</p>
+                            <div class="item-price">₺35,50</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🍗</div>
+                            <h3 class="item-name">Tavuk Satay</h3>
+                            <p class="item-description">Aşı çivirili tavuk etleri, sos içinde ızgarada pişirilmiş Endonezya tarzı lezzet.</p>
+                            <div class="item-price">₺44,00</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🦞</div>
+                            <h3 class="item-name">Istakoz Bilim</h3>
+                            <p class="item-description">Taze ıstakozu tereyağ, limon ve ince baharat sos ile lezize dönüştürülen özel</p>
+                            <div class="item-price">₺85,00</div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tatlılar Sekmesi -->
+            <div class="menu-tab">
+                <input type="radio" id="tab3" name="menu-tabs">
+                <label for="tab3" class="tab-label">🍰 Tatlılar</label>
+                <div class="tab-content">
+                    <div class="menu-grid">
+                        <article class="menu-item">
+                            <span class="badge">Popüler</span>
+                            <div class="item-icon">🍰</div>
+                            <h3 class="item-name">Baklava Sarayı</h3>
+                            <p class="item-description">Fındık ve ceviz dolu, tereyağda pişirilen, şerbet ile ıslatılan geleneksel Osmanlı baklavaası.</p>
+                            <div class="item-price">₺16,50</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🍮</div>
+                            <h3 class="item-name">Krem Şerbeti</h3>
+                            <p class="item-description">Çikolata ve vanila yapısında yapılan yumuşak, ağlı ve hoş tatlı kombinasyonları.</p>
+                            <div class="item-price">₺12,00</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <span class="badge">Yeni</span>
+                            <div class="item-icon">🍓</div>
+                            <h3 class="item-name">Çilekli Tiramisü</h3>
+                            <p class="item-description">Taze çilekler ve Mascarpon peyniri ile yapılan modern bir take klasik İtalyan tatlısı.</p>
+                            <div class="item-price">₺18,75</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🥜</div>
+                            <h3 class="item-name">Fıstık Pastası</h3>
+                            <p class="item-description">Gaziantep fıstığı ile yapılan, çay saatleri için ideal hafif ve zarif bir seçim.</p>
+                            <div class="item-price">₺14,50</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🍫</div>
+                            <h3 class="item-name">Çikolata Şantiye</h3>
+                            <p class="item-description">Çikolata spongesi, kremalı dolgusu ve tüm ürün çikolata ile kaplanmış, en çok sevenler.</p>
+                            <div class="item-price">₺15,75</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🍊</div>
+                            <h3 class="item-name">Portakal Muffini</h3>
+                            <p class="item-description">Portakal suyuyla yapılan, nemli ve aromalı muffin, limon sosla servis edilir.</p>
+                            <div class="item-price">₺10,50</div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <!-- İçecekler Sekmesi -->
+            <div class="menu-tab">
+                <input type="radio" id="tab4" name="menu-tabs">
+                <label for="tab4" class="tab-label">🥤 İçecekler</label>
+                <div class="tab-content">
+                    <div class="menu-grid">
+                        <article class="menu-item">
+                            <div class="item-icon">☕</div>
+                            <h3 class="item-name">Türk Kahvesi</h3>
+                            <p class="item-description">Cezve'de pişirilen, aromalı ve yoğun Türk kahvesi, lezzet ve geleneğin birleşimi.</p>
+                            <div class="item-price">₺4,50</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🍵</div>
+                            <h3 class="item-name">Bergamot Çayı</h3>
+                            <p class="item-description">Bergamot aroma ile yapılan, ferahlayan ve sıcak bir çay, klasik Avrupa stil.</p>
+                            <div class="item-price">₺5,00</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <span class="badge">Popüler</span>
+                            <div class="item-icon">🥛</div>
+                            <h3 class="item-name">Ayran Türk</h3>
+                            <p class="item-description">Geleneksel yoğurttan yapılan, tuzlu ve serinletici mükemmel bir Türk içeceği.</p>
+                            <div class="item-price">₺3,50</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🧃</div>
+                            <h3 class="item-name">Meyve Suyu</h3>
+                            <p class="item-description">Taze meyvelerden yapılan, doğal ve tatlı meyve suyu seçenekleri (portakal, nar, melon).</p>
+                            <div class="item-price">₺6,50</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <span class="badge">Yeni</span>
+                            <div class="item-icon">🍷</div>
+                            <h3 class="item-name">Ev Kırmızısı</h3>
+                            <p class="item-description">Yerel bağdan alınan, tannik ve dengeli özellikli sevilen bir ev şarabı.</p>
+                            <div class="item-price">₺28,00</div>
+                        </article>
+
+                        <article class="menu-item">
+                            <div class="item-icon">🍋</div>
+                            <h3 class="item-name">Limonata Taze</h3>
+                            <p class="item-description">Taze limon suyundan yapılan, maden suyü ve doğal şeker karışımı serinletici içecek.</p>
+                            <div class="item-price">₺4,75</div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ŞEF'İN ÖNERİSİ -->
+        <section class="chef-special" aria-label="Şef'in Önerisi">
+            <h2>👨‍🍳 Şef'in Önerisi Bu Haftanın Seçkilemeleri</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Bugün Aşçı Mehmet tarafından özel olarak seçilen üç lezzeti kesinlikle denemelisiniz:</p>
+            <div class="chef-special-grid">
+                <div class="special-item">
+                    <div class="special-item-icon">🍖</div>
+                    <h3 class="special-item-name">Kuzu Tandoori</h3>
+                    <p class="special-item-description">Tat ve aroma ile dolu, alümen fırında pişirilen etli bir seçim. Tüm yemeklerinin arka planında gizli bir aile sırrı var.</p>
+                </div>
+                <div class="special-item">
+                    <div class="special-item-icon">🥗</div>
+                    <h3 class="special-item-name">Mevsim Salatası</h3>
+                    <p class="special-item-description">Bu haftanın en taze malzemeleriyle yapılan, sağlık eko şarap ve ana yemek öncesinin mükemmel dengesidir.</p>
+                </div>
+                <div class="special-item">
+                    <div class="special-item-icon">🍓</div>
+                    <h3 class="special-item-name">Çilekli Tiramisü</h3>
+                    <p class="special-item-description">Yeni eklenen bu tatlı, Mascarpon peyniri ile çileklerin mükemmel karışımı, hafif ve hoş tadında.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- İLETİŞİM BÖLÜMÜ -->
+        <section class="contact-section" id="contact" aria-label="İletişim bilgileri">
+            <h2>Bize Ulaşın</h2>
+
+            <!-- Harita Placeholder -->
+            <div class="map-placeholder">📍</div>
+
+            <!-- İletişim Bilgileri -->
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <h3>Adres</h3>
+                    <p>Bahçelievler, Atatürk Cad. No: 42<br>Ankara, Türkiye 06100</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <h3>Telefon</h3>
+                    <p>+90 312 456 7890<br>Hafta İçi: 11:00 - 23:00</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <h3>E-posta</h3>
+                    <p>info@lezzet-duragi.com<br>rezervasyon@lezzet-duragi.com</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- REZERVASYON FORMU -->
+        <section class="reservation-section" id="reservation" aria-label="Masa rezervasyon formu">
+            <h2>Masa Rezerve Et</h2>
+            <form class="reservation-form" aria-label="Rezervasyon formu">
+                <div class="form-group">
+                    <label for="name">Adınız Soyadınız *</label>
+                    <input type="text" id="name" name="name" required placeholder="Adınızı giriniz" aria-required="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-posta Adresi *</label>
+                    <input type="email" id="email" name="email" required placeholder="E-posta adresinizi giriniz" aria-required="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Telefon Numarası *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+90 (555) 123 45 67" aria-required="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Tarih *</label>
+                    <input type="date" id="date" name="date" required aria-required="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="time">Saat *</label>
+                    <input type="time" id="time" name="time" required aria-required="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="guests">Kişi Sayısı *</label>
+                    <input type="number" id="guests" name="guests" min="1" max="20" required placeholder="1-20 arası" aria-required="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Özel İstek / Not</label>
+                    <textarea id="message" name="message" placeholder="Örn: Doğum günü kutlaması, alerji uyarısı vb..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-button">Rezervasyonu Onayla</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Lezzet Durağı</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Geleneksel ve modern mutfağın birleştiği, samimi ve sıcak bir mekan.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">f</a>
+                    <a href="#" aria-label="Instagram">📷</a>
+                    <a href="#" aria-label="Twitter">𝕏</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Hızlı Linkler</h3>
+                <a href="#menu">Menü</a>
+                <a href="#contact">İletişim</a>
+                <a href="#reservation">Rezervasyon</a>
+                <a href="#">Hakkında</a>
+            </div>
+            <div class="footer-section">
+                <h3>Çalışma Saatleri</h3>
+                <p style="color: var(--text-secondary);">
+                    <strong>Salı - Perşembe:</strong> 11:00 - 23:00<br>
+                    <strong>Cuma - Cumartesi:</strong> 11:00 - 01:00<br>
+                    <strong>Pazar:</strong> 12:00 - 23:00<br>
+                    <strong>Pazartesi:</strong> Kapalı
+                </p>
+            </div>
+            <div class="footer-section">
+                <h3>Haber Bülteni</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Yeni menü öğelerinden ve özel fiyatlardan haberdar olun.</p>
+                <form class="newsletter-form" style="margin-top: 1rem;">
+                    <input type="email" placeholder="E-posta..." style="flex: 1; padding: 0.6rem; border: none; border-radius: 3px; color: var(--text-primary);" aria-label="E-posta adresi">
+                    <button type="submit" style="padding: 0.6rem 1rem; background: var(--primary-color); color: white; border: none; border-radius: 3px; cursor: pointer; font-weight: bold;">Abone Ol</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Lezzet Durağı. Tüm hakları saklıdır. | <a href="#" style="color: inherit; text-decoration: none; transition: color 0.3s;">Gizlilik Politikası</a> | <a href="#" style="color: inherit; text-decoration: none; transition: color 0.3s;">Kullanım Şartları</a></p>
+        </div>
+    </footer>
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        // Tema toggle işlevselliği
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // Kaydedilmiş tema tercihi
+        const savedTheme = safeStorage('get', 'theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            html.setAttribute('data-theme', newTheme);
+            safeStorage('set', 'theme', newTheme);
+            updateThemeButton(newTheme);
+        });
+
+        function updateThemeButton(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙 Koyu Tema' : '☀️ Açık Tema';
+        }
+
+        // Rezervasyon formu işlemesi
+        const reservationForm = document.querySelector('.reservation-form');
+        reservationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const guests = document.getElementById('guests').value;
+
+            if (name && date && time && guests) {
+                alert(`${name} için ${date} tarihinde ${time}'de ${guests} kişi rezervasyonu alındı. Teşekkür ederiz!`);
+                reservationForm.reset();
+            }
+        });
+
+        // Kategori sekmesi geçişi (pure CSS olsa da, erişilebilirlik için script)
+        const tabButtons = document.querySelectorAll('.tab-label');
+        tabButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                // Tab accessibility
+                tabButtons.forEach(btn => btn.setAttribute('aria-selected', 'false'));
+                button.setAttribute('aria-selected', 'true');
+            });
+
+            // Başlangıç durumu
+            if (index === 0) {
+                button.setAttribute('aria-selected', 'true');
+            }
+        });
+
+        // Smooth scroll navigasyon
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kişisel Blog - Web Geliştirme ve Tasarım Hakkında Yazılar">
+    <title>Teknoloji & Tasarım Blog</title>
+
+    <!-- Google Fonts - Profesyonel ve modern yazı tipleri -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ================================================
+           1. ROOT VE CSS CUSTOM PROPERTIES
+           Tüm tema renkleri ve değişkenleri
+           ================================================ */
+        :root {
+            --renkBg: #ffffff;
+            --renkMetin: #1a1a2e;
+            --renkMetinAcik: #4a4a6a;
+            --renkVurgu: #6366f1;
+            --renkVurgu2: #ec4899;
+            --renkBorder: #e5e7eb;
+            --renkGolge: rgba(0, 0, 0, 0.08);
+            --renkGolgeDerin: rgba(0, 0, 0, 0.15);
+            --renkSuccess: #10b981;
+            --renkWarning: #f59e0b;
+        }
+
+        /* Koyu tema - çok şık ve modern görünüm */
+        [data-tema="koyu"] {
+            --renkBg: #0f172a;
+            --renkMetin: #e2e8f0;
+            --renkMetinAcik: #cbd5e1;
+            --renkBorder: #334155;
+            --renkGolge: rgba(255, 255, 255, 0.08);
+            --renkGolgeDerin: rgba(255, 255, 255, 0.15);
+        }
+
+        /* ================================================
+           2. GENEL RESET VE TEMEL STİLLER
+           ================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--renkBg);
+            color: var(--renkMetin);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            line-height: 1.6;
+        }
+
+        /* ================================================
+           3. TEMA TOGGLE BUTONU
+           Sabit konumda, her yerde erişilebilir
+           ================================================ */
+        .tema-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px var(--renkGolgeDerin);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+            outline: none;
+        }
+
+        .tema-toggle:hover {
+            transform: scale(1.1) rotateZ(20deg);
+            box-shadow: 0 6px 20px var(--renkVurgu);
+        }
+
+        .tema-toggle:focus {
+            outline: 3px solid var(--renkVurgu2);
+            outline-offset: 3px;
+        }
+
+        /* ================================================
+           4. HEADER / NAV BAR
+           Blog başlığı ve navigasyon menüsü
+           ================================================ */
+        header {
+            background-color: var(--renkBg);
+            border-bottom: 2px solid var(--renkBorder);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px var(--renkGolge);
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Blog başlığı - şık ve dikkat çekici */
+        .logo {
+            font-family: 'Merriweather', serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        /* Navigasyon menüsü */
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--renkMetin);
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        /* Link hover efekti - alt çizgi animasyonu */
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--renkVurgu), var(--renkVurgu2));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: var(--renkVurgu);
+        }
+
+        /* ================================================
+           5. HERO SECTION
+           Öne çıkan yazı - büyük ve çekici
+           ================================================ */
+        .hero {
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.95;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 14px;
+            flex-wrap: wrap;
+        }
+
+        /* ================================================
+           6. ANA CONTAINER
+           İçerik ve sidebar'ı barındıran wrapper
+           ================================================ */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+        }
+
+        /* Tablet ve mobilde single column layout */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        /* ================================================
+           7. YAZILARIN GRID LAYOUT
+           Responsive grid - mobilde 1, tablette 2, masaüstünde 3
+           ================================================ */
+        .yazilarin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Büyük ekranda 3 kolon */
+        @media (min-width: 1024px) {
+            .yazilarin-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Orta ekranda 2 kolon */
+        @media (max-width: 1023px) and (min-width: 768px) {
+            .yazilarin-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ================================================
+           8. BLOG YAZISI KARTI
+           Yazıları gösterecek kart tasarımı - çok şık!
+           ================================================ */
+        .yazı-karti {
+            background-color: var(--renkBg);
+            border: 2px solid var(--renkBorder);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* Kartın üzerine gelindiğinde yukarı kalkması - harika efekt! */
+        .yazı-karti:hover {
+            transform: translateY(-10px);
+            border-color: var(--renkVurgu);
+            box-shadow: 0 15px 40px var(--renkGolgeDerin);
+        }
+
+        /* Yazı resim alanı - renk geçişi */
+        .yazı-resim {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: rgba(255, 255, 255, 0.3);
+            transition: transform 0.4s ease;
+        }
+
+        /* Resim hover efekti - zoom */
+        .yazı-karti:hover .yazı-resim {
+            transform: scale(1.05);
+        }
+
+        /* Yazı içeriği alanı */
+        .yazı-icerik {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Meta bilgisi - tarih ve kategori */
+        .yazı-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+
+        .yazı-tarih {
+            color: var(--renkMetinAcik);
+        }
+
+        /* Kategori etiketi - renkli ve dikkat çekici */
+        .yazı-kategori {
+            display: inline-block;
+            background-color: var(--renkVurgu);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .yazı-kategori.tasarim {
+            background-color: var(--renkVurgu2);
+        }
+
+        .yazı-kategori.teknoloji {
+            background-color: var(--renkSuccess);
+        }
+
+        .yazı-kategori.uygulama {
+            background-color: var(--renkWarning);
+        }
+
+        /* Yazı başlığı */
+        .yazı-baslik {
+            font-family: 'Merriweather', serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            color: var(--renkMetin);
+        }
+
+        /* Yazı özeti */
+        .yazı-ozet {
+            color: var(--renkMetinAcik);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        /* Devamını Oku Butonu */
+        .yazı-buton {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            align-self: flex-start;
+            outline: none;
+        }
+
+        .yazı-buton:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px var(--renkVurgu);
+        }
+
+        .yazı-buton:focus {
+            outline: 3px solid var(--renkVurgu2);
+            outline-offset: 2px;
+        }
+
+        /* ================================================
+           9. SIDEBAR
+           Hakkımda, Kategoriler, Son Yazılar
+           ================================================ */
+        aside {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Sidebar kutusu genel stil */
+        .sidebar-kutu {
+            background-color: var(--renkBg);
+            border: 2px solid var(--renkBorder);
+            border-radius: 15px;
+            padding: 24px;
+        }
+
+        .sidebar-kutu h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 18px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--renkVurgu);
+            color: var(--renkMetin);
+        }
+
+        /* Kategoriler Listesi */
+        .kategori-liste {
+            list-style: none;
+        }
+
+        .kategori-liste li {
+            margin-bottom: 10px;
+        }
+
+        .kategori-liste a {
+            color: var(--renkMetinAcik);
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .kategori-liste a:hover {
+            background-color: var(--renkGolge);
+            color: var(--renkVurgu);
+            padding-left: 8px;
+        }
+
+        /* Kategori sayısı - küçük arka plan kutusu */
+        .kategori-sayisi {
+            background-color: var(--renkVurgu);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Son Yazılar Listesi */
+        .sonYazilarin-liste {
+            list-style: none;
+        }
+
+        .sonYazilarin-liste li {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--renkBorder);
+        }
+
+        .sonYazilarin-liste li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .sonYazilarin-liste a {
+            color: var(--renkMetinAcik);
+            text-decoration: none;
+            font-size: 13px;
+            line-height: 1.5;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .sonYazilarin-liste a:hover {
+            color: var(--renkVurgu);
+        }
+
+        .sonYazilarin-tarih {
+            font-size: 11px;
+            color: var(--renkMetinAcik);
+            opacity: 0.7;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* ================================================
+           10. FOOTER
+           Sayfa altı bilgisi
+           ================================================ */
+        footer {
+            background-color: var(--renkBg);
+            border-top: 2px solid var(--renkBorder);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--renkMetinAcik);
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        .sosyal-linkler {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .sosyal-linkler a {
+            color: var(--renkVurgu);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .sosyal-linkler a:hover {
+            color: var(--renkVurgu2);
+        }
+
+        /* ================================================
+           11. MOBİL UYUMLULUĞU
+           Küçük ekranlar için ayarlamalar
+           ================================================ */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            nav ul {
+                gap: 15px;
+            }
+
+            nav a {
+                font-size: 12px;
+            }
+
+            .tema-toggle {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .yazı-baslik {
+                font-size: 18px;
+            }
+        }
+
+        /* ================================================
+           12. ERIŞILEBILIRLIK
+           Odak göstergeleri ve hareket tercihleri
+           ================================================ */
+        *:focus-visible {
+            outline: 3px solid var(--renkVurgu);
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body data-tema="acik">
+<a href="../../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <!-- Tema Toggle Butonu -->
+    <button class="tema-toggle" id="temaToggle" aria-label="Açık/Koyu temayı değiştir" title="Temayı değiştir">🌙</button>
+
+    <!-- Header ve Navigasyon -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">📝 Tech Blog</a>
+            <nav aria-label="Ana navigasyon">
+                <ul>
+                    <li><a href="#anasayfa">Ana Sayfa</a></li>
+                    <li><a href="#yazilari">Yazılar</a></li>
+                    <li><a href="#hakkimda">Hakkımda</a></li>
+                    <li><a href="#iletisim">İletişim</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Bölümü - Dikkat çekici giriş -->
+    <section class="hero" id="anasayfa">
+        <div class="hero-container">
+            <h1>Web Tasarım & Geliştirme</h1>
+            <p>
+                Modern web teknolojileri, CSS trendleri ve tasarım prensipleri üzerine yazılar.
+                Kodlama yolculuğunda bizi takip edin!
+            </p>
+            <div class="hero-meta">
+                <span>📚 15+ Yazı</span>
+                <span>👥 5K+ Takipçi</span>
+                <span>⭐ En yeni güncellemeler</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ana İçerik Alanı -->
+    <main class="main-container" id="yazilari">
+        <!-- Blog Yazıları Alanı -->
+        <section>
+            <h2 style="margin-bottom: 30px; font-family: 'Merriweather', serif; font-size: 32px;">
+                Son Yazılar
+            </h2>
+
+            <div class="yazilarin-grid">
+                <!-- Yazı Kartı 1 -->
+                <article class="yazı-karti">
+                    <div class="yazı-resim">📱</div>
+                    <div class="yazı-icerik">
+                        <div class="yazı-meta">
+                            <span class="yazı-tarih">15 Mart 2024</span>
+                            <span class="yazı-kategori tasarim">Tasarım</span>
+                        </div>
+                        <h3 class="yazı-baslik">Responsive Web Tasarımı Rehberi</h3>
+                        <p class="yazı-ozet">
+                            Mobil-first yaklaşımı kullanarak tüm cihazlarda mükemmel görünen web siteleri tasarlamanın temel prensiplerini öğrenin.
+                        </p>
+                        <button class="yazı-buton" onclick="alert('Makale açılıyor...')">
+                            Devamını Oku →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Yazı Kartı 2 -->
+                <article class="yazı-karti">
+                    <div class="yazı-resim">🎨</div>
+                    <div class="yazı-icerik">
+                        <div class="yazı-meta">
+                            <span class="yazı-tarih">12 Mart 2024</span>
+                            <span class="yazı-kategori teknoloji">Teknoloji</span>
+                        </div>
+                        <h3 class="yazı-baslik">CSS Grid ile Düzen Tasarımı</h3>
+                        <p class="yazı-ozet">
+                            CSS Grid özelliğini kullanarak karmaşık ve esnek sayfa düzenleri nasıl oluşturacağını adım adım anlatıyoruz.
+                        </p>
+                        <button class="yazı-buton" onclick="alert('Makale açılıyor...')">
+                            Devamını Oku →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Yazı Kartı 3 -->
+                <article class="yazı-karti">
+                    <div class="yazı-resim">⚡</div>
+                    <div class="yazı-icerik">
+                        <div class="yazı-meta">
+                            <span class="yazı-tarih">10 Mart 2024</span>
+                            <span class="yazı-kategori">Performans</span>
+                        </div>
+                        <h3 class="yazı-baslik">Web Performansını Optimize Etme</h3>
+                        <p class="yazı-ozet">
+                            Sayfanızın hızını artırmak, görüntüleri sıkıştırmak ve kullanıcı deneyimini geliştirmek için pratik ipuçları.
+                        </p>
+                        <button class="yazı-buton" onclick="alert('Makale açılıyor...')">
+                            Devamını Oku →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Yazı Kartı 4 -->
+                <article class="yazı-karti">
+                    <div class="yazı-resim">🔐</div>
+                    <div class="yazı-icerik">
+                        <div class="yazı-meta">
+                            <span class="yazı-tarih">8 Mart 2024</span>
+                            <span class="yazı-kategori uygulama">Uygulama</span>
+                        </div>
+                        <h3 class="yazı-baslik">Web Güvenliği Temel İlkeleri</h3>
+                        <p class="yazı-ozet">
+                            Web uygulamalarında güvenlik açıklarından korunmanın ve HTTPS, CORS gibi teknolojileri anlamanın önemi.
+                        </p>
+                        <button class="yazı-buton" onclick="alert('Makale açılıyor...')">
+                            Devamını Oku →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Yazı Kartı 5 -->
+                <article class="yazı-karti">
+                    <div class="yazı-resim">🚀</div>
+                    <div class="yazı-icerik">
+                        <div class="yazı-meta">
+                            <span class="yazı-tarih">5 Mart 2024</span>
+                            <span class="yazı-kategori tasarim">Tasarım</span>
+                        </div>
+                        <h3 class="yazı-baslik">JavaScript Animasyonları Mastered</h3>
+                        <p class="yazı-ozet">
+                            CSS ve JavaScript ile etkileyici animasyonlar yaratmanın ileri teknikleri. Smooth ve performans optimizasyonu.
+                        </p>
+                        <button class="yazı-buton" onclick="alert('Makale açılıyor...')">
+                            Devamını Oku →
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Yazı Kartı 6 -->
+                <article class="yazı-karti">
+                    <div class="yazı-resim">♿</div>
+                    <div class="yazı-icerik">
+                        <div class="yazı-meta">
+                            <span class="yazı-tarih">1 Mart 2024</span>
+                            <span class="yazı-kategori">Erişilebilirlik</span>
+                        </div>
+                        <h3 class="yazı-baslik">Web Erişilebiliği (A11Y)</h3>
+                        <p class="yazı-ozet">
+                            Herkes için erişilebilir web siteleri tasarlamanın önemi. WCAG kuralları ve en iyi uygulamalar.
+                        </p>
+                        <button class="yazı-buton" onclick="alert('Makale açılıyor...')">
+                            Devamını Oku →
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Sidebar - Ek bilgiler -->
+        <aside id="hakkimda">
+            <!-- Hakkımda Kutusu -->
+            <div class="sidebar-kutu">
+                <h3>👋 Hakkımda</h3>
+                <p style="color: var(--renkMetinAcik); font-size: 14px; line-height: 1.6;">
+                    Merhaba! Ben web tasarımcı ve geliştirici. Modern web teknolojilerine tutkun, HTML, CSS ve JavaScript ile etkileyici projeler geliştiririm. Bu blogda öğrendiklerimi paylaşıyorum.
+                </p>
+            </div>
+
+            <!-- Kategoriler Kutusu -->
+            <div class="sidebar-kutu">
+                <h3>📂 Kategoriler</h3>
+                <ul class="kategori-liste">
+                    <li>
+                        <a href="#tasarim">
+                            <span>🎨 Tasarım</span>
+                            <span class="kategori-sayisi">5</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#teknoloji">
+                            <span>🔧 Teknoloji</span>
+                            <span class="kategori-sayisi">4</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#uygulama">
+                            <span>📱 Uygulamalar</span>
+                            <span class="kategori-sayisi">3</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#performans">
+                            <span>⚡ Performans</span>
+                            <span class="kategori-sayisi">2</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Son Yazılar Kutusu -->
+            <div class="sidebar-kutu">
+                <h3>📰 Son Yazılar</h3>
+                <ul class="sonYazilarin-liste">
+                    <li>
+                        <a href="#">Responsive Web Tasarımı Rehberi</a>
+                        <span class="sonYazilarin-tarih">15 Mart 2024</span>
+                    </li>
+                    <li>
+                        <a href="#">CSS Grid ile Düzen Tasarımı</a>
+                        <span class="sonYazilarin-tarih">12 Mart 2024</span>
+                    </li>
+                    <li>
+                        <a href="#">Web Performansını Optimize Etme</a>
+                        <span class="sonYazilarin-tarih">10 Mart 2024</span>
+                    </li>
+                    <li>
+                        <a href="#">Web Güvenliği Temel İlkeleri</a>
+                        <span class="sonYazilarin-tarih">8 Mart 2024</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer id="iletisim">
+        <p>&copy; 2024 Tech Blog. Tüm hakları saklıdır.</p>
+        <p>Web tasarım ve geliştirme üzerine yazılar ve rehberler.</p>
+        <div class="sosyal-linkler">
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">GitHub</a>
+            <a href="#">İletişim</a>
+        </div>
+    </footer>
+
+    <!-- JavaScript - Tema Toggle ve Local Storage -->
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        // Tema toggle özellikleri
+        const temaToggle = document.getElementById('temaToggle');
+        const html = document.documentElement;
+
+        // Kaydedilmiş temayı yükle veya sistem tercihini kontrol et
+        const kaydedilmisTema = safeStorage('get', 'tema') || 'acik';
+        html.setAttribute('data-tema', kaydedilmisTema);
+        temaToggle.textContent = kaydedilmisTema === 'acik' ? '🌙' : '☀️';
+
+        // Tema toggle butonu tıklandığında
+        temaToggle.addEventListener('click', () => {
+            const mevcutTema = html.getAttribute('data-tema');
+            const yeniTema = mevcutTema === 'acik' ? 'koyu' : 'acik';
+
+            // Temayı güncelle ve kaydet
+            html.setAttribute('data-tema', yeniTema);
+            safeStorage('set', 'tema', yeniTema);
+
+            // İkon güncelle - yumuşak geçiş
+            temaToggle.textContent = yeniTema === 'acik' ? '🌙' : '☀️';
+        });
+
+        // Sistem tema tercihini kontrol et (gelişmiş feature)
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            if (!safeStorage('get', 'tema')) {
+                html.setAttribute('data-tema', 'koyu');
+                temaToggle.textContent = '☀️';
+            }
+        }
+
+        // Smooth scroll animasyonu - navigasyon linkleri için
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

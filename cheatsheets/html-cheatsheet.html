@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UI/UX Tasarımcıları İçin Kapsamlı HTML Cheatsheet - Temel Bilgileri Kolayca Öğrenin">
+    <meta name="og:title" content="HTML Cheatsheet - UI/UX Tasarımcılar İçin">
+    <meta name="og:description" content="HTML etiketleri, özellikleri ve kullanım örnekleri ile kapsamlı bir rehber">
+    <title>HTML Cheatsheet - UI/UX Tasarımcılar İçin Eksiksiz Rehber</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #10b981;
+            --dark-bg: #1a1a2e;
+            --dark-surface: #16213e;
+            --dark-text: #e4e4e7;
+            --light-bg: #ffffff;
+            --light-surface: #f8f9fa;
+            --light-text: #1a1a2e;
+            --border: #e0e0e0;
+            --dark-border: #404060;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+
+        .header-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .theme-toggle, .search-box {
+            padding: 0.7rem 1.2rem;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover, .search-box:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .search-box {
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            min-width: 300px;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 120px;
+            width: 250px;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            color: var(--primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 0.6rem 0.8rem;
+            color: var(--light-text);
+            text-decoration: none;
+            border-radius: 0.4rem;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            border-left: 3px solid transparent;
+        }
+
+        body.dark-mode .sidebar a {
+            color: var(--dark-text);
+        }
+
+        .sidebar a:hover {
+            background: var(--light-surface);
+            border-left-color: var(--primary);
+            padding-left: 1.2rem;
+        }
+
+        body.dark-mode .sidebar a:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .tag-card {
+            background: var(--light-surface);
+            border: 1px solid var(--border);
+            border-radius: 0.8rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .tag-card {
+            background: var(--dark-surface);
+            border-color: var(--dark-border);
+        }
+
+        .tag-card:hover {
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.15);
+            border-color: var(--primary);
+        }
+
+        .tag-name {
+            font-family: 'Courier New', monospace;
+            background: var(--primary);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.4rem;
+            display: inline-block;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .tag-description {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .tag-attributes {
+            margin-bottom: 1rem;
+        }
+
+        .tag-attributes h4 {
+            color: var(--secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .attribute-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .attribute-list li {
+            padding: 0.4rem 0;
+            font-size: 0.95rem;
+        }
+
+        .attr-name {
+            font-family: 'Courier New', monospace;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .code-example {
+            background: #1e1e2e;
+            color: #e4e4e7;
+            padding: 1rem;
+            border-radius: 0.6rem;
+            margin: 1rem 0;
+            position: relative;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .code-copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.4rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .code-copy-btn:hover {
+            background: var(--primary);
+        }
+
+        .note-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.4rem;
+        }
+
+        body.dark-mode .note-box {
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .note-box strong {
+            color: var(--secondary);
+        }
+
+        .accessibility-tip {
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.4rem;
+            font-size: 0.95rem;
+        }
+
+        body.dark-mode .accessibility-tip {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .accessibility-tip strong {
+            color: var(--primary);
+        }
+
+        /* Syntax Highlighting */
+        .tag { color: #7dd3fc; }
+        .attr { color: #86efac; }
+        .value { color: #fbbf24; }
+        .comment { color: #6b7280; }
+
+        /* Footer */
+        .footer {
+            background: var(--light-surface);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode .footer {
+            background: var(--dark-surface);
+            border-top-color: var(--dark-border);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .resources {
+            margin-top: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .sidebar {
+                position: relative;
+                top: auto;
+                width: 100%;
+                max-height: none;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .sidebar h3 {
+                flex-basis: 100%;
+            }
+
+            .sidebar a {
+                flex: 1;
+                min-width: 150px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .search-box {
+                min-width: 200px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 0.95rem;
+            }
+
+            .header-controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .theme-toggle {
+                width: 100%;
+            }
+
+            .tag-card {
+                padding: 1rem;
+            }
+
+            .code-example {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-surface);
+        }
+
+        body.dark-mode ::-webkit-scrollbar-track {
+            background: var(--dark-surface);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+<a href="../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <div class="header">
+        <h1>🚀 HTML Cheatsheet</h1>
+        <p>UI/UX Tasarımcıları İçin Eksiksiz Rehber - Yazılım Bilgisi Gerekmez!</p>
+        <div class="header-controls">
+            <button class="theme-toggle" id="themeToggle">🌙 Koyu Tema</button>
+            <input type="text" class="search-box" id="searchBox" placeholder="Etiketleri ara (h1, div, form...)">
+        </div>
+    </div>
+
+    <div class="container">
+        <nav class="sidebar">
+            <h3>📚 Kategoriler</h3>
+            <a href="#temel">Temel Yapı</a>
+            <a href="#metin">Metin Etiketleri</a>
+            <a href="#baglantilar">Bağlantılar & Görseller</a>
+            <a href="#listeler">Listeler</a>
+            <a href="#tablolar">Tablolar</a>
+            <a href="#formlar">Formlar</a>
+            <a href="#semantik">Semantik HTML5</a>
+            <a href="#medya">Medya</a>
+            <a href="#meta">Meta & SEO</a>
+            <a href="#erisim">Erişilebilirlik</a>
+            <a href="#global">Global Öznitelikler</a>
+        </nav>
+
+        <main class="main-content">
+            <!-- TEMEL YAPILAR BÖLÜMÜ -->
+            <section class="section active" id="temel-section" data-category="temel">
+                <h2>📋 Temel Yapı</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">Her HTML belgesinin temelini oluşturan etiketler. Bunlar olmadan web sayfası çalışmaz!</p>
+
+                <!-- DOCTYPE -->
+                <div class="tag-card" data-tags="doctype">
+                    <span class="tag-name">&lt;!DOCTYPE html&gt;</span>
+                    <div class="tag-description">Web tarayıcıya "Bu bir HTML5 belgesidir" demektir. Her HTML dosyasının en başında bulunması ZORUNLUDUR.</div>
+                    <div class="tag-attributes">
+                        <h4>Kullanım Yeri:</h4>
+                        <div class="note-box"><strong>Her HTML dosyasının ilk satırı!</strong> Dosyayı HTML olarak tanınmasını sağlar.</div>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html&gt;</span>
+  <span class="tag">&lt;head&gt;</span>...&lt;/head&gt;
+  <span class="tag">&lt;body&gt;</span>...&lt;/body&gt;
+<span class="tag">&lt;/html&gt;</span>
+                    </div>
+                </div>
+
+                <!-- HTML -->
+                <div class="tag-card" data-tags="html">
+                    <span class="tag-name">&lt;html&gt;</span>
+                    <div class="tag-description">Bütün HTML içeriğini kapsayan en üst seviyedeki etiket. Web sayfasının anahtarı!</div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">lang</span> - Sayfanın dilini belirtir. "tr" = Türkçe, "en" = İngilizce</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;html lang="tr"&gt;</span>
+  <!-- Bütün içerik buraya -->
+<span class="tag">&lt;/html&gt;</span>
+                    </div>
+                    <div class="accessibility-tip">
+                        <strong>♿ Erişilebilirlik İpucu:</strong> lang özniteliğini eklemek ekran okuyucuların doğru dili seçmesini sağlar.
+                    </div>
+                </div>
+
+                <!-- HEAD -->
+                <div class="tag-card" data-tags="head">
+                    <span class="tag-name">&lt;head&gt;</span>
+                    <div class="tag-description">Web sayfasının "bilgi merkezi"dir. Başlık, açıklama, bağlantılar ve meta bilgileri buraya gider. Tarayıcı ve arama motorları buradaki bilgileri kullanır.</div>
+                    <div class="tag-attributes">
+                        <h4>İçinde Bulunabilecekler:</h4>
+                        <ul class="attribute-list">
+                            <li>&lt;title&gt; - Tarayıcı sekmesinde görünen başlık</li>
+                            <li>&lt;meta&gt; - Sayfanın açıklaması, charset (karakter seti) vs.</li>
+                            <li>&lt;link&gt; - CSS dosyaları, favicon vs.</li>
+                            <li>&lt;script&gt; - JavaScript kodları</li>
+                            <li>&lt;style&gt; - CSS stilleri</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="value">"UTF-8"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;title&gt;</span>Benim Harika Websitem<span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="value">"stylesheet"</span> <span class="attr">href</span>=<span class="value">"styles.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+                    </div>
+                </div>
+
+                <!-- BODY -->
+                <div class="tag-card" data-tags="body">
+                    <span class="tag-name">&lt;body&gt;</span>
+                    <div class="tag-description">Web sayfasında kullanıcının görebileceği BÜTÜNa içeriğin bulunduğu konteyner. Metin, resimler, linkler, formlar vb. hepsi buraya gider.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;body&gt;</span>
+  <span class="tag">&lt;h1&gt;</span>Hoş Geldiniz!<span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Bu metni herkes görebilir.<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+                    </div>
+                </div>
+
+                <!-- META CHARSET -->
+                <div class="tag-card" data-tags="meta charset">
+                    <span class="tag-name">&lt;meta charset="UTF-8"&gt;</span>
+                    <div class="tag-description">Sayfanın karakter setini belirtir. UTF-8, dünyadaki TÜM harfleri (ş, ç, ğ, ı vb.) destekler. Türkçe yazı yazacaksanız ÖNCELİKLE bu satırı ekleyin!</div>
+                    <div class="note-box"><strong>Çok Önemli:</strong> UTF-8 olmadan Türkçe karakterler yanlış gösterilir!</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="value">"UTF-8"</span><span class="tag">&gt;</span>
+                    </div>
+                </div>
+
+                <!-- TITLE -->
+                <div class="tag-card" data-tags="title">
+                    <span class="tag-name">&lt;title&gt;</span>
+                    <div class="tag-description">Tarayıcı sekmesinde ve arama motoru sonuçlarında görünen başlık. İlk izlenim burada başlar!</div>
+                    <div class="tag-attributes">
+                        <h4>Ne Zaman Kullanılır:</h4>
+                        <div class="note-box">Her sayfanın kendine özgü, açıklayıcı bir başlığı olmalıdır. SEO için çok önemlidir.</div>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;title&gt;</span>Benim Tasarım Portföyüm | İbrahim Yilmaz<span class="tag">&lt;/title&gt;</span>
+                    </div>
+                </div>
+
+                <!-- LINK -->
+                <div class="tag-card" data-tags="link">
+                    <span class="tag-name">&lt;link&gt;</span>
+                    <div class="tag-description">Sayfaya dış dosyaları (CSS, favicon vb.) bağlamak için kullanılır. Sayfanın görünümünü kontrol eden CSS dosyaları genellikle burada bağlanır.</div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">rel</span> - Dosyanın ilişkisi ("stylesheet" = CSS dosyası)</li>
+                            <li><span class="attr-name">href</span> - Dosyanın konumu</li>
+                            <li><span class="attr-name">type</span> - Dosyanın tipi (genellikle "text/css")</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="value">"stylesheet"</span> <span class="attr">href</span>=<span class="value">"styles.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="value">"icon"</span> <span class="attr">href</span>=<span class="value">"favicon.ico"</span><span class="tag">&gt;</span>
+                    </div>
+                </div>
+
+                <!-- SCRIPT -->
+                <div class="tag-card" data-tags="script">
+                    <span class="tag-name">&lt;script&gt;</span>
+                    <div class="tag-description">JavaScript kodunu sayfaya eklemek için kullanılır. Butonlara tıklama işlevselliği, animasyonlar vb. hepsi JavaScript ile yapılır.</div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">src</span> - Dış JavaScript dosyasının konumu</li>
+                            <li><span class="attr-name">type</span> - Genellikle "text/javascript"</li>
+                            <li><span class="attr-name">async</span> - Dosya indirme sırasında sayfanın yüklenmesini durdurmaması</li>
+                            <li><span class="attr-name">defer</span> - Sayfanın yüklenmesinden sonra script çalış</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="comment">&lt;!-- Dış JavaScript dosyası --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="value">"script.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="comment">&lt;!-- Direkt JavaScript kodu --&gt;</span>
+<span class="tag">&lt;script&gt;</span>
+  console.log('Merhaba Dünya!');
+<span class="tag">&lt;/script&gt;</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- METIN ETİKETLERİ BÖLÜMÜ -->
+            <section class="section" id="metin-section" data-category="metin">
+                <h2>📝 Metin Etiketleri</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">Metni biçimlendirmek ve anlamlandırmak için kullanılan etiketler.</p>
+
+                <!-- H1-H6 -->
+                <div class="tag-card" data-tags="h1 h2 h3 h4 h5 h6">
+                    <span class="tag-name">&lt;h1&gt; ... &lt;h6&gt;</span>
+                    <div class="tag-description">Başlıklar! h1 en büyük ve en önemli, h6 en küçük ve en az önemli. Bir sayfada genellikle sadece BİR tane h1 olmalıdır.</div>
+                    <div class="note-box"><strong>SEO İpucu:</strong> Başlıklar arama motorları tarafından çok önemli görülür. Ana başlık için h1 kullanın!</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;h1&gt;</span>Sayfa Başlığı (En Büyük)<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;h2&gt;</span>Alt Başlık<span class="tag">&lt;/h2&gt;</span>
+<span class="tag">&lt;h3&gt;</span>Daha Küçük Başlık<span class="tag">&lt;/h3&gt;</span>
+                    </div>
+                    <div class="accessibility-tip">
+                        <strong>♿ Erişilebilirlik:</strong> Başlıklar sayfanın yapısını gösterir. Ekran okuyucular başlıkları takip ederek içeriği gezinir.
+                    </div>
+                </div>
+
+                <!-- P -->
+                <div class="tag-card" data-tags="p paragraph">
+                    <span class="tag-name">&lt;p&gt;</span>
+                    <div class="tag-description">Paragraf (paragraph). Metin bloklarını ayrı tutmak için kullanılır. Normal sayfada gördüğünüz metin bloklarının neredeyse hepsi p etiketidir.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;p&gt;</span>Bu bir paragraf. Paragraflar otomatik olarak metin bloklarını ayırır.<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;p&gt;</span>İkinci paragraf. Arasında boşluk vardır.<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+
+                <!-- SPAN -->
+                <div class="tag-card" data-tags="span">
+                    <span class="tag-name">&lt;span&gt;</span>
+                    <div class="tag-description">Küçük metin parçalarını biçimlendirilmek için kullanılır. Paragraflı içinde belirli kelimeleri vurgulama için ideal.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;p&gt;</span>Bu paragrafta <span class="tag">&lt;span</span> <span class="attr">style</span>=<span class="value">"color: red;"</span><span class="tag">&gt;</span>bu kısım kırmızı<span class="tag">&lt;/span&gt;</span> gösterilir.<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+
+                <!-- STRONG & EM -->
+                <div class="tag-card" data-tags="strong em emphasis bold italic">
+                    <span class="tag-name">&lt;strong&gt; & &lt;em&gt;</span>
+                    <div class="tag-description">
+                        <strong>&lt;strong&gt;</strong> - Metni BOLD (kalın) yapar ve SEO açısından önemli gösterir.
+                        <br><strong>&lt;em&gt;</strong> - Metni İTALİC (eğik) yapar ve vurgu anlamı taşır.
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;p&gt;</span>Bu <span class="tag">&lt;strong&gt;</span>çok önemli<span class="tag">&lt;/strong&gt;</span> ve bu <span class="tag">&lt;em&gt;</span>vurgulu<span class="tag">&lt;/em&gt;</span>.<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+
+                <!-- BR -->
+                <div class="tag-card" data-tags="br break line">
+                    <span class="tag-name">&lt;br&gt;</span>
+                    <div class="tag-description">Satır sonu (break). Metni yeni satıra geçirmek için kullanılır. UYARI: Layout kontrol etmek için br kullanmayın, bunun için CSS kullanın!</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+Adres:<br>
+Ankara Caddesi No: 123<br>
+Ankara, Türkiye
+                    </div>
+                </div>
+
+                <!-- HR -->
+                <div class="tag-card" data-tags="hr horizontal rule">
+                    <span class="tag-name">&lt;hr&gt;</span>
+                    <div class="tag-description">Yatay çizgi (horizontal rule). İçeriği bölümlere ayırmak için kullanılır. Görsel ayırıcı.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;p&gt;</span>Birinci bölüm<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;hr&gt;</span>
+<span class="tag">&lt;p&gt;</span>İkinci bölüm<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+
+                <!-- BLOCKQUOTE -->
+                <div class="tag-card" data-tags="blockquote quote">
+                    <span class="tag-name">&lt;blockquote&gt;</span>
+                    <div class="tag-description">Alıntı yapmak için kullanılır. Başka birinin sözünü alıntıladığınızda bu etiketj kullanın.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;blockquote&gt;</span>
+  <span class="tag">&lt;p&gt;</span>İyi tasarım, kullanıcı deneyiminin temelini oluşturur. - Steve Jobs<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/blockquote&gt;</span>
+                    </div>
+                </div>
+
+                <!-- PRE & CODE -->
+                <div class="tag-card" data-tags="pre code programming">
+                    <span class="tag-name">&lt;pre&gt; & &lt;code&gt;</span>
+                    <div class="tag-description">
+                        <strong>&lt;pre&gt;</strong> - Metni olduğu gibi gösterir (boşluklar, satır sonları korunur).
+                        <br><strong>&lt;code&gt;</strong> - Kod parçalarını gösterir (Courier New yazı tipi).
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;pre&gt;&lt;code&gt;</span>
+function hello() {
+  console.log('Merhaba');
+}
+<span class="tag">&lt;/code&gt;&lt;/pre&gt;</span>
+                    </div>
+                </div>
+
+                <!-- MARK -->
+                <div class="tag-card" data-tags="mark highlight">
+                    <span class="tag-name">&lt;mark&gt;</span>
+                    <div class="tag-description">Metin vurgula/highlight yap. Sayfa içinde arama sonucunda bulunan kelimeleri vurgulamak için ideal.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;p&gt;</span>HTML öğrenmek <span class="tag">&lt;mark&gt;</span>çok önemli<span class="tag">&lt;/mark&gt;</span> bir beceridir.<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+
+                <!-- SMALL, SUB, SUP -->
+                <div class="tag-card" data-tags="small sub sup subscript superscript">
+                    <span class="tag-name">&lt;small&gt;, &lt;sub&gt;, &lt;sup&gt;</span>
+                    <div class="tag-description">
+                        <strong>&lt;small&gt;</strong> - Metni küçültür (yaşlı insanlar için de iyidir).
+                        <br><strong>&lt;sub&gt;</strong> - Alt yazı (H₂O gibi).
+                        <br><strong>&lt;sup&gt;</strong> - Üst yazı (x² gibi).
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;p&gt;</span>Su H<span class="tag">&lt;sub&gt;</span>2<span class="tag">&lt;/sub&gt;</span>O'dur. E=mc<span class="tag">&lt;sup&gt;</span>2<span class="tag">&lt;/sup&gt;</span><span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;p&gt;</span><span class="tag">&lt;small&gt;</span>Bu çok küçük yazı<span class="tag">&lt;/small&gt;</span><span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BAĞLANTILAR VE GÖRSELLER BÖLÜMÜ -->
+            <section class="section" id="baglantilar-section" data-category="baglantilar">
+                <h2>🔗 Bağlantılar & Görseller</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">Web'i web yapan bağlantılar ve sayfaları güzel gösteren görseller.</p>
+
+                <!-- A (BAĞLANTI) -->
+                <div class="tag-card" data-tags="a link href anchor">
+                    <span class="tag-name">&lt;a&gt;</span>
+                    <div class="tag-description">Bağlantı (anchor). Başka sayfaya veya web sitesine gitmek için tıklanabilir metin yaratır. Web'in kalbi!</div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">href</span> - Gidilecek sayfanın adresi (ZORUNLU)</li>
+                            <li><span class="attr-name">target</span> - "_blank" = yeni sekmede aç, "_self" = aynı sekmede aç (varsayılan)</li>
+                            <li><span class="attr-name">rel</span> - "nofollow" = arama motorları bunu takip etmesin, "external" = dış bağlantı</li>
+                            <li><span class="attr-name">title</span> - Fare üzerine getirilince görünen açıklama</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="value">"https://google.com"</span> <span class="attr">target</span>=<span class="value">"_blank"</span><span class="tag">&gt;</span>Google'a Git<span class="tag">&lt;/a&gt;</span>
+
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="value">"/hakkimizda.html"</span><span class="tag">&gt;</span>Hakkımızda<span class="tag">&lt;/a&gt;</span>
+
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="value">"#bölüm2"</span><span class="tag">&gt;</span>Bölüm 2'ye Git<span class="tag">&lt;/a&gt;</span>
+                    </div>
+                    <div class="accessibility-tip">
+                        <strong>♿ Erişilebilirlik:</strong> Bağlantı metni açıklayıcı olmalıdır. "Tıkla" yerine "Google'a Git" yazın.
+                    </div>
+                </div>
+
+                <!-- IMG -->
+                <div class="tag-card" data-tags="img image resim">
+                    <span class="tag-name">&lt;img&gt;</span>
+                    <div class="tag-description">Resim gösterir. Web sayfalarını güzel yapan önemli eleman! Self-closing yani kapatma etiketi yoktur.</div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">src</span> - Resim dosyasının yolu (ZORUNLU)</li>
+                            <li><span class="attr-name">alt</span> - Resim yüklenemediğinde gösterilen metin (ZORUNLU - SEO ve erişilebilirlik için)</li>
+                            <li><span class="attr-name">width</span> - Resimin genişliği (piksel veya %)</li>
+                            <li><span class="attr-name">height</span> - Resimin yüksekliği</li>
+                            <li><span class="attr-name">loading</span> - "lazy" = sayfaya yaklaşınca yükle (hız için iyi)</li>
+                            <li><span class="attr-name">srcset</span> - Farklı ekran boyutları için farklı resimler</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="value">"resimler/logo.png"</span> <span class="attr">alt</span>=<span class="value">"Şirket Logosu"</span> <span class="attr">width</span>=<span class="value">"200"</span><span class="tag">&gt;</span>
+
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="value">"foto.jpg"</span> <span class="attr">alt</span>=<span class="value">"Dağ Manzarası"</span> <span class="attr">loading</span>=<span class="value">"lazy"</span><span class="tag">&gt;</span>
+                    </div>
+                    <div class="note-box"><strong>Alt Metni Çok Önemlidir!</strong> Görme engellililer için resmin ne olduğunu açıklar. SEO açısından da önemlidir.</div>
+                    <div class="accessibility-tip">
+                        <strong>♿ Erişilebilirlik:</strong> Alt metni resmin içeriğini açıklamalıdır. "Resim" yerine "Sabahlayan Dağ Manzarası" yazın.
+                    </div>
+                </div>
+
+                <!-- PICTURE & SOURCE -->
+                <div class="tag-card" data-tags="picture source responsive">
+                    <span class="tag-name">&lt;picture&gt; & &lt;source&gt;</span>
+                    <div class="tag-description">Farklı ekran boyutları için farklı resimler göstermek için kullanılır. Mobil telefonlarda küçük resim, bilgisayarda büyük resim gibi.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;picture&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">media</span>=<span class="value">"(max-width: 600px)"</span> <span class="attr">srcset</span>=<span class="value">"resim-kucuk.jpg"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">media</span>=<span class="value">"(min-width: 601px)"</span> <span class="attr">srcset</span>=<span class="value">"resim-buyuk.jpg"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="value">"resim-varsayilan.jpg"</span> <span class="attr">alt</span>=<span class="value">"Açıklama"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/picture&gt;</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LİSTELER BÖLÜMÜ -->
+            <section class="section" id="listeler-section" data-category="listeler">
+                <h2>📋 Listeler</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">Öğeleri organize etmek için harika etiketler.</p>
+
+                <!-- UL (SIRASIZ LİSTE) -->
+                <div class="tag-card" data-tags="ul unordered list">
+                    <span class="tag-name">&lt;ul&gt;</span>
+                    <div class="tag-description">Sırasız liste (unordered list). Satın alınacak ürünler, özellikler vb. için kullanılır. Her öğe bullet (•) ile başlar.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>HTML öğrenin<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>CSS öğrenin<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>JavaScript öğrenin<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span>
+                    </div>
+                </div>
+
+                <!-- OL (SIRALI LİSTE) -->
+                <div class="tag-card" data-tags="ol ordered list">
+                    <span class="tag-name">&lt;ol&gt;</span>
+                    <div class="tag-description">Sıralı liste (ordered list). Adım adım yapılması gereken şeyler için kullanılır. Otomatik olarak numaralandırılır (1, 2, 3...).</div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">type</span> - "1" (sayılar), "a" (küçük harfler), "A" (büyük harfler), "i" (romen rakamları)</li>
+                            <li><span class="attr-name">start</span> - Kaçtan başlanacağı (varsayılan: 1)</li>
+                            <li><span class="attr-name">reversed</span> - Ters sırada (10, 9, 8...)</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;ol&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Malzemeleri hazırla<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Karıştır<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Fırınla<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span>
+
+<span class="comment">&lt;!-- Romen rakamları ile --&gt;</span>
+<span class="tag">&lt;ol</span> <span class="attr">type</span>=<span class="value">"i"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Birinci<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>İkinci<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ol&gt;</span>
+                    </div>
+                </div>
+
+                <!-- LI -->
+                <div class="tag-card" data-tags="li list item">
+                    <span class="tag-name">&lt;li&gt;</span>
+                    <div class="tag-description">Liste öğesi (list item). Listedeki her öğe bu etiketle çerçevelenmelidir.</div>
+                </div>
+
+                <!-- DL, DT, DD -->
+                <div class="tag-card" data-tags="dl dt dd definition list">
+                    <span class="tag-name">&lt;dl&gt;, &lt;dt&gt;, &lt;dd&gt;</span>
+                    <div class="tag-description">
+                        <strong>&lt;dl&gt;</strong> - Tanım listesi (definition list).
+                        <br><strong>&lt;dt&gt;</strong> - Tanım terimi (definition term).
+                        <br><strong>&lt;dd&gt;</strong> - Tanım açıklaması (definition description).
+                        <br>Sözlük, terim açıklaması vb. için kullanılır.
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;dl&gt;</span>
+  <span class="tag">&lt;dt&gt;</span>HTML<span class="tag">&lt;/dt&gt;</span>
+  <span class="tag">&lt;dd&gt;</span>Web sayfasının yapısını belirtir<span class="tag">&lt;/dd&gt;</span>
+
+  <span class="tag">&lt;dt&gt;</span>CSS<span class="tag">&lt;/dt&gt;</span>
+  <span class="tag">&lt;dd&gt;</span>Web sayfasının görünümünü kontrol eder<span class="tag">&lt;/dd&gt;</span>
+<span class="tag">&lt;/dl&gt;</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TABLOLAR BÖLÜMÜ -->
+            <section class="section" id="tablolar-section" data-category="tablolar">
+                <h2>📊 Tablolar</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">Verileri satır ve sütunlarda organize etmek için.</p>
+
+                <!-- TABLE -->
+                <div class="tag-card" data-tags="table">
+                    <span class="tag-name">&lt;table&gt;</span>
+                    <div class="tag-description">Tablo oluşturur. İçinde thead, tbody, tfoot ve tr, th, td etiketleri bulunur.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;table&gt;</span>
+  <span class="tag">&lt;thead&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;th&gt;</span>Ürün<span class="tag">&lt;/th&gt;</span>
+      <span class="tag">&lt;th&gt;</span>Fiyat<span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/thead&gt;</span>
+  <span class="tag">&lt;tbody&gt;</span>
+    <span class="tag">&lt;tr&gt;</span>
+      <span class="tag">&lt;td&gt;</span>Kitap<span class="tag">&lt;/td&gt;</span>
+      <span class="tag">&lt;td&gt;</span>₺50<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;/tbody&gt;</span>
+<span class="tag">&lt;/table&gt;</span>
+                    </div>
+                </div>
+
+                <!-- THEAD, TBODY, TFOOT -->
+                <div class="tag-card" data-tags="thead tbody tfoot">
+                    <span class="tag-name">&lt;thead&gt;, &lt;tbody&gt;, &lt;tfoot&gt;</span>
+                    <div class="tag-description">
+                        <strong>&lt;thead&gt;</strong> - Tablo başlığı (başlık satırı).
+                        <br><strong>&lt;tbody&gt;</strong> - Tablo gövdesi (ana veri).
+                        <br><strong>&lt;tfoot&gt;</strong> - Tablo ayağı (özet/toplam satırı).
+                    </div>
+                </div>
+
+                <!-- TR, TH, TD -->
+                <div class="tag-card" data-tags="tr th td row cell">
+                    <span class="tag-name">&lt;tr&gt;, &lt;th&gt;, &lt;td&gt;</span>
+                    <div class="tag-description">
+                        <strong>&lt;tr&gt;</strong> - Tablo satırı (table row).
+                        <br><strong>&lt;th&gt;</strong> - Tablo başlık hücresi (table header). Varsayılan olarak BOLD ve merkez hizalıdır.
+                        <br><strong>&lt;td&gt;</strong> - Tablo veri hücresi (table data).
+                    </div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri (td & th için):</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">colspan</span> - Hücrenin kaç sütun boyutunda olacağı</li>
+                            <li><span class="attr-name">rowspan</span> - Hücrenin kaç satır boyutunda olacağı</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;table&gt;</span>
+  <span class="tag">&lt;tr&gt;</span>
+    <span class="tag">&lt;th&gt;</span>Adı<span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;th</span> <span class="attr">colspan</span>=<span class="value">"2"</span><span class="tag">&gt;</span>İletişim<span class="tag">&lt;/th&gt;</span>
+  <span class="tag">&lt;/tr&gt;</span>
+  <span class="tag">&lt;tr&gt;</span>
+    <span class="tag">&lt;td&gt;</span>Ahmet<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;td&gt;</span>ahmet@email.com<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;td&gt;</span>05551234567<span class="tag">&lt;/td&gt;</span>
+  <span class="tag">&lt;/tr&gt;</span>
+<span class="tag">&lt;/table&gt;</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FORMLAR BÖLÜMÜ -->
+            <section class="section" id="formlar-section" data-category="formlar">
+                <h2>📝 Formlar</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">Kullanıcıdan veri almak için - arama kutuları, giriş sayfaları vb.</p>
+
+                <!-- FORM -->
+                <div class="tag-card" data-tags="form">
+                    <span class="tag-name">&lt;form&gt;</span>
+                    <div class="tag-description">Form oluşturur. İçinde input, textarea, select vb. alanlar bulunur. Verileri sunucuya gönderir.</div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">action</span> - Form verilerinin gönderileceği sunucu adresi</li>
+                            <li><span class="attr-name">method</span> - "GET" (URL'de görünür) veya "POST" (gizli gönderim)</li>
+                            <li><span class="attr-name">enctype</span> - Dosya yükleme için "multipart/form-data"</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="value">"/gonder"</span> <span class="attr">method</span>=<span class="value">"POST"</span><span class="tag">&gt;</span>
+  <span class="comment">&lt;!-- Form alanları buraya --&gt;</span>
+<span class="tag">&lt;/form&gt;</span>
+                    </div>
+                </div>
+
+                <!-- INPUT (TÜM TÜRLERI) -->
+                <div class="tag-card" data-tags="input text password email number">
+                    <span class="tag-name">&lt;input&gt;</span>
+                    <div class="tag-description">Kullanıcıdan veri alan alan. Türe bağlı olarak farklı şekillerde görünür. Self-closing etiket!</div>
+                    <div class="tag-attributes">
+                        <h4>Türleri (type özniteliği):</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">text</span> - Sade metin (adı, soyadı vb.)</li>
+                            <li><span class="attr-name">password</span> - Şifre (yazılanlar • • • şeklinde gösterilir)</li>
+                            <li><span class="attr-name">email</span> - E-posta (@ kontrolü yapar)</li>
+                            <li><span class="attr-name">number</span> - Sayı (sadece rakamlar kabul eder)</li>
+                            <li><span class="attr-name">tel</span> - Telefon numarası</li>
+                            <li><span class="attr-name">url</span> - Web adresi</li>
+                            <li><span class="attr-name">date</span> - Tarih seçme takvimi</li>
+                            <li><span class="attr-name">time</span> - Saat seçme</li>
+                            <li><span class="attr-name">color</span> - Renk seçme palesiz</li>
+                            <li><span class="attr-name">range</span> - Kaydırıcı (1-100 arası seç gibi)</li>
+                            <li><span class="attr-name">checkbox</span> - Onay kutusu (birden fazla seç)</li>
+                            <li><span class="attr-name">radio</span> - Radyo düğmesi (birini seç)</li>
+                            <li><span class="attr-name">file</span> - Dosya yükleme</li>
+                            <li><span class="attr-name">submit</span> - Gönder düğmesi</li>
+                            <li><span class="attr-name">reset</span> - Sıfırla düğmesi</li>
+                            <li><span class="attr-name">button</span> - Normal düğme</li>
+                            <li><span class="attr-name">hidden</span> - Gizli alan (kullanıcı görmez)</li>
+                            <li><span class="attr-name">search</span> - Arama kutusu</li>
+                        </ul>
+                    </div>
+                    <div class="tag-attributes">
+                        <h4>Ortak Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">name</span> - Alan adı (form sunucuya gönderirken bu adı kullanır)</li>
+                            <li><span class="attr-name">value</span> - Varsayılan değer</li>
+                            <li><span class="attr-name">placeholder</span> - Alan boşken gösterilen ipucu metni</li>
+                            <li><span class="attr-name">required</span> - Bu alan zorunlu (doldurulması gerekir)</li>
+                            <li><span class="attr-name">disabled</span> - Alan devre dışı (tıklanamaz)</li>
+                            <li><span class="attr-name">readonly</span> - Alan okunabilir ancak değiştirilmez</li>
+                            <li><span class="attr-name">maxlength</span> - En fazla kaç karakter yazılabileceği</li>
+                            <li><span class="attr-name">min & max</span> - Minimum ve maksimum değer (number, range için)</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">placeholder</span>=<span class="value">"Adınızı girin"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"email"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"password"</span> <span class="attr">placeholder</span>=<span class="value">"Şifreni girin"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"checkbox"</span><span class="tag">&gt;</span> Şartları Kabul Ediyorum
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"submit"</span> <span class="attr">value</span>=<span class="value">"Gönder"</span><span class="tag">&gt;</span>
+                    </div>
+                </div>
+
+                <!-- TEXTAREA -->
+                <div class="tag-card" data-tags="textarea">
+                    <span class="tag-name">&lt;textarea&gt;</span>
+                    <div class="tag-description">Çok satırlı metin alanı. Yorum, mesaj vb. için ideal. input'tan farkı: birden fazla satır yazılabilir.</div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">rows</span> - Kaç satır yüksekliğinde olacağı</li>
+                            <li><span class="attr-name">cols</span> - Kaç karakterlik genişlik</li>
+                            <li><span class="attr-name">placeholder</span> - İpucu metni</li>
+                            <li><span class="attr-name">maxlength</span> - En fazla kaç karakter</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;textarea</span> <span class="attr">rows</span>=<span class="value">"5"</span> <span class="attr">cols</span>=<span class="value">"40"</span> <span class="attr">placeholder</span>=<span class="value">"Mesajınızı yazın..."</span><span class="tag">&gt;&lt;/textarea&gt;</span>
+                    </div>
+                </div>
+
+                <!-- SELECT & OPTION -->
+                <div class="tag-card" data-tags="select option dropdown">
+                    <span class="tag-name">&lt;select&gt; & &lt;option&gt;</span>
+                    <div class="tag-description">Açılır menü (dropdown). Seçenekler arasında seçim yapılır. Kontrol edilen seçimler için ideal.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;select</span> <span class="attr">name</span>=<span class="value">"renk"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;option&gt;</span>Renk Seçin<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="value">"kirmizi"</span><span class="tag">&gt;</span>Kırmızı<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="value">"mavi"</span><span class="tag">&gt;</span>Mavi<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="value">"yesil"</span><span class="tag">&gt;</span>Yeşil<span class="tag">&lt;/option&gt;</span>
+<span class="tag">&lt;/select&gt;</span>
+                    </div>
+                </div>
+
+                <!-- LABEL -->
+                <div class="tag-card" data-tags="label">
+                    <span class="tag-name">&lt;label&gt;</span>
+                    <div class="tag-description">Form alanları için etiket. Hangi alanın ne olduğunu açıklar. Erişilebilirlik için ÇOK ÖNEMLİ!</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="value">"email-input"</span><span class="tag">&gt;</span>E-posta:<span class="tag">&lt;/label&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"email"</span> <span class="attr">id</span>=<span class="value">"email-input"</span><span class="tag">&gt;</span>
+                    </div>
+                    <div class="accessibility-tip">
+                        <strong>♿ Erişilebilirlik:</strong> Label'in "for" özniteliği input'un "id" ile eşleşmelidir.
+                    </div>
+                </div>
+
+                <!-- FIELDSET & LEGEND -->
+                <div class="tag-card" data-tags="fieldset legend">
+                    <span class="tag-name">&lt;fieldset&gt; & &lt;legend&gt;</span>
+                    <div class="tag-description">Form alanlarını gruplandırır. Legend başlık olur. Ilgili alanları organize eder.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;fieldset&gt;</span>
+  <span class="tag">&lt;legend&gt;</span>Kişisel Bilgiler<span class="tag">&lt;/legend&gt;</span>
+  <span class="tag">&lt;label&gt;</span>Ad: <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span><span class="tag">&gt;&lt;/label&gt;</span>
+  <span class="tag">&lt;label&gt;</span>Soyad: <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span><span class="tag">&gt;&lt;/label&gt;</span>
+<span class="tag">&lt;/fieldset&gt;</span>
+                    </div>
+                </div>
+
+                <!-- BUTTON -->
+                <div class="tag-card" data-tags="button">
+                    <span class="tag-name">&lt;button&gt;</span>
+                    <div class="tag-description">Tıklanabilir düğme. Input submit'in aksine, button içinde HTML (resim, metin vb.) konulabilir.</div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">type</span> - "submit" (form gönder), "reset" (sıfırla), "button" (normal)</li>
+                            <li><span class="attr-name">disabled</span> - Düğmeyi devre dışı bırak</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="value">"submit"</span><span class="tag">&gt;</span>Formu Gönder<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="value">"button"</span><span class="tag">&gt;</span>Beni Tıkla!<span class="tag">&lt;/button&gt;</span>
+                    </div>
+                </div>
+
+                <!-- DATALIST -->
+                <div class="tag-card" data-tags="datalist">
+                    <span class="tag-name">&lt;datalist&gt;</span>
+                    <div class="tag-description">Input alanı için öneriler listesi. Yazarken uygun öneriler gösterilir. Google arama gibi!</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">list</span>=<span class="value">"ülkeler"</span> <span class="attr">placeholder</span>=<span class="value">"Ülke yazın"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;datalist</span> <span class="attr">id</span>=<span class="value">"ülkeler"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;option&gt;</span>Türkiye<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;option&gt;</span>Amerika<span class="tag">&lt;/option&gt;</span>
+  <span class="tag">&lt;option&gt;</span>İngiltere<span class="tag">&lt;/option&gt;</span>
+<span class="tag">&lt;/datalist&gt;</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEMANTİK HTML5 BÖLÜMÜ -->
+            <section class="section" id="semantik-section" data-category="semantik">
+                <h2>🏗️ Semantik HTML5</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">Sayfanın yapısını anlatan etiketler. Arama motorları ve ekran okuyucuları için çok önemli!</p>
+
+                <!-- HEADER -->
+                <div class="tag-card" data-tags="header">
+                    <span class="tag-name">&lt;header&gt;</span>
+                    <div class="tag-description">Sayfa veya bölümün başlığı. Logo, navigasyon, arama kutusu vb. burada olur.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;header&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="value">"logo.png"</span> <span class="attr">alt</span>=<span class="value">"Logo"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;nav&gt;</span>...<span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;/header&gt;</span>
+                    </div>
+                </div>
+
+                <!-- NAV -->
+                <div class="tag-card" data-tags="nav navigation">
+                    <span class="tag-name">&lt;nav&gt;</span>
+                    <div class="tag-description">Navigasyon (menü). Siteyi dolaşmak için kullanılan bağlantılar burada olur.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;nav&gt;</span>
+  <span class="tag">&lt;ul&gt;</span>
+    <span class="tag">&lt;li&gt;&lt;a</span> <span class="attr">href</span>=<span class="value">"/"</span><span class="tag">&gt;</span>Ana Sayfa<span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="tag">&lt;li&gt;&lt;a</span> <span class="attr">href</span>=<span class="value">"/hakkimizda"</span><span class="tag">&gt;</span>Hakkımızda<span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="tag">&lt;/ul&gt;</span>
+<span class="tag">&lt;/nav&gt;</span>
+                    </div>
+                </div>
+
+                <!-- MAIN -->
+                <div class="tag-card" data-tags="main content">
+                    <span class="tag-name">&lt;main&gt;</span>
+                    <div class="tag-description">Sayfanın ana içeriği. Her sayfada sadece BİR tane main olmalıdır. Header, footer, sidebar vb. içermez.</div>
+                </div>
+
+                <!-- ARTICLE -->
+                <div class="tag-card" data-tags="article">
+                    <span class="tag-name">&lt;article&gt;</span>
+                    <div class="tag-description">Bağımsız içerik. Blog yazısı, haber, ürün açıklaması vb. Her article kendi başına anlamlı olmalıdır.</div>
+                </div>
+
+                <!-- SECTION -->
+                <div class="tag-card" data-tags="section">
+                    <span class="tag-name">&lt;section&gt;</span>
+                    <div class="tag-description">Mantıksal bölüm. İlgili içeriği gruplaşımak için kullanılır. Başlık içermelidir.</div>
+                </div>
+
+                <!-- ASIDE -->
+                <div class="tag-card" data-tags="aside sidebar">
+                    <span class="tag-name">&lt;aside&gt;</span>
+                    <div class="tag-description">Yan taraf içeriği. Sidebar, ilgili linkler, reklam vb. Main içerikten ayrı şeyler.</div>
+                </div>
+
+                <!-- FOOTER -->
+                <div class="tag-card" data-tags="footer">
+                    <span class="tag-name">&lt;footer&gt;</span>
+                    <div class="tag-description">Sayfanın altı. Telif hakkı, linkler, iletişim bilgileri vb. burada olur.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;footer&gt;</span>
+  <span class="tag">&lt;p&gt;</span>&copy; 2026 Benim Şirketim. Tüm hakları saklıdır.<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/footer&gt;</span>
+                    </div>
+                </div>
+
+                <!-- FIGURE & FIGCAPTION -->
+                <div class="tag-card" data-tags="figure figcaption">
+                    <span class="tag-name">&lt;figure&gt; & &lt;figcaption&gt;</span>
+                    <div class="tag-description">Resim veya şemayı başlığı ile birlikte gösterir. Şekil + açıklama için ideal.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;figure&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="value">"grafik.png"</span> <span class="attr">alt</span>=<span class="value">"Satış Grafiği"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;figcaption&gt;</span>2026 Yılı Satış Rakamları<span class="tag">&lt;/figcaption&gt;</span>
+<span class="tag">&lt;/figure&gt;</span>
+                    </div>
+                </div>
+
+                <!-- DETAILS & SUMMARY -->
+                <div class="tag-card" data-tags="details summary accordion">
+                    <span class="tag-name">&lt;details&gt; & &lt;summary&gt;</span>
+                    <div class="tag-description">Genişletilir/daraltılabilir içerik. S.S.S. (Sıkça Sorulan Sorular) için ideal. JavaScript gerekmez!</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;details&gt;</span>
+  <span class="tag">&lt;summary&gt;</span>HTML nedir?<span class="tag">&lt;/summary&gt;</span>
+  <span class="tag">&lt;p&gt;</span>HTML, web sayfasının yapısını belirtir...<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/details&gt;</span>
+                    </div>
+                </div>
+
+                <!-- DIALOG -->
+                <div class="tag-card" data-tags="dialog modal">
+                    <span class="tag-name">&lt;dialog&gt;</span>
+                    <div class="tag-description">Modal dialog kutusu. Uyarı, onay vb. için kullanılır. showModal() ile açılır.</div>
+                </div>
+
+                <!-- TIME -->
+                <div class="tag-card" data-tags="time date datetime">
+                    <span class="tag-name">&lt;time&gt;</span>
+                    <div class="tag-description">Tarih veya zaman belirtir. Arama motorları bu bilgiyi anlayabilir.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;p&gt;</span>Makale <span class="tag">&lt;time</span> <span class="attr">datetime</span>=<span class="value">"2026-03-27"</span><span class="tag">&gt;</span>27 Mart 2026<span class="tag">&lt;/time&gt;</span> tarihinde yayınlandı.<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MEDYA BÖLÜMÜ -->
+            <section class="section" id="medya-section" data-category="medya">
+                <h2>🎬 Medya</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">Video, ses, ve etkileşimli içerik için etiketler.</p>
+
+                <!-- VIDEO -->
+                <div class="tag-card" data-tags="video">
+                    <span class="tag-name">&lt;video&gt;</span>
+                    <div class="tag-description">Video gösterir. YouTube embed etmek yerine kendi videolarınızı barındırabileceğiniz alternatif.</div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">src</span> - Video dosyasının yolu</li>
+                            <li><span class="attr-name">controls</span> - Oynat/duraklat/ses düğmelerini göster</li>
+                            <li><span class="attr-name">autoplay</span> - Sayfaya girince otomatik oynat</li>
+                            <li><span class="attr-name">loop</span> - Bitiş sonra tekrar başla</li>
+                            <li><span class="attr-name">muted</span> - Sessiz başla (autoplay için gerekli)</li>
+                            <li><span class="attr-name">poster</span> - Oynatmadan önce gösterilecek resim</li>
+                            <li><span class="attr-name">width & height</span> - Video boyutu</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;video</span> <span class="attr">width</span>=<span class="value">"320"</span> <span class="attr">height</span>=<span class="value">"240"</span> <span class="attr">controls</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="value">"video.mp4"</span> <span class="attr">type</span>=<span class="value">"video/mp4"</span><span class="tag">&gt;</span>
+  Tarayıcınız video desteklemiyor
+<span class="tag">&lt;/video&gt;</span>
+                    </div>
+                </div>
+
+                <!-- AUDIO -->
+                <div class="tag-card" data-tags="audio sound music">
+                    <span class="tag-name">&lt;audio&gt;</span>
+                    <div class="tag-description">Ses oynatır. Müzik, podcast vb. için kullanılır.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;audio</span> <span class="attr">controls</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">src</span>=<span class="value">"muzik.mp3"</span> <span class="attr">type</span>=<span class="value">"audio/mpeg"</span><span class="tag">&gt;</span>
+  Tarayıcınız ses desteklemiyor
+<span class="tag">&lt;/audio&gt;</span>
+                    </div>
+                </div>
+
+                <!-- IFRAME -->
+                <div class="tag-card" data-tags="iframe embed">
+                    <span class="tag-name">&lt;iframe&gt;</span>
+                    <div class="tag-description">Başka bir web sayfasını veya video (YouTube vb.) sayfanın içine gömütür. Inline frame = sayfanın içindeki frame.</div>
+                    <div class="tag-attributes">
+                        <h4>Önemli Öznitelikleri:</h4>
+                        <ul class="attribute-list">
+                            <li><span class="attr-name">src</span> - Gömülecek sayfanın URL'si</li>
+                            <li><span class="attr-name">width & height</span> - Boyutlar</li>
+                            <li><span class="attr-name">frameborder</span> - Çerçeve göster (1) veya gösterme (0)</li>
+                            <li><span class="attr-name">allow</span> - İzinler (fullscreen, camera vb.)</li>
+                        </ul>
+                    </div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="comment">&lt;!-- YouTube Videosu --&gt;</span>
+<span class="tag">&lt;iframe</span> <span class="attr">width</span>=<span class="value">"560"</span> <span class="attr">height</span>=<span class="value">"315"</span>
+  <span class="attr">src</span>=<span class="value">"https://www.youtube.com/embed/..."</span>
+  <span class="attr">allow</span>=<span class="value">"fullscreen"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/iframe&gt;</span>
+                    </div>
+                </div>
+
+                <!-- CANVAS -->
+                <div class="tag-card" data-tags="canvas graphics drawing">
+                    <span class="tag-name">&lt;canvas&gt;</span>
+                    <div class="tag-description">Boş bir tuvale JavaScript ile şekil, grafik vb. çizebileceğiniz alan. Oyunlar, animasyonlar vb. için kullanılır.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;canvas</span> <span class="attr">id</span>=<span class="value">"myCanvas"</span> <span class="attr">width</span>=<span class="value">"400"</span> <span class="attr">height</span>=<span class="value">"400"</span><span class="tag">&gt;&lt;/canvas&gt;</span>
+<span class="tag">&lt;script&gt;</span>
+  const canvas = document.getElementById('myCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = 'red';
+  ctx.fillRect(0, 0, 100, 100);
+<span class="tag">&lt;/script&gt;</span>
+                    </div>
+                </div>
+
+                <!-- SVG -->
+                <div class="tag-card" data-tags="svg vector graphics">
+                    <span class="tag-name">&lt;svg&gt;</span>
+                    <div class="tag-description">Vektör grafikleri (ölçeklendirilebilir, keskin kalır). İkonlar, loggolar vb. için ideal.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;svg</span> <span class="attr">width</span>=<span class="value">"100"</span> <span class="attr">height</span>=<span class="value">"100"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;circle</span> <span class="attr">cx</span>=<span class="value">"50"</span> <span class="attr">cy</span>=<span class="value">"50"</span> <span class="attr">r</span>=<span class="value">"40"</span> <span class="attr">fill</span>=<span class="value">"blue"</span><span class="tag">&gt;&lt;/circle&gt;</span>
+<span class="tag">&lt;/svg&gt;</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- META & SEO BÖLÜMÜ -->
+            <section class="section" id="meta-section" data-category="meta">
+                <h2>🔍 Meta & SEO</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">Arama motorları ve sosyal medya için önemli bilgiler.</p>
+
+                <!-- META DESCRIPTION -->
+                <div class="tag-card" data-tags="meta description seo">
+                    <span class="tag-name">&lt;meta name="description"&gt;</span>
+                    <div class="tag-description">Google'daki arama sonuçlarında görünen açıklamadan. 155-160 karakter olmalı.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="value">"description"</span> <span class="attr">content</span>=<span class="value">"UI/UX Tasarımcıları için HTML öğrenme rehberi. Yazılım bilgisi gerekmez!"</span><span class="tag">&gt;</span>
+                    </div>
+                </div>
+
+                <!-- META VIEWPORT -->
+                <div class="tag-card" data-tags="meta viewport responsive">
+                    <span class="tag-name">&lt;meta name="viewport"&gt;</span>
+                    <div class="tag-description">Mobil cihazlarda sayfanın doğru görünmesini sağlar. Responsive tasarım için ZORUNLU!</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="value">"viewport"</span> <span class="attr">content</span>=<span class="value">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+                    </div>
+                </div>
+
+                <!-- OG TAGS (Open Graph) -->
+                <div class="tag-card" data-tags="og:title og:image og:description">
+                    <span class="tag-name">Open Graph Tags (&lt;meta property="og:..."&gt;)</span>
+                    <div class="tag-description">Sayfayı Twitter, Facebook vb. sosyal ağlarda paylaşırken görünen bilgiler. Instagram'da güzel görünmek için önemli!</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="value">"og:title"</span> <span class="attr">content</span>=<span class="value">"HTML Cheatsheet"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="value">"og:description"</span> <span class="attr">content</span>=<span class="value">"UI/UX Tasarımcıları için eksiksiz rehber"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="value">"og:image"</span> <span class="attr">content</span>=<span class="value">"https://example.com/og-image.jpg"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="value">"og:url"</span> <span class="attr">content</span>=<span class="value">"https://example.com"</span><span class="tag">&gt;</span>
+                    </div>
+                </div>
+
+                <!-- CANONICAL -->
+                <div class="tag-card" data-tags="canonical link rel">
+                    <span class="tag-name">&lt;link rel="canonical"&gt;</span>
+                    <div class="tag-description">Ana sayfayı belirtir. Aynı içeriğin birden fazla URL'si varsa ("?page=1" vs) hangisinin ana olduğunu söyle.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="value">"canonical"</span> <span class="attr">href</span>=<span class="value">"https://example.com/sayfam"</span><span class="tag">&gt;</span>
+                    </div>
+                </div>
+
+                <!-- ROBOTS META -->
+                <div class="tag-card" data-tags="robots meta index follow">
+                    <span class="tag-name">&lt;meta name="robots"&gt;</span>
+                    <div class="tag-description">Google'a sayfayı index etmesini mi yoksa görmezden gelmesini mi söyler.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="value">"robots"</span> <span class="attr">content</span>=<span class="value">"index, follow"</span><span class="tag">&gt;</span>
+<span class="comment">&lt;!-- "index, follow" = normal (varsayılan) --&gt;</span>
+<span class="comment">&lt;!-- "noindex, nofollow" = gizli sayfa --&gt;</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ERİŞİLEBİLİRLİK BÖLÜMÜ -->
+            <section class="section" id="erisim-section" data-category="erisim">
+                <h2>♿ Erişilebilirlik (Accessibility)</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">Engelli insanların da sayfanızı kullanabilmesi için önemli öznitelikleri.</p>
+
+                <!-- ARIA-LABEL -->
+                <div class="tag-card" data-tags="aria-label aria accessibility">
+                    <span class="tag-name">aria-label</span>
+                    <div class="tag-description">Ekran okuyucuya element'in ne olduğunu söyler. Örneğin resim olmadan bir buton varsa neyi yaptığını açıklar.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;button</span> <span class="attr">aria-label</span>=<span class="value">"Menüyü Aç"</span><span class="tag">&gt;</span>☰<span class="tag">&lt;/button&gt;</span>
+                    </div>
+                </div>
+
+                <!-- ARIA-DESCRIBEDBY -->
+                <div class="tag-card" data-tags="aria-describedby">
+                    <span class="tag-name">aria-describedby</span>
+                    <div class="tag-description">Element'in ayrıntılı açıklamasını başka bir elemento referans eder.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="value">"password"</span> <span class="attr">aria-describedby</span>=<span class="value">"password-hint"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;p</span> <span class="attr">id</span>=<span class="value">"password-hint"</span><span class="tag">&gt;</span>En az 8 karakter<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+
+                <!-- ARIA-HIDDEN -->
+                <div class="tag-card" data-tags="aria-hidden">
+                    <span class="tag-name">aria-hidden="true"</span>
+                    <div class="tag-description">Element'i ekran okuyuculardan gizler. Dekoratif öğeleri (sadece görünüş için) gizlemek için kullanılır.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;span</span> <span class="attr">aria-hidden</span>=<span class="value">"true"</span><span class="tag">&gt;</span>★★★★★<span class="tag">&lt;/span&gt;</span> 5 Yıldız
+                    </div>
+                </div>
+
+                <!-- TABINDEX -->
+                <div class="tag-card" data-tags="tabindex keyboard navigation">
+                    <span class="tag-name">tabindex</span>
+                    <div class="tag-description">Klavye ile Tab tuşu basılırken elementin sırasını belirtir. Sağlam navigasyon için önemli.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;button</span> <span class="attr">tabindex</span>=<span class="value">"1"</span><span class="tag">&gt;</span>Birinci Buton<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;button</span> <span class="attr">tabindex</span>=<span class="value">"2"</span><span class="tag">&gt;</span>İkinci Buton<span class="tag">&lt;/button&gt;</span>
+                    </div>
+                </div>
+
+                <!-- ROLE -->
+                <div class="tag-card" data-tags="role aria">
+                    <span class="tag-name">role</span>
+                    <div class="tag-description">Element'in ne işe yaradığını açıkça söyler. Örneğin div'i button gibi davranması için role="button".</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;div</span> <span class="attr">role</span>=<span class="value">"button"</span> <span class="attr">tabindex</span>=<span class="value">"0"</span><span class="tag">&gt;</span>Tıkla Beni<span class="tag">&lt;/div&gt;</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GLOBAL ÖZNİTELİKLER BÖLÜMÜ -->
+            <section class="section" id="global-section" data-category="global">
+                <h2>🌍 Global Öznitelikler</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">TÜM HTML etiketlerinde kullanılabilecek ortak öznitelikler.</p>
+
+                <!-- CLASS -->
+                <div class="tag-card" data-tags="class css styling">
+                    <span class="tag-name">class</span>
+                    <div class="tag-description">CSS ve JavaScript tarafından element'i seçmek için kullanılır. Birden fazla class alanı olabilir (space ile ayrılır).</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"container header-section"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+                    </div>
+                </div>
+
+                <!-- ID -->
+                <div class="tag-card" data-tags="id unique identifier">
+                    <span class="tag-name">id</span>
+                    <div class="tag-description">Sayfada benzersiz (unique) tanımlayıcı. Sayfa içindeki bağlantılarda ve CSS'de kullanılır. Bir id sadece BİR elemento verilmelidir!</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;h2</span> <span class="attr">id</span>=<span class="value">"bölüm-1"</span><span class="tag">&gt;</span>Bölüm 1<span class="tag">&lt;/h2&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="value">"#bölüm-1"</span><span class="tag">&gt;</span>Bölüm 1'e Git<span class="tag">&lt;/a&gt;</span>
+                    </div>
+                </div>
+
+                <!-- STYLE -->
+                <div class="tag-card" data-tags="style inline css">
+                    <span class="tag-name">style</span>
+                    <div class="tag-description">Element'e direkt CSS yazma. Genellikle externnal CSS dosyaları tercih edilir ama hızlı teste yarar.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;p</span> <span class="attr">style</span>=<span class="value">"color: red; font-size: 18px;"</span><span class="tag">&gt;</span>Kırmızı metin<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+
+                <!-- DATA-* -->
+                <div class="tag-card" data-tags="data-* custom attributes">
+                    <span class="tag-name">data-*</span>
+                    <div class="tag-description">Kişiye özel veri saklama özniteliği. JavaScript tarafından kolayca erişilebilir. Örneğin data-user-id="123".</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;button</span> <span class="attr">data-product-id</span>=<span class="value">"42"</span> <span class="attr">data-price</span>=<span class="value">"99.99"</span><span class="tag">&gt;</span>Satın Al<span class="tag">&lt;/button&gt;</span>
+                    </div>
+                </div>
+
+                <!-- HIDDEN -->
+                <div class="tag-card" data-tags="hidden attribute">
+                    <span class="tag-name">hidden</span>
+                    <div class="tag-description">Element'i gizler. CSS display: none ile aynı işe yarar ama daha semantik.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;p</span> <span class="attr">hidden</span><span class="tag">&gt;</span>Bu paragraf gizlidir<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+
+                <!-- TITLE -->
+                <div class="tag-card" data-tags="title tooltip hover">
+                    <span class="tag-name">title</span>
+                    <div class="tag-description">Element'e fare üzerine getirilince gösterilen tooltip. Kullanıcıya ipucu verir.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;button</span> <span class="attr">title</span>=<span class="value">"Sayfayı yenile"</span><span class="tag">&gt;</span>🔄<span class="tag">&lt;/button&gt;</span>
+                    </div>
+                </div>
+
+                <!-- LANG -->
+                <div class="tag-card" data-tags="lang language">
+                    <span class="tag-name">lang</span>
+                    <div class="tag-description">Element'in dilini belirtir. tr = Türkçe, en = İngilizce vb. Ekran okuyucular bunu kullanır.</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;p</span> <span class="attr">lang</span>=<span class="value">"en"</span><span class="tag">&gt;</span>Hello World<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+
+                <!-- DIR -->
+                <div class="tag-card" data-tags="dir direction rtl ltr">
+                    <span class="tag-name">dir</span>
+                    <div class="tag-description">Metnin yönünü belirtir. ltr = soldan sağa (İngilizce), rtl = sağdan sola (Arapça, Farsça vb.).</div>
+                    <div class="code-example">
+                        <button class="code-copy-btn" onclick="copyCode(this)">Kopyala</button>
+<span class="tag">&lt;p</span> <span class="attr">dir</span>=<span class="value">"rtl"</span><span class="tag">&gt;</span>مرحبا بالعالم<span class="tag">&lt;/p&gt;</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- KAYNAKLAR BÖLÜMÜ -->
+            <section class="section active" id="resources-section">
+                <h2>📚 Önerilen Kaynaklar</h2>
+                <p style="margin-bottom: 2rem; font-size: 1.1rem;">Daha fazla bilgi ve derinlemesine öğrenme için harika siteler:</p>
+
+                <div class="tag-card">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Web Geliştirme Kaynakları</h3>
+                    <ul style="list-style-position: inside; line-height: 2;">
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" style="color: var(--secondary);">MDN Web Docs - HTML</a> - Mozilla tarafından resmi HTML dokümantasyonu. En güvenilir kaynak!</li>
+                        <li><a href="https://www.w3schools.com/html/" target="_blank" style="color: var(--secondary);">W3Schools - HTML Tutorial</a> - Başlayanlar için eğlenceli ve interaktif öğrenme.</li>
+                        <li><a href="https://html.spec.whatwg.org/" target="_blank" style="color: var(--secondary);">HTML Living Standard</a> - Resmi HTML standardı. Teknik detaylar.</li>
+                        <li><a href="https://caniuse.com/" target="_blank" style="color: var(--secondary);">Can I Use</a> - Hangi HTML özelliklerinin hangi tarayıcılarda çalıştığını öğren.</li>
+                        <li><a href="https://www.w3.org/WAI/" target="_blank" style="color: var(--secondary);">Web Accessibility Initiative (WAI)</a> - Erişilebilirlik hakkında resmi bilgiler.</li>
+                    </ul>
+                </div>
+
+                <div class="tag-card">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">💡 İpuçları</h3>
+                    <div class="note-box">
+                        <strong>1. Semantik HTML Kullanın:</strong> Divlerin yerine header, nav, article vb. etiketleri kullanın. Arama motorları ve ekran okuyucuları bunları anlayabilir.
+                    </div>
+                    <div class="note-box">
+                        <strong>2. Her Resime Alt Metni Ekleyin:</strong> Görme engelliler için ve SEO açısından çok önemlidir.
+                    </div>
+                    <div class="note-box">
+                        <strong>3. Meta Öznitelikleri Unutmayın:</strong> charset, viewport, description vb. her sayfada bulunmalıdır.
+                    </div>
+                    <div class="note-box">
+                        <strong>4. Erişilebilirlik Sağlayın:</strong> ARIA etiketlerini, tabindex'i ve semantik HTML'i kullanarak herkesin kullanabileceği sayfalar yapın.
+                    </div>
+                    <div class="note-box">
+                        <strong>5. Validasyon Yapın:</strong> W3C Validator'ü kullanarak HTML kodunuzun doğru olduğunu kontrol edin.
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="footer">
+        <p>HTML Cheatsheet - UI/UX Tasarımcıları İçin Eksiksiz Rehber</p>
+        <div class="resources">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank">📖 MDN</a>
+            <a href="https://www.w3schools.com/html/" target="_blank">📚 W3Schools</a>
+            <a href="https://html.spec.whatwg.org/" target="_blank">📋 HTML Standard</a>
+            <a href="https://caniuse.com/" target="_blank">🔍 Can I Use</a>
+            <a href="https://www.w3.org/WAI/" target="_blank">♿ Web Accessibility</a>
+        </div>
+        <p style="margin-top: 1.5rem; font-size: 0.85rem; opacity: 0.8;">
+            Bu cheatsheet'teki tüm örnekler ve açıklamalar güncel HTML5 standartlarına uygun olarak hazırlanmıştır.
+            <br>Yazılım bilgisi olmayan UI/UX tasarımcıları da bu kaynaktan faydalanabilir.
+        </p>
+    </div>
+
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        // Tema Değiştirme
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        // Kaydedilmiş tema tercihini yükle
+        const savedTheme = safeStorage('get', 'theme') || 'light';
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️ Açık Tema';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            themeToggle.textContent = isDark ? '☀️ Açık Tema' : '🌙 Koyu Tema';
+            safeStorage('set', 'theme', isDark ? 'dark' : 'light');
+        });
+
+        // Arama/Filtreleme
+        const searchBox = document.getElementById('searchBox');
+        const tagCards = document.querySelectorAll('.tag-card');
+        const sections = document.querySelectorAll('.section');
+
+        searchBox.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+
+            if (searchTerm === '') {
+                // Arama boşsa tüm kartları göster
+                tagCards.forEach(card => card.style.display = '');
+                // Birinci section'ı aktif et
+                sections.forEach(s => s.classList.remove('active'));
+                sections[0].classList.add('active');
+            } else {
+                // Eşleşen kartları göster
+                let hasVisibleCards = false;
+                tagCards.forEach(card => {
+                    const tags = (card.dataset.tags || '').toLowerCase();
+                    const tagName = card.querySelector('.tag-name')?.textContent.toLowerCase() || '';
+                    const description = card.querySelector('.tag-description')?.textContent.toLowerCase() || '';
+
+                    if (tags.includes(searchTerm) || tagName.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = '';
+                        hasVisibleCards = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Kartlara sahip sectionları göster
+                sections.forEach(section => {
+                    const visibleCards = Array.from(section.querySelectorAll('.tag-card')).filter(
+                        card => card.style.display !== 'none'
+                    );
+                    if (visibleCards.length > 0 || section.id === 'resources-section') {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            }
+        });
+
+        // Sidebar bağlantıları
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = link.getAttribute('href');
+                const sectionId = target.replace('#', '') + '-section';
+
+                // Arama kutusunu temizle
+                searchBox.value = '';
+
+                // Tüm kartları göster
+                tagCards.forEach(card => card.style.display = '');
+
+                // Seçilen section'ı göster, diğerlerini gizle
+                sections.forEach(s => {
+                    if (s.id === sectionId || s.id === 'resources-section') {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+
+                // Sayfayı üste kaydır
+                window.scrollTo(0, 0);
+            });
+        });
+
+        // Kod Kopyalama
+        function copyCode(button) {
+            const codeBlock = button.parentElement;
+            const text = codeBlock.innerText.replace('Kopyala', '').trim();
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '✓ Kopyalandı!';
+                button.style.background = 'var(--secondary)';
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                }, 2000);
+            });
+        }
+
+        // İlk açılışta Temel Yapı section'ını göster
+        window.addEventListener('DOMContentLoaded', () => {
+            sections.forEach(s => s.classList.remove('active'));
+            document.getElementById('temel-section').classList.add('active');
+        });
+    </script>
+</body>
+</html>

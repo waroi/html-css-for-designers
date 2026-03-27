@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinemaLog - Film Arşivi</title>
+    <!-- SEO ve Erişilebilirlik -->
+    <meta name="description" content="SinemaLog - Sinema dünyasının en kapsamlı film arşivi">
+    <meta name="keywords" content="film, sinema, arşiv, movie database">
+    <style>
+        /* ========== RESET VE TEMEL AYARLAR ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Scroll bar özelleştirmesi (modern tarayıcılar için) */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hover);
+        }
+
+        /* ========== TEMA DEĞİŞKENLERİ ========== */
+        :root {
+            /* Açık tema (varsayılan) */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #eeeeee;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #e74c3c;
+            --accent-hover: #c0392b;
+            --border-color: #ddd;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Koyu tema */
+        html[data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #aaa;
+            --accent: #ff6b5b;
+            --accent-hover: #ff5141;
+            --border-color: #444;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== HEADER ========== */
+        header {
+            background-color: var(--bg-secondary);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Logo ve site adı */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Logo simgesi (CSS ile yapılan film bandı efekti) */
+        .logo::before {
+            content: "🎬";
+            font-size: 2rem;
+        }
+
+        /* Navigasyon */
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        /* Navigasyon hover efekti */
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Tema toggle butonu */
+        .theme-toggle {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        /* ========== HERO BÖLÜMÜ ========== */
+        .hero {
+            background: linear-gradient(135deg, var(--accent) 0%, #c0392b 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hero arka plan efekti */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(20px);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .hero-button {
+            display: inline-block;
+            background: white;
+            color: var(--accent);
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+
+        .hero-button:hover {
+            background: transparent;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* ========== ARAMA BÖLÜMÜ ========== */
+        .search-section {
+            max-width: 1200px;
+            margin: -2rem auto 3rem;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: 2px solid var(--border-color);
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .search-button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* ========== KATEGORİ SEKMELERİ ========== */
+        .category-tabs {
+            display: flex;
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 2rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .tab-button {
+            padding: 0.8rem 1.5rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover,
+        .tab-button.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* ========== ANA İÇERİK ========== */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Film Grid */
+        .film-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Film Kartı */
+        .film-card {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .film-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Film Poster */
+        .film-poster {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Her kartın farklı gradient rengi */
+        .film-card:nth-child(1) .film-poster {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .film-card:nth-child(2) .film-poster {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .film-card:nth-child(3) .film-poster {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .film-card:nth-child(4) .film-poster {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .film-card:nth-child(5) .film-poster {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .film-card:nth-child(6) .film-poster {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .film-card:nth-child(7) .film-poster {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .film-card:nth-child(8) .film-poster {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);
+        }
+
+        .film-card:nth-child(9) .film-poster {
+            background: linear-gradient(135deg, #2e2e78 0%, #662d91 100%);
+        }
+
+        .film-card:nth-child(10) .film-poster {
+            background: linear-gradient(135deg, #00dbde 0%, #0083b0 100%);
+        }
+
+        .film-card:nth-child(11) .film-poster {
+            background: linear-gradient(135deg, #ff6e40 0%, #bf360c 100%);
+        }
+
+        .film-card:nth-child(12) .film-poster {
+            background: linear-gradient(135deg, #8e44ad 0%, #c0392b 100%);
+        }
+
+        .film-card:nth-child(13) .film-poster {
+            background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+        }
+
+        .film-card:nth-child(14) .film-poster {
+            background: linear-gradient(135deg, #16a085 0%, #1abc9c 100%);
+        }
+
+        .film-card:nth-child(15) .film-poster {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        /* Overlay efekti */
+        .film-poster::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.3s ease;
+        }
+
+        .film-card:hover .film-poster::after {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Film Bilgisi */
+        .film-info {
+            padding: 1.5rem;
+        }
+
+        .film-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .film-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .film-year,
+        .film-genre {
+            display: inline-block;
+        }
+
+        /* Yıldız Puanı */
+        .film-rating {
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
+        }
+
+        .film-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+
+        .film-button {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .film-button:hover {
+            background: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        /* ========== MODAL (Film Detay) ========== */
+        /* Hidden checkbox for modal control */
+        #filmModal {
+            display: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        #filmModal:checked ~ .modal {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: 10px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal-body {
+            color: var(--text-primary);
+        }
+
+        .modal-body h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent);
+        }
+
+        .modal-body p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar-box {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.8rem;
+        }
+
+        .sidebar-item {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-item:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-item:hover {
+            padding-left: 0.5rem;
+            color: var(--accent);
+        }
+
+        .sidebar-item-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .sidebar-item-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            margin-top: 5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .newsletter-form button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+            background: var(--accent-hover);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== RESPONSIVE TASARIM ========== */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .film-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .header-container {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                gap: 1rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                padding: 2rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .search-section {
+                padding: 0 1rem;
+                margin: -1rem auto 2rem;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .category-tabs {
+                padding: 0 1rem;
+            }
+
+            .film-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                max-height: 90vh;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.1rem;
+            }
+
+            .logo::before {
+                font-size: 1.5rem;
+            }
+
+            nav {
+                font-size: 0.8rem;
+                gap: 0.5rem;
+            }
+
+            .hero h1 {
+                font-size: 1.4rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .film-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 1rem;
+            }
+
+            .film-title {
+                font-size: 0.9rem;
+            }
+
+            .main-container {
+                gap: 1.5rem;
+                padding: 0 1rem;
+            }
+        }
+
+        /* ========== ERİŞİLEBİLİRLİK ========== */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Keyboard navigate etme için açık focus stilleri */
+        a:focus,
+        button:focus,
+        input:focus {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* Contrast iyileştirmesi */
+        button {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+<a href="../../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <!-- Erişilebilirlik: Ana içeriğe atla linki -->
+    <a href="#main-content" class="skip-link">Ana içeriğe atla</a>
+
+    <!-- ========== HEADER ========== -->
+    <header role="banner">
+        <div class="header-container">
+            <a href="#" class="logo" aria-label="SinemaLog Ana Sayfası">SinemaLog</a>
+            <nav aria-label="Ana navigasyon">
+                <a href="#" aria-current="page">Ana Sayfa</a>
+                <a href="#films-section">Filmler</a>
+                <a href="#categories">Kategoriler</a>
+                <a href="#about">Hakkında</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌙 Koyu Tema</button>
+        </div>
+    </header>
+
+    <!-- ========== HERO BÖLÜMÜ ========== -->
+    <section class="hero" aria-label="Öne çıkan film bölümü">
+        <div class="hero-content">
+            <h1>Bu Haftanın Seçkisi</h1>
+            <p>Sinema dünyasının en etkileyici filmleri siz için derlenmiştir. Keşfetmeye başlayın!</p>
+            <a href="#films-section" class="hero-button">Filmleri İncele</a>
+        </div>
+    </section>
+
+    <!-- ========== ARAMA ========== -->
+    <section class="search-section" aria-label="Film arama">
+        <div class="search-box">
+            <input type="text" placeholder="Film adı, oyuncu veya yönetmen adı girin..." aria-label="Film arama kutusu">
+            <button class="search-button" aria-label="Ara">🔍 Ara</button>
+        </div>
+    </section>
+
+    <!-- ========== KATEGORİ SEKMELERİ ========== -->
+    <div class="category-tabs" id="categories" role="tablist" aria-label="Film kategorileri">
+        <button class="tab-button active" role="tab" aria-selected="true">Tümü</button>
+        <button class="tab-button" role="tab" aria-selected="false">Aksiyon</button>
+        <button class="tab-button" role="tab" aria-selected="false">Dram</button>
+        <button class="tab-button" role="tab" aria-selected="false">Komedi</button>
+        <button class="tab-button" role="tab" aria-selected="false">Bilim Kurgu</button>
+        <button class="tab-button" role="tab" aria-selected="false">Korku</button>
+    </div>
+
+    <!-- ========== ANA İÇERİK ========== -->
+    <main id="main-content">
+        <div class="main-container">
+            <!-- Film Grid -->
+            <section id="films-section" aria-label="Film listesi">
+                <div class="film-grid">
+                    <!-- Film Kartı 1 -->
+                    <article class="film-card">
+                        <div class="film-poster">🎭</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Kader Alaşkarlığı</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2024</span>
+                                <span class="film-genre">Dram</span>
+                            </div>
+                            <div class="film-rating">⭐ 8.5/10</div>
+                            <p class="film-description">Hayatın bize verdiği sınavlardan birisini ele alan etkileyici bir dram.</p>
+                            <label>
+                                <input type="checkbox" id="filmModal">
+                                <button class="film-button">Detaylar</button>
+                            </label>
+                            <!-- Detay Modal -->
+                            <div class="modal">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h2 class="modal-title">Kader Alaşkarlığı</h2>
+                                        <label for="filmModal" class="modal-close" aria-label="Kapat">✕</label>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><strong>Yönetmen:</strong> Fatih Şaman</p>
+                                        <p><strong>Oyuncular:</strong> Çağatay Ulusoy, Bergüzar Korel</p>
+                                        <p><strong>Tür:</strong> Dram</p>
+                                        <p><strong>IMDB:</strong> 8.5/10</p>
+                                        <h3>Özet</h3>
+                                        <p>Kader Alaşkarlığı, iki insanın beklenmedik bir şekilde karşılaşmasını ve bunu takip eden duygu dolu olayları anlatır. Aşk, ıstırap ve umut temasında harika bir örnek.</p>
+                                        <h3>Yapımcı Tarafından</h3>
+                                        <p>Bu film, gerçek yaşam hikayelerinden ilham alınarak hazırlanmıştır. Her sahne özenle çekilmiştir.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 2 -->
+                    <article class="film-card">
+                        <div class="film-poster">🚀</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Uzay Savaşçıları</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2024</span>
+                                <span class="film-genre">Bilim Kurgu</span>
+                            </div>
+                            <div class="film-rating">⭐ 9.0/10</div>
+                            <p class="film-description">Galaksiye ait kahraman askerlerin destanı. Muhteşem aksiyonu kaçırmayın!</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 3 -->
+                    <article class="film-card">
+                        <div class="film-poster">😂</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Gülüş Dalgası</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2023</span>
+                                <span class="film-genre">Komedi</span>
+                            </div>
+                            <div class="film-rating">⭐ 7.8/10</div>
+                            <p class="film-description">Eğlence dolu sahneler ve yan karakterler ile dolu komik bir macera.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 4 -->
+                    <article class="film-card">
+                        <div class="film-poster">⚔️</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Kahraman Geçidi</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2024</span>
+                                <span class="film-genre">Aksiyon</span>
+                            </div>
+                            <div class="film-rating">⭐ 8.2/10</div>
+                            <p class="film-description">Tarihsel aksiyon dolu bir macera. Tehlikeler, görkemli dövüşler ve oyuncu</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 5 -->
+                    <article class="film-card">
+                        <div class="film-poster">❤️</div>
+                        <div class="film-info">
+                            <h2 class="film-title">İlk Aşk Zamanı</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2023</span>
+                                <span class="film-genre">Romantik</span>
+                            </div>
+                            <div class="film-rating">⭐ 7.9/10</div>
+                            <p class="film-description">Gençlik yıllarında yaşanan tutkulu ilk aşk hikayeleri.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 6 -->
+                    <article class="film-card">
+                        <div class="film-poster">👽</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Uzaylı İstilası</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2024</span>
+                                <span class="film-genre">Bilim Kurgu</span>
+                            </div>
+                            <div class="film-rating">⭐ 8.7/10</div>
+                            <p class="film-description">Dünya uzaylılar tarafından istila ediliyor. Direniş çalışması başlıyor.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 7 -->
+                    <article class="film-card">
+                        <div class="film-poster">🌙</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Gece Sakinleri</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2023</span>
+                                <span class="film-genre">Korku</span>
+                            </div>
+                            <div class="film-rating">⭐ 8.1/10</div>
+                            <p class="film-description">Karanlığın içinde tehlikeler. Sinir bozucu ve çetin anlar.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 8 -->
+                    <article class="film-card">
+                        <div class="film-poster">🕵️</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Gizli Ajanlar</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2024</span>
+                                <span class="film-genre">Aksiyon</span>
+                            </div>
+                            <div class="film-rating">⭐ 8.4/10</div>
+                            <p class="film-description">İstihbarat örgütüne ait gizli operasyonlar. Sürükleyici komplot.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 9 -->
+                    <article class="film-card">
+                        <div class="film-poster">🎨</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Sanat Şefi</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2023</span>
+                                <span class="film-genre">Dram</span>
+                            </div>
+                            <div class="film-rating">⭐ 8.3/10</div>
+                            <p class="film-description">Ünlü sanat yönetmeninin kişisel yaşamı ve yaratıcılığı.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 10 -->
+                    <article class="film-card">
+                        <div class="film-poster">🏃</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Hız Adası</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2024</span>
+                                <span class="film-genre">Aksiyon</span>
+                            </div>
+                            <div class="film-rating">⭐ 8.0/10</div>
+                            <p class="film-description">Otomobil yarışı ve rekabeti merkeze alan heyecan dolu yapım.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 11 -->
+                    <article class="film-card">
+                        <div class="film-poster">🎭</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Tiyatro Geceleri</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2023</span>
+                                <span class="film-genre">Dram</span>
+                            </div>
+                            <div class="film-rating">⭐ 7.7/10</div>
+                            <p class="film-description">Eski tiyatro oyuncularının bir araya gelmesiyle başlayan hikaye.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 12 -->
+                    <article class="film-card">
+                        <div class="film-poster">🌍</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Dünya Seyahati</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2024</span>
+                                <span class="film-genre">Macera</span>
+                            </div>
+                            <div class="film-rating">⭐ 8.6/10</div>
+                            <p class="film-description">Dünyanın en güzel yerlerinde geçen epik bir seyahat.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 13 -->
+                    <article class="film-card">
+                        <div class="film-poster">💎</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Elmas Tuzağı</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2024</span>
+                                <span class="film-genre">Gerilim</span>
+                            </div>
+                            <div class="film-rating">⭐ 8.2/10</div>
+                            <p class="film-description">Değerli bir elmasa ulaşma arayışındaki çeteler ve polisler.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 14 -->
+                    <article class="film-card">
+                        <div class="film-poster">🎪</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Sirk Gösterisi</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2023</span>
+                                <span class="film-genre">Komedi</span>
+                            </div>
+                            <div class="film-rating">⭐ 7.6/10</div>
+                            <p class="film-description">Kötü sirk oyunculalarının komik ve mizahi anları.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+
+                    <!-- Film Kartı 15 -->
+                    <article class="film-card">
+                        <div class="film-poster">🏰</div>
+                        <div class="film-info">
+                            <h2 class="film-title">Kale Hukuku</h2>
+                            <div class="film-meta">
+                                <span class="film-year">2024</span>
+                                <span class="film-genre">Dram</span>
+                            </div>
+                            <div class="film-rating">⭐ 8.4/10</div>
+                            <p class="film-description">Ortaçağ döneminde bir kale lordunun tüm mücadelesi.</p>
+                            <button class="film-button">Detaylar</button>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- SIDEBAR -->
+            <aside class="sidebar" aria-label="Yan panel">
+                <!-- En Çok Beğenilenler -->
+                <div class="sidebar-box">
+                    <h3 class="sidebar-title">⭐ En Çok Beğenilenler</h3>
+                    <div class="sidebar-item">
+                        <div class="sidebar-item-title">Uzay Savaşçıları</div>
+                        <div class="sidebar-item-meta">2024 • Bilim Kurgu</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-item-title">Dünya Seyahati</div>
+                        <div class="sidebar-item-meta">2024 • Macera</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-item-title">Uzaylı İstilası</div>
+                        <div class="sidebar-item-meta">2024 • Bilim Kurgu</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-item-title">Kader Alaşkarlığı</div>
+                        <div class="sidebar-item-meta">2024 • Dram</div>
+                    </div>
+                </div>
+
+                <!-- Yakında Gelecekler -->
+                <div class="sidebar-box">
+                    <h3 class="sidebar-title">🎬 Yakında Gelecekler</h3>
+                    <div class="sidebar-item">
+                        <div class="sidebar-item-title">Fırtına Cenahı</div>
+                        <div class="sidebar-item-meta">Mayıs 2026 • Dram</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-item-title">Zaman Yolcusu</div>
+                        <div class="sidebar-item-meta">Haziran 2026 • Bilim Kurgu</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-item-title">Son Kahkaha</div>
+                        <div class="sidebar-item-meta">Temmuz 2026 • Komedi</div>
+                    </div>
+                    <div class="sidebar-item">
+                        <div class="sidebar-item-title">Korku Tapınağı</div>
+                        <div class="sidebar-item-meta">Ağustos 2026 • Korku</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Hakkında</h3>
+                <a href="#">SinemaLog Hakkında</a>
+                <a href="#">Bizim Öykümüz</a>
+                <a href="#">Kariyer</a>
+                <a href="#">Basın Odası</a>
+            </div>
+            <div class="footer-section">
+                <h3>Yardım</h3>
+                <a href="#">Sik Sorulan Sorular</a>
+                <a href="#">Destek Merkezi</a>
+                <a href="#">İletişim</a>
+                <a href="#">Geri Bildirim</a>
+            </div>
+            <div class="footer-section">
+                <h3>Yasal</h3>
+                <a href="#">Gizlilik Politikası</a>
+                <a href="#">Kullanım Şartları</a>
+                <a href="#">Çerez Politikası</a>
+                <a href="#">Telif Hakkı</a>
+            </div>
+            <div class="footer-section">
+                <h3>Haber Bülteni</h3>
+                <p>En son film haberlerinden haberdar olmak için abone olun!</p>
+                <form class="newsletter-form" role="search" aria-label="Email abone ol">
+                    <input type="email" placeholder="E-posta adresiniz..." aria-label="E-posta">
+                    <button type="submit" aria-label="Abone ol">Abone Ol</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SinemaLog. Tüm hakları saklıdır. | Tasarım: HTML-CSS Öğreticisi</p>
+        </div>
+    </footer>
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        // Tema toggle işlevselliği
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // Kaydedilmiş tema tercihi var mı kontrol et
+        const savedTheme = safeStorage('get', 'theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            // Tema değişkenleri güncelle
+            html.setAttribute('data-theme', newTheme);
+
+            // LocalStorage'a kaydet
+            safeStorage('set', 'theme', newTheme);
+
+            // Buton metni güncelle
+            updateThemeButton(newTheme);
+        });
+
+        function updateThemeButton(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙 Koyu Tema' : '☀️ Açık Tema';
+        }
+
+        // Tab button işlevselliği
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Tüm tablar için aktif sınıfı kaldır
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+
+                // Tıklanan tabı aktif yap
+                button.classList.add('active');
+                button.setAttribute('aria-selected', 'true');
+
+                // Diğer tablar için aria-selected'i false yap
+                tabButtons.forEach(btn => {
+                    if (btn !== button) {
+                        btn.setAttribute('aria-selected', 'false');
+                    }
+                });
+            });
+        });
+
+        // Arama işlevselliği
+        const searchButton = document.querySelector('.search-button');
+        const searchInput = document.querySelector('.search-box input');
+
+        searchButton.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                alert(`"${query}" için arama yapılıyor...`);
+                searchInput.value = '';
+            }
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchButton.click();
+            }
+        });
+
+        // Film kartı detay açma işlevselliği
+        const filmCards = document.querySelectorAll('.film-card');
+        filmCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (!e.target.closest('button') && !e.target.closest('label')) {
+                    // Detay modal'ını aç
+                    const modal = card.querySelector('input[type="checkbox"]');
+                    if (modal) {
+                        modal.checked = true;
+                    }
+                }
+            });
+        });
+
+        // Modal kapatma işlevselliği
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    const checkbox = modal.previousElementSibling.previousElementSibling;
+                    if (checkbox && checkbox.type === 'checkbox') {
+                        checkbox.checked = false;
+                    }
+                }
+            });
+        });
+
+        // ESC tuşu ile modal'ı kapat
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

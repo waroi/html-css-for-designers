@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML & CSS Müfredat - UI/UX Designer'lar İçin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #10b981;
+            --dark-bg: #1f2937;
+            --dark-text: #f3f4f6;
+            --light-bg: #ffffff;
+            --light-text: #111827;
+            --border: #e5e7eb;
+            --code-bg: #1e293b;
+            --code-text: #e2e8f0;
+            --accent: #f59e0b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--light-text);
+            background-color: var(--light-bg);
+            transition: background-color 0.3s, color 0.3s;
+            scroll-behavior: smooth;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-content p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 0.7rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 0;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background: var(--light-bg);
+            border-right: 1px solid var(--border);
+            padding: 2rem 0;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+
+        body.dark-mode .sidebar {
+            background: #111827;
+            border-right-color: #374151;
+        }
+
+        .sidebar h3 {
+            padding: 0 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--primary);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 0.8rem 1.5rem;
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        body.dark-mode .sidebar a {
+            color: var(--dark-text);
+        }
+
+        .sidebar a:hover,
+        .sidebar li.active a {
+            background: var(--primary);
+            color: white;
+            border-left-color: var(--secondary);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 3rem;
+            max-width: 900px;
+        }
+
+        main > section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 100px;
+        }
+
+        /* Section Styling */
+        h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 0.8rem;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-top: 1.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            color: var(--secondary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--light-text);
+        }
+
+        body.dark-mode p {
+            color: var(--dark-text);
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--primary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Inline code */
+        p code, li code {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+        }
+
+        body.dark-mode p code,
+        body.dark-mode li code {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        /* Tip Box */
+        .tip-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        body.dark-mode .tip-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
+        }
+
+        .tip-box strong {
+            color: var(--secondary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .tip-box p {
+            margin: 0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.7rem;
+            color: var(--light-text);
+        }
+
+        body.dark-mode li {
+            color: var(--dark-text);
+        }
+
+        /* Practice Box */
+        .practice-box {
+            background: rgba(245, 158, 11, 0.05);
+            border: 2px dashed var(--accent);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        body.dark-mode .practice-box {
+            background: rgba(245, 158, 11, 0.08);
+        }
+
+        .practice-box strong {
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Resource Links */
+        .resources {
+            background: var(--light-bg);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        body.dark-mode .resources {
+            background: #111827;
+            border-color: #374151;
+        }
+
+        .resources h4 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .resources ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .resources a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+            color: var(--secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                display: none;
+            }
+
+            .sidebar.active {
+                display: block;
+            }
+
+            main {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .header-content h1 {
+                font-size: 1.4rem;
+            }
+
+            main {
+                padding: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+            }
+
+            pre {
+                font-size: 0.8rem;
+                padding: 1rem;
+            }
+        }
+
+        /* Syntax Highlighting */
+        .tag { color: #f472b6; }
+        .attr { color: #60a5fa; }
+        .value { color: #fbbf24; }
+        .comment { color: #6b7280; font-style: italic; }
+        .text { color: #d1d5db; }
+    </style>
+</head>
+<body>
+<a href="../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <header>
+        <div class="header-content">
+            <h1>HTML & CSS Müfredat</h1>
+            <p>UI/UX Designer'lar için Frontend Temeleri</p>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙 Koyu Tema</button>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h3>MODÜL 1</h3>
+            <ul>
+                <li><a href="#modul1-1">HTML Nedir?</a></li>
+                <li><a href="#modul1-2">Tarayıcı Nasıl Çalışır?</a></li>
+                <li><a href="#modul1-3">Temel Etiketler</a></li>
+                <li><a href="#modul1-4">Dosya Yapısı</a></li>
+                <li><a href="#modul1-5">Öznitelikler</a></li>
+            </ul>
+
+            <h3>MODÜL 2</h3>
+            <ul>
+                <li><a href="#modul2-1">Tablolar ve Formlar</a></li>
+                <li><a href="#modul2-2">Semantik HTML5</a></li>
+                <li><a href="#modul2-3">Medya Etiketleri</a></li>
+                <li><a href="#modul2-4">Meta ve SEO</a></li>
+                <li><a href="#modul2-5">Erişilebilirlik</a></li>
+            </ul>
+
+            <h3>MODÜL 3</h3>
+            <ul>
+                <li><a href="#modul3-1">CSS Nedir?</a></li>
+                <li><a href="#modul3-2">Seçiciler</a></li>
+                <li><a href="#modul3-3">Renkler</a></li>
+                <li><a href="#modul3-4">Tipografi</a></li>
+                <li><a href="#modul3-5">Box Model</a></li>
+                <li><a href="#modul3-6">Display Türleri</a></li>
+            </ul>
+
+            <h3>MODÜL 4</h3>
+            <ul>
+                <li><a href="#modul4-1">Flexbox</a></li>
+                <li><a href="#modul4-2">CSS Grid</a></li>
+                <li><a href="#modul4-3">Pozisyonlama</a></li>
+                <li><a href="#modul4-4">Pseudo-Class & Element</a></li>
+                <li><a href="#modul4-5">CSS Değişkenleri</a></li>
+                <li><a href="#modul4-6">Animasyonlar</a></li>
+            </ul>
+
+            <h3>MODÜL 5</h3>
+            <ul>
+                <li><a href="#modul5-1">Responsive Design</a></li>
+                <li><a href="#modul5-2">Media Queries</a></li>
+                <li><a href="#modul5-3">Birimler</a></li>
+                <li><a href="#modul5-4">Responsive İçerik</a></li>
+            </ul>
+
+            <h3>MODÜL 6</h3>
+            <ul>
+                <li><a href="#modul6-1">CSS Metodolojileri</a></li>
+                <li><a href="#modul6-2">Dark Mode</a></li>
+                <li><a href="#modul6-3">Modern CSS</a></li>
+            </ul>
+
+            <h3>MODÜL 7</h3>
+            <ul>
+                <li><a href="#modul7-1">Projeler</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <!-- MODÜL 1: HTML TEMELLERI -->
+            <section id="modul1">
+                <h2>MODÜL 1: HTML Temelleri</h2>
+                <p>Bu modülde HTML'in temellerini öğreneceksiniz. HTML (HyperText Markup Language), web sayfalarının yapısını oluşturan dildir. Tasarımcı olarak, kodun nasıl çalıştığını anlamak sizin yaratıcı çıktılarınızı daha iyi, daha uygulanabilir hale getirecektir.</p>
+
+                <h3 id="modul1-1">HTML Nedir? Tarayıcı Nasıl Çalışır?</h3>
+                <p>HTML, "etiketler" (tags) kullanarak web sayfasının iskeletini oluşturur. Tarayıcı bu etiketleri okur ve sayfayı görsel olarak render eder. Örneğin, bir başlık etiketini gördüğünde, tarayıcı bunu büyük bir metin olarak gösterir.</p>
+
+                <p><strong>Tarayıcının çalışma süreci:</strong></p>
+                <ol>
+                    <li>HTML dosyasını indir</li>
+                    <li>Etiketleri sırayla oku</li>
+                    <li>CSS kurallarını uygula</li>
+                    <li>JavaScript kodunu çalıştır</li>
+                    <li>Görsel olarak sayfayı render et</li>
+                </ol>
+
+                <div class="tip-box">
+                    <strong>💡 Designer'lar İçin İpucu:</strong>
+                    Tarayıcılar etiketleri belirli şekillerde gösterir. Örneğin <code>&lt;h1&gt;</code> her zaman bir başlık gibi görünür. Bu nedenle HTML'de "anlamsal" etiketler kullanmak önemlidir - tasarımınızı doğru yapıda kodlamak, farklı cihazlarda daha iyi çalışmasını sağlar.
+                </div>
+
+                <h3 id="modul1-2">HTML'de Etiketler ve Yapısı</h3>
+                <p>Etiketler açılış ve kapanış olmak üzere iki kısımdan oluşur. Bazı etiketler ise kendi kendine kapanır.</p>
+
+                <pre><code>&lt;!-- Açılış ve kapanış etiket örneği --&gt;
+&lt;<span class="tag">h1</span>&gt;Bu bir başlıktır&lt;/<span class="tag">h1</span>&gt;
+
+&lt;!-- Paragraph etiketinin içinde metin --&gt;
+&lt;<span class="tag">p</span>&gt;Bu bir paragraftır.&lt;/<span class="tag">p</span>&gt;
+
+&lt;!-- Kendi kendine kapanan etiket örneği --&gt;
+&lt;<span class="tag">img</span> <span class="attr">src</span>=<span class="value">"foto.jpg"</span> /&gt;
+&lt;<span class="tag">br</span> /&gt;
+&lt;<span class="tag">hr</span> /&gt;</code></pre>
+
+                <h3 id="modul1-3">Temel Etiketler</h3>
+
+                <h4>Başlıklar (h1-h6)</h4>
+                <p>Başlık etiketleri içeriğin hiyerarşisini belirler. <code>&lt;h1&gt;</code> en önemli, <code>&lt;h6&gt;</code> en az önemlisidir.</p>
+                <pre><code>&lt;<span class="tag">h1</span>&gt;Sayfa Başlığı&lt;/<span class="tag">h1</span>&gt;
+&lt;<span class="tag">h2</span>&gt;Bölüm Başlığı&lt;/<span class="tag">h2</span>&gt;
+&lt;<span class="tag">h3</span>&gt;Alt Bölüm&lt;/<span class="tag">h3</span>&gt;
+&lt;<span class="tag">h4</span>&gt;Daha Alt Başlık&lt;/<span class="tag">h4</span>&gt;</code></pre>
+
+                <h4>Paragraf (p)</h4>
+                <p><code>&lt;p&gt;</code> etiketi metni paragraf olarak biçimlendirir. Paragraflar otomatik olarak etrafında boşluk (margin) vardır.</p>
+                <pre><code>&lt;<span class="tag">p</span>&gt;Bu bir paragrafın ilk cümlesidir. Tasarımcılar için HTML öğrenmek şaşırtıcı derecede faydalıdır.&lt;/<span class="tag">p</span>&gt;
+&lt;<span class="tag">p</span>&gt;Bu ikinci paragraf. HTML ve CSS bilmek, designerlara daha iyi haberci olmalarını sağlar.&lt;/<span class="tag">p</span>&gt;</code></pre>
+
+                <h4>Bağlantılar (a)</h4>
+                <p><code>&lt;a&gt;</code> etiketi başka sayfalar veya yerler arasında gezinme sağlar. <code>href</code> özniteliği hedefi belirtir.</p>
+                <pre><code>&lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="value">"https://example.com"</span>&gt;Başka Siteye Git&lt;/<span class="tag">a</span>&gt;
+&lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="value">"#modul1-3"</span>&gt;Sayfanın içindeki bölüme git&lt;/<span class="tag">a</span>&gt;</code></pre>
+
+                <h4>Görseller (img)</h4>
+                <p><code>&lt;img&gt;</code> web sayfasına resim ekler. <code>src</code> resim dosyasının yolunu, <code>alt</code> ise alternatif metni belirtir.</p>
+                <pre><code>&lt;<span class="tag">img</span> <span class="attr">src</span>=<span class="value">"portrait.jpg"</span> <span class="attr">alt</span>=<span class="value">"Bir tasarımcının portresi"</span> /&gt;
+&lt;<span class="tag">img</span> <span class="attr">src</span>=<span class="value">"/images/icon.png"</span> <span class="attr">alt</span>=<span class="value">"Uygulama ikonu"</span> /&gt;</code></pre>
+
+                <div class="tip-box">
+                    <strong>💡 Designer'lar İçin İpucu:</strong>
+                    <code>alt</code> özniteliği çok önemlidir! Görme engelli kişiler için ekran okuyucuların resmi tanımlaması için gereklidir. Ayrıca resim yüklenirse bu metin görüntülenir.
+                </div>
+
+                <h4>Listeler</h4>
+                <p>İki tür liste vardır: sırasız (<code>&lt;ul&gt;</code>) ve sıralı (<code>&lt;ol&gt;</code>). Her liste öğesi <code>&lt;li&gt;</code> ile başlar.</p>
+                <pre><code>&lt;!-- Sırasız Liste --&gt;
+&lt;<span class="tag">ul</span>&gt;
+  &lt;<span class="tag">li</span>&gt;Birinci öğe&lt;/<span class="tag">li</span>&gt;
+  &lt;<span class="tag">li</span>&gt;İkinci öğe&lt;/<span class="tag">li</span>&gt;
+  &lt;<span class="tag">li</span>&gt;Üçüncü öğe&lt;/<span class="tag">li</span>&gt;
+&lt;/<span class="tag">ul</span>&gt;
+
+&lt;!-- Sıralı Liste --&gt;
+&lt;<span class="tag">ol</span>&gt;
+  &lt;<span class="tag">li</span>&gt;Adım 1&lt;/<span class="tag">li</span>&gt;
+  &lt;<span class="tag">li</span>&gt;Adım 2&lt;/<span class="tag">li</span>&gt;
+  &lt;<span class="tag">li</span>&gt;Adım 3&lt;/<span class="tag">li</span>&gt;
+&lt;/<span class="tag">ol</span>&gt;</code></pre>
+
+                <h4>Konteynerler (div ve span)</h4>
+                <p><code>&lt;div&gt;</code> bir blok konteyner (tüm satırı kaplar), <code>&lt;span&gt;</code> ise satır içi konteynerdir (sadece gerektiği kadar yer kaplar).</p>
+                <pre><code>&lt;!-- Div: Blok seviyesinde kapsayıcı --&gt;
+&lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="value">"hero-section"</span>&gt;
+  &lt;<span class="tag">h2</span>&gt;Hoş geldiniz&lt;/<span class="tag">h2</span>&gt;
+  &lt;<span class="tag">p</span>&gt;Bu başlık bölümüdür.&lt;/<span class="tag">p</span>&gt;
+&lt;/<span class="tag">div</span>&gt;
+
+&lt;!-- Span: Satır içi kapsayıcı --&gt;
+&lt;<span class="tag">p</span>&gt;Bu paragrafta &lt;<span class="tag">span</span> <span class="attr">style</span>=<span class="value">"color: red;"</span>&gt;kırmızı metin&lt;/<span class="tag">span</span>&gt; vardır.&lt;/<span class="tag">p</span>&gt;</code></pre>
+
+                <h3 id="modul1-4">HTML Dosya Yapısı</h3>
+                <p>Her HTML dosyası belirli bir yapıyla başlar. Bu yapı tarayıcıya dosyanın ne olduğunu ve nasıl işlenmesi gerektiğini söyler.</p>
+
+                <pre><code>&lt;!DOCTYPE html&gt;
+&lt;<span class="tag">html</span> <span class="attr">lang</span>=<span class="value">"tr"</span>&gt;
+  &lt;<span class="tag">head</span>&gt;
+    &lt;<span class="tag">meta</span> <span class="attr">charset</span>=<span class="value">"UTF-8"</span>&gt;
+    &lt;<span class="tag">meta</span> <span class="attr">name</span>=<span class="value">"viewport"</span> <span class="attr">content</span>=<span class="value">"width=device-width"</span>&gt;
+    &lt;<span class="tag">title</span>&gt;Sayfa Başlığı&lt;/<span class="tag">title</span>&gt;
+    &lt;<span class="tag">link</span> <span class="attr">rel</span>=<span class="value">"stylesheet"</span> <span class="attr">href</span>=<span class="value">"style.css"</span>&gt;
+  &lt;/<span class="tag">head</span>&gt;
+  &lt;<span class="tag">body</span>&gt;
+    &lt;<span class="tag">h1</span>&gt;Sayfanın İçeriği&lt;/<span class="tag">h1</span>&gt;
+    &lt;<span class="tag">p</span>&gt;Burası kullanıcının göreceği içeriktir.&lt;/<span class="tag">p</span>&gt;
+  &lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</code></pre>
+
+                <p><strong>Her bölümün anlamı:</strong></p>
+                <ul>
+                    <li><code>&lt;!DOCTYPE html&gt;</code> - Bu bir HTML5 dosyası olduğunu söyler</li>
+                    <li><code>&lt;html&gt;</code> - Tüm HTML'i kapsayan kök etiket</li>
+                    <li><code>&lt;head&gt;</code> - Sayfanın meta bilgilerini içerir (başlık, stil vb.)</li>
+                    <li><code>&lt;body&gt;</code> - Tarayıcıda gösterilen gerçek içerik</li>
+                </ul>
+
+                <h3 id="modul1-5">Öznitelikler (Attributes)</h3>
+                <p>Öznitelikler, etiketlere ek bilgi ekler. Her etiket farklı özniteliklere sahip olabilir.</p>
+
+                <pre><code>&lt;!-- class özniteliği --&gt;
+&lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="value">"container"</span>&gt;İçerik&lt;/<span class="tag">div</span>&gt;
+
+&lt;!-- id özniteliği --&gt;
+&lt;<span class="tag">section</span> <span class="attr">id</span>=<span class="value">"bölüm-1"</span>&gt;...&lt;/<span class="tag">section</span>&gt;
+
+&lt;!-- data özniteliği (özel veriler) --&gt;
+&lt;<span class="tag">button</span> <span class="attr">data-action</span>=<span class="value">"kaydet"</span>&gt;Kaydet&lt;/<span class="tag">button</span>&gt;
+
+&lt;!-- Birden fazla öznitelik --&gt;
+&lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="value">"#"</span> <span class="attr">class</span>=<span class="value">"link"</span> <span class="attr">title</span>=<span class="value">"Daha fazla bilgi"</span>&gt;Bağlantı&lt;/<span class="tag">a</span>&gt;</code></pre>
+
+                <p><strong>Yaygın öznitelikler:</strong></p>
+                <ul>
+                    <li><code>class</code> - CSS ile stillemek için (tekrarlanabilir)</li>
+                    <li><code>id</code> - Benzersiz tanımlayıcı (sadece bir kez kullanılmalı)</li>
+                    <li><code>href</code> - Bağlantıda hedef belirtir</li>
+                    <li><code>src</code> - Dosya kaynağı (resim, script vb.)</li>
+                    <li><code>alt</code> - Alternatif metin (resimler için)</li>
+                    <li><code>data-*</code> - Özel veri depolamak için</li>
+                </ul>
+
+                <div class="practice-box">
+                    <strong>🎯 Pratik Alıştırma:</strong>
+                    Aşağıdaki HTML yapısını oluşturun:
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Bir başlık "Benim Tasarım Projelerim"</li>
+                        <li>Üç paragraf metin</li>
+                        <li>Bir görselli 3 başlıklı bir liste (kullanıcı profilleri)</li>
+                        <li>Bir "portfolio.css" dosyasına bağlantı</li>
+                    </ul>
+                </div>
+
+                <div class="resources">
+                    <h4>Kaynaklar</h4>
+                    <ul>
+                        <li><a href="https://developer.mozilla.org/tr/docs/Web/HTML" target="_blank">MDN - HTML Referansı</a></li>
+                        <li><a href="https://www.w3schools.com/html/" target="_blank">W3Schools - HTML Tutorial</a></li>
+                        <li><a href="https://html.spec.whatwg.org/" target="_blank">WHATWG - HTML Standardı</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- MODÜL 2: HTML İLERİ SEVİYE -->
+            <section id="modul2">
+                <h2>MODÜL 2: HTML İleri Seviye</h2>
+                <p>Artık temel HTML etiketlerini biliyorsunuz. Bu modülde tablolar, formlar, semantik HTML5 etiketleri ve erişilebilirlik gibi daha gelişmiş konuları öğreneceksiniz. Bu bilgi, web sayfalarını daha profesyonel ve kullanıcı dostu hale getirecektir.</p>
+
+                <h3 id="modul2-1">Tablolar ve Formlar</h3>
+
+                <h4>Tablolar</h4>
+                <p>Tablolar veri göstermek için kullanılır. Satır, sütun ve hücrelerden oluşurlar.</p>
+                <pre><code>&lt;<span class="tag">table</span>&gt;
+  &lt;<span class="tag">thead</span>&gt;
+    &lt;<span class="tag">tr</span>&gt;
+      &lt;<span class="tag">th</span>&gt;İsim&lt;/<span class="tag">th</span>&gt;
+      &lt;<span class="tag">th</span>&gt;Ünvan&lt;/<span class="tag">th</span>&gt;
+      &lt;<span class="tag">th</span>&gt;Şirket&lt;/<span class="tag">th</span>&gt;
+    &lt;/<span class="tag">tr</span>&gt;
+  &lt;/<span class="tag">thead</span>&gt;
+  &lt;<span class="tag">tbody</span>&gt;
+    &lt;<span class="tag">tr</span>&gt;
+      &lt;<span class="tag">td</span>&gt;Ayşe&lt;/<span class="tag">td</span>&gt;
+      &lt;<span class="tag">td</span>&gt;Designer&lt;/<span class="tag">td</span>&gt;
+      &lt;<span class="tag">td</span>&gt;TechCorp&lt;/<span class="tag">td</span>&gt;
+    &lt;/<span class="tag">tr</span>&gt;
+    &lt;<span class="tag">tr</span>&gt;
+      &lt;<span class="tag">td</span>&gt;Mehmet&lt;/<span class="tag">td</span>&gt;
+      &lt;<span class="tag">td</span>&gt;Developer&lt;/<span class="tag">td</span>&gt;
+      &lt;<span class="tag">td</span>&gt;WebAgency&lt;/<span class="tag">td</span>&gt;
+    &lt;/<span class="tag">tr</span>&gt;
+  &lt;/<span class="tag">tbody</span>&gt;
+&lt;/<span class="tag">table</span>&gt;</code></pre>
+
+                <div class="tip-box">
+                    <strong>💡 Designer'lar İçin İpucu:</strong>
+                    Tablo etiketlerini layout için kullanmayın! Tablolar sadece veri göstermek içindir. Layout için CSS Flexbox veya Grid kullanın.
+                </div>
+
+                <h4>Formlar</h4>
+                <p>Formlar kullanıcıdan veri toplamak için kullanılır. <code>&lt;form&gt;</code>, <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code> gibi etiketlerden oluşur.</p>
+                <pre><code>&lt;<span class="tag">form</span> <span class="attr">action</span>=<span class="value">"/submit"</span> <span class="attr">method</span>=<span class="value">"POST"</span>&gt;
+  &lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="value">"isim"</span>&gt;İsim:&lt;/<span class="tag">label</span>&gt;
+  &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="value">"text"</span> <span class="attr">id</span>=<span class="value">"isim"</span> <span class="attr">name</span>=<span class="value">"isim"</span> /&gt;
+
+  &lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="value">"email"</span>&gt;E-mail:&lt;/<span class="tag">label</span>&gt;
+  &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="value">"email"</span> <span class="attr">id</span>=<span class="value">"email"</span> <span class="attr">name</span>=<span class="value">"email"</span> /&gt;
+
+  &lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="value">"mesaj"</span>&gt;Mesaj:&lt;/<span class="tag">label</span>&gt;
+  &lt;<span class="tag">textarea</span> <span class="attr">id</span>=<span class="value">"mesaj"</span> <span class="attr">name</span>=<span class="value">"mesaj"</span>&gt;&lt;/<span class="tag">textarea</span>&gt;
+
+  &lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="value">"sehir"</span>&gt;Şehir:&lt;/<span class="tag">label</span>&gt;
+  &lt;<span class="tag">select</span> <span class="attr">id</span>=<span class="value">"sehir"</span> <span class="attr">name</span>=<span class="value">"sehir"</span>&gt;
+    &lt;<span class="tag">option</span> <span class="attr">value</span>=<span class="value">""</span>&gt;Seçin&lt;/<span class="tag">option</span>&gt;
+    &lt;<span class="tag">option</span> <span class="attr">value</span>=<span class="value">"istanbul"</span>&gt;İstanbul&lt;/<span class="tag">option</span>&gt;
+    &lt;<span class="tag">option</span> <span class="attr">value</span>=<span class="value">"ankara"</span>&gt;Ankara&lt;/<span class="tag">option</span>&gt;
+  &lt;/<span class="tag">select</span>&gt;
+
+  &lt;<span class="tag">button</span> <span class="attr">type</span>=<span class="value">"submit"</span>&gt;Gönder&lt;/<span class="tag">button</span>&gt;
+&lt;/<span class="tag">form</span>&gt;</code></pre>
+
+                <p><strong>Input Tipleri:</strong></p>
+                <ul>
+                    <li><code>type="text"</code> - Metin giriş</li>
+                    <li><code>type="email"</code> - E-posta giriş (otomatik validasyon)</li>
+                    <li><code>type="password"</code> - Şifre giriş (gizlenir)</li>
+                    <li><code>type="number"</code> - Sayı giriş</li>
+                    <li><code>type="date"</code> - Tarih seçici</li>
+                    <li><code>type="checkbox"</code> - Seçim kutusu</li>
+                    <li><code>type="radio"</code> - Seçenek düğmesi</li>
+                    <li><code>type="file"</code> - Dosya yükleme</li>
+                </ul>
+
+                <h3 id="modul2-2">Semantik HTML5 Etiketleri</h3>
+                <p>Semantik etiketler, yapıyı ve anlamı açıklayan etiketlerdir. Bu, arama motorları ve ekran okuyucuları için önemlidir.</p>
+
+                <pre><code>&lt;!DOCTYPE html&gt;
+&lt;<span class="tag">html</span>&gt;
+  &lt;<span class="tag">body</span>&gt;
+    &lt;<span class="tag">header</span>&gt;
+      &lt;<span class="tag">nav</span>&gt;
+        &lt;<span class="tag">ul</span>&gt;
+          &lt;<span class="tag">li</span>&gt;&lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="value">"/"</span>&gt;Ana Sayfa&lt;/<span class="tag">a</span>&gt;&lt;/<span class="tag">li</span>&gt;
+          &lt;<span class="tag">li</span>&gt;&lt;<span class="tag">a</span> <span class="attr">href</span>=<span class="value">"/about"</span>&gt;Hakkında&lt;/<span class="tag">a</span>&gt;&lt;/<span class="tag">li</span>&gt;
+        &lt;/<span class="tag">ul</span>&gt;
+      &lt;/<span class="tag">nav</span>&gt;
+    &lt;/<span class="tag">header</span>&gt;
+
+    &lt;<span class="tag">main</span>&gt;
+      &lt;<span class="tag">article</span>&gt;
+        &lt;<span class="tag">h1</span>&gt;Blog Yazısı&lt;/<span class="tag">h1</span>&gt;
+        &lt;<span class="tag">p</span>&gt;Bu ana içeriktir...&lt;/<span class="tag">p</span>&gt;
+      &lt;/<span class="tag">article</span>&gt;
+
+      &lt;<span class="tag">aside</span>&gt;
+        &lt;<span class="tag">h3</span>&gt;Yan Çubuk&lt;/<span class="tag">h3</span>&gt;
+        &lt;<span class="tag">ul</span>&gt;
+          &lt;<span class="tag">li</span>&gt;İlişkili Link 1&lt;/<span class="tag">li</span>&gt;
+          &lt;<span class="tag">li</span>&gt;İlişkili Link 2&lt;/<span class="tag">li</span>&gt;
+        &lt;/<span class="tag">ul</span>&gt;
+      &lt;/<span class="tag">aside</span>&gt;
+    &lt;/<span class="tag">main</span>&gt;
+
+    &lt;<span class="tag">footer</span>&gt;
+      &lt;<span class="tag">p</span>&gt;&copy; 2026 Telif Hakkı Saklıdır&lt;/<span class="tag">p</span>&gt;
+    &lt;/<span class="tag">footer</span>&gt;
+  &lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</code></pre>
+
+                <p><strong>Semantik Etiketler:</strong></p>
+                <ul>
+                    <li><code>&lt;header&gt;</code> - Başlık bölümü</li>
+                    <li><code>&lt;nav&gt;</code> - Navigasyon bağlantıları</li>
+                    <li><code>&lt;main&gt;</code> - Ana içerik</li>
+                    <li><code>&lt;article&gt;</code> - Bağımsız içerik (blog yazısı vb.)</li>
+                    <li><code>&lt;section&gt;</code> - Sayfanın mantıksal bölümü</li>
+                    <li><code>&lt;aside&gt;</code> - Yan çubuk veya ilişkili içerik</li>
+                    <li><code>&lt;footer&gt;</code> - Altlık bölümü</li>
+                </ul>
+
+                <div class="tip-box">
+                    <strong>💡 Designer'lar İçin İpucu:</strong>
+                    Semantik etiketler sayfa yapısını daha anlaşılır hale getirir. Arama motorları bu yapıyı okur ve önem derecelerini anlar. Ayrıca ekran okuyucuları kullanan görme engelli kişiler daha iyi bir deneyim yaşar.
+                </div>
+
+                <h3 id="modul2-3">Medya Etiketleri</h3>
+
+                <h4>Video Etiketleri</h4>
+                <pre><code>&lt;<span class="tag">video</span> <span class="attr">width</span>=<span class="value">"640"</span> <span class="attr">height</span>=<span class="value">"480"</span> <span class="attr">controls</span>&gt;
+  &lt;<span class="tag">source</span> <span class="attr">src</span>=<span class="value">"video.mp4"</span> <span class="attr">type</span>=<span class="value">"video/mp4"</span>&gt;
+  &lt;<span class="tag">source</span> <span class="attr">src</span>=<span class="value">"video.webm"</span> <span class="attr">type</span>=<span class="value">"video/webm"</span>&gt;
+  Tarayıcınız video etiketini desteklemiyor.
+&lt;/<span class="tag">video</span>&gt;</code></pre>
+
+                <h4>Ses Etiketleri</h4>
+                <pre><code>&lt;<span class="tag">audio</span> <span class="attr">controls</span>&gt;
+  &lt;<span class="tag">source</span> <span class="attr">src</span>=<span class="value">"podcast.mp3"</span> <span class="attr">type</span>=<span class="value">"audio/mpeg"</span>&gt;
+  Tarayıcınız ses etiketini desteklemiyor.
+&lt;/<span class="tag">audio</span>&gt;</code></pre>
+
+                <h4>Şekil ve Başlık (figure, figcaption)</h4>
+                <pre><code>&lt;<span class="tag">figure</span>&gt;
+  &lt;<span class="tag">img</span> <span class="attr">src</span>=<span class="value">"design-process.jpg"</span> <span class="attr">alt</span>=<span class="value">"Tasarım Süreci"</span> /&gt;
+  &lt;<span class="tag">figcaption</span>&gt;Tasarım Süreci: Araştırma, Taslak, Prototipi&lt;/<span class="tag">figcaption</span>&gt;
+&lt;/<span class="tag">figure</span>&gt;</code></pre>
+
+                <h4>İçgün Resim (picture)</h4>
+                <pre><code>&lt;<span class="tag">picture</span>&gt;
+  &lt;<span class="tag">source</span> <span class="attr">media</span>=<span class="value">"(max-width: 600px)"</span> <span class="attr">srcset</span>=<span class="value">"mobile-image.jpg"</span>&gt;
+  &lt;<span class="tag">source</span> <span class="attr">media</span>=<span class="value">"(max-width: 1200px)"</span> <span class="attr">srcset</span>=<span class="value">"tablet-image.jpg"</span>&gt;
+  &lt;<span class="tag">img</span> <span class="attr">src</span>=<span class="value">"desktop-image.jpg"</span> <span class="attr">alt</span>=<span class="value">"Responsive görsel"</span> /&gt;
+&lt;/<span class="tag">picture</span>&gt;</code></pre>
+
+                <h3 id="modul2-4">Meta Etiketleri ve SEO</h3>
+                <p>Meta etiketleri sayfanın meta bilgilerini tanımlar. Tarayıcılar ve arama motorları bu bilgileri kullanır.</p>
+
+                <pre><code>&lt;<span class="tag">head</span>&gt;
+  &lt;<span class="tag">meta</span> <span class="attr">charset</span>=<span class="value">"UTF-8"</span>&gt;
+  &lt;<span class="tag">meta</span> <span class="attr">name</span>=<span class="value">"viewport"</span> <span class="attr">content</span>=<span class="value">"width=device-width, initial-scale=1.0"</span>&gt;
+
+  &lt;!-- SEO Meta Etiketleri --&gt;
+  &lt;<span class="tag">meta</span> <span class="attr">name</span>=<span class="value">"description"</span> <span class="attr">content</span>=<span class="value">"Sayfanız hakkında 155 karakterlik bir açıklama"</span>&gt;
+  &lt;<span class="tag">meta</span> <span class="attr">name</span>=<span class="value">"keywords"</span> <span class="attr">content</span>=<span class="value">"html, css, web tasarımı"</span>&gt;
+  &lt;<span class="tag">meta</span> <span class="attr">name</span>=<span class="value">"author"</span> <span class="attr">content</span>=<span class="value">"Yazarın İsmi"</span>&gt;
+
+  &lt;!-- Open Graph (Sosyal Medya) --&gt;
+  &lt;<span class="tag">meta</span> <span class="attr">property</span>=<span class="value">"og:title"</span> <span class="attr">content</span>=<span class="value">"Sayfa Başlığı"</span>&gt;
+  &lt;<span class="tag">meta</span> <span class="attr">property</span>=<span class="value">"og:description"</span> <span class="attr">content</span>=<span class="value">"Açıklama"</span>&gt;
+  &lt;<span class="tag">meta</span> <span class="attr">property</span>=<span class="value">"og:image"</span> <span class="attr">content</span>=<span class="value">"https://example.com/image.jpg"</span>&gt;
+&lt;/<span class="tag">head</span>&gt;</code></pre>
+
+                <h3 id="modul2-5">Erişilebilirlik (Accessibility)</h3>
+                <p>Erişilebilir web, herkes tarafından kullanılabilen web demektir. Bu, görme engelli, işitme engelli ve diğer engellileri de içerir.</p>
+
+                <h4>ARIA Roles</h4>
+                <pre><code>&lt;!-- Başlık Rolü --&gt;
+&lt;<span class="tag">div</span> <span class="attr">role</span>=<span class="value">"banner"</span>&gt;...&lt;/<span class="tag">div</span>&gt;
+
+&lt;!-- Navigasyon Rolü --&gt;
+&lt;<span class="tag">div</span> <span class="attr">role</span>=<span class="value">"navigation"</span>&gt;...&lt;/<span class="tag">div</span>&gt;
+
+&lt;!-- Uyarı Dialogu --&gt;
+&lt;<span class="tag">div</span> <span class="attr">role</span>=<span class="value">"alert"</span>&gt;Bu önemli bir uyarıdır!&lt;/<span class="tag">div</span>&gt;
+
+&lt;!-- Tab Listesi --&gt;
+&lt;<span class="tag">ul</span> <span class="attr">role</span>=<span class="value">"tablist"</span>&gt;
+  &lt;<span class="tag">li</span> <span class="attr">role</span>=<span class="value">"tab"</span>&gt;Tab 1&lt;/<span class="tag">li</span>&gt;
+  &lt;<span class="tag">li</span> <span class="attr">role</span>=<span class="value">"tab"</span>&gt;Tab 2&lt;/<span class="tag">li</span>&gt;
+&lt;/<span class="tag">ul</span>&gt;</code></pre>
+
+                <h4>Alt Text</h4>
+                <pre><code>&lt;!-- Kötü: Tanımlayıcı olmayan alt metin --&gt;
+&lt;<span class="tag">img</span> <span class="attr">src</span>=<span class="value">"photo.jpg"</span> <span class="attr">alt</span>=<span class="value">"resim"</span> /&gt;
+
+&lt;!-- İyi: Tanımlayıcı alt metin --&gt;
+&lt;<span class="tag">img</span> <span class="attr">src</span>=<span class="value">"design-team.jpg"</span> <span class="attr">alt</span>=<span class="value">"Tasarım ekibi ofiste çalışıyor"</span> /&gt;</code></pre>
+
+                <h4>Label ve Form Erişilebilirliği</h4>
+                <pre><code>&lt;!-- Her input'un bir label'ı olmalı --&gt;
+&lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="value">"search-box"</span>&gt;Ara:&lt;/<span class="tag">label</span>&gt;
+&lt;<span class="tag">input</span> <span class="attr">id</span>=<span class="value">"search-box"</span> <span class="attr">type</span>=<span class="value">"search"</span> <span class="attr">placeholder</span>=<span class="value">"Arama teriminizi girin"</span> /&gt;
+
+&lt;!-- Checkbox'un label'ı --&gt;
+&lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="value">"checkbox"</span> <span class="attr">id</span>=<span class="value">"agree"</span>&gt;
+&lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="value">"agree"</span>&gt;Şartları kabul ediyorum&lt;/<span class="tag">label</span>&gt;</code></pre>
+
+                <div class="tip-box">
+                    <strong>💡 Designer'lar İçin İpucu:</strong>
+                    Erişilebilirlik, sadece etik değil aynı zamanda iş açısından da mantıklıdır. Daha geniş bir kitle sayfanızı kullanabilecek, SEO daha iyi olacak ve yasal sorunları önleyebileceksiniz.
+                </div>
+
+                <div class="practice-box">
+                    <strong>🎯 Pratik Alıştırma:</strong>
+                    Semantik yapılı, erişilebilir bir blog post sayfası oluşturun:
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Başlık, navigasyon</li>
+                        <li>Ana makale (başlık, paragraflar, resimler figcaption'yla)</li>
+                        <li>Yan çubuk (ilişkili yazılar)</li>
+                        <li>Yorum formu (label'larla)</li>
+                        <li>Altlık (meta bilgiler)</li>
+                    </ul>
+                </div>
+
+                <div class="resources">
+                    <h4>Kaynaklar</h4>
+                    <ul>
+                        <li><a href="https://www.w3.org/WAI/WCAG21/quickref/" target="_blank">WCAG 2.1 - Erişilebilirlik Kılavuzu</a></li>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Learn/Accessibility" target="_blank">MDN - Erişilebilirlik</a></li>
+                        <li><a href="https://html.spec.whatwg.org/#semantics" target="_blank">HTML Semantik Referansı</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- MODÜL 3: CSS TEMELLERI -->
+            <section id="modul3">
+                <h2>MODÜL 3: CSS Temelleri</h2>
+                <p>CSS (Cascading Style Sheets), HTML elemanlarının nasıl görüneceğini kontrol eder. Tasarımcı olarak, CSS'de ustalaşmak sizin tasarımlarınızı web'de tam olarak gerçekleştirmenizi sağlar.</p>
+
+                <h3 id="modul3-1">CSS Nedir ve Nasıl Bağlanır?</h3>
+                <p>CSS, "kurallar" kümesidir. Her kural hangi elemanları seçeceğini (seçici) ve onlara ne stil vereceğini (özellikler) belirtir.</p>
+
+                <pre><code><span class="comment">/* CSS Kuralının Yapısı */</span>
+<span class="text">selector {
+  property: value;
+  another-property: value;
+}</span></code></pre>
+
+                <h4>CSS Bağlama Yöntemleri</h4>
+
+                <p><strong>1. External CSS (En İyi Yöntem)</strong></p>
+                <pre><code>&lt;!-- HTML dosyasında --&gt;
+&lt;<span class="tag">link</span> <span class="attr">rel</span>=<span class="value">"stylesheet"</span> <span class="attr">href</span>=<span class="value">"style.css"</span>&gt;
+
+<span class="comment">/* style.css dosyasında */</span>
+body {
+  font-family: Arial, sans-serif;
+}</code></pre>
+
+                <p><strong>2. Internal CSS</strong></p>
+                <pre><code>&lt;<span class="tag">style</span>&gt;
+  body {
+    font-family: Arial, sans-serif;
+  }
+&lt;/<span class="tag">style</span>&gt;</code></pre>
+
+                <p><strong>3. Inline CSS (Kaçınılmalı)</strong></p>
+                <pre><code>&lt;<span class="tag">p</span> <span class="attr">style</span>=<span class="value">"color: red; font-size: 16px;"</span>&gt;Kırmızı metin&lt;/<span class="tag">p</span>&gt;</code></pre>
+
+                <h3 id="modul3-2">Seçiciler (Selectors)</h3>
+
+                <h4>Element Seçici</h4>
+                <pre><code>p {
+  color: blue;
+}</code></pre>
+
+                <h4>Class Seçici</h4>
+                <pre><code><span class="comment">/* CSS */</span>
+.highlight {
+  background-color: yellow;
+}
+
+<span class="comment">/* HTML */</span>
+&lt;<span class="tag">p</span> <span class="attr">class</span>=<span class="value">"highlight"</span>&gt;Bu vurgulanmış metindir&lt;/<span class="tag">p</span>&gt;</code></pre>
+
+                <h4>ID Seçici</h4>
+                <pre><code><span class="comment">/* CSS */</span>
+#main-title {
+  font-size: 32px;
+}
+
+<span class="comment">/* HTML */</span>
+&lt;<span class="tag">h1</span> <span class="attr">id</span>=<span class="value">"main-title"</span>&gt;Sayfa Başlığı&lt;/<span class="tag">h1</span>&gt;</code></pre>
+
+                <h4>Grup Seçici</h4>
+                <pre><code>h1, h2, h3 {
+  font-weight: bold;
+  color: navy;
+}</code></pre>
+
+                <h4>Soyundan Gelen Seçici (Descendant)</h4>
+                <pre><code>div p {
+  color: green;
+}</code></pre>
+
+                <h4>Çocuk Seçici (Child)</h4>
+                <pre><code>ul > li {
+  list-style: none;
+}</code></pre>
+
+                <h4>Bitişik Kardeş Seçici</h4>
+                <pre><code>h2 + p {
+  font-weight: bold;
+}</code></pre>
+
+                <div class="tip-box">
+                    <strong>💡 Designer'lar İçin İpucu:</strong>
+                    Seçici özgünlüğü önemlidir. ID'ler en spesifik, ardından class'lar, sonra element seçicileri gelir. Genellikle class'ları kullanmak en iyi uygulamadır.
+                </div>
+
+                <h3 id="modul3-3">Renk Sistemleri</h3>
+
+                <h4>Hex Renkler</h4>
+                <pre><code>body {
+  background-color: #ffffff; <span class="comment">/* Beyaz */</span>
+  color: #000000;           <span class="comment">/* Siyah */</span>
+  border-color: #6366f1;    <span class="comment">/* İndigo */</span>
+}</code></pre>
+
+                <h4>RGB/RGBA Renkler</h4>
+                <pre><code>.box {
+  background-color: rgb(99, 102, 241);      <span class="comment">/* İndigo */</span>
+  border-color: rgba(99, 102, 241, 0.5);   <span class="comment">/* İndigo %50 saydamlık */</span>
+}</code></pre>
+
+                <h4>HSL Renkler</h4>
+                <pre><code>.element {
+  background-color: hsl(226, 71%, 67%);    <span class="comment">/* İndigo */</span>
+  border-color: hsl(226, 71%, 67%, 0.5);  <span class="comment">/* %50 saydamlık */</span>
+}</code></pre>
+
+                <p><strong>HSL Açıklaması:</strong></p>
+                <ul>
+                    <li>Hue (Renk): 0-360 derece (0=Kırmızı, 120=Yeşil, 240=Mavi)</li>
+                    <li>Saturation (Doygunluk): 0-100% (0=Gri, 100=Dolu renk)</li>
+                    <li>Lightness (Parlaklık): 0-100% (0=Siyah, 50=Orta, 100=Beyaz)</li>
+                </ul>
+
+                <h3 id="modul3-4">Tipografi</h3>
+
+                <h4>Font Family</h4>
+                <pre><code>body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.serif-text {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.monospace {
+  font-family: 'Courier New', Courier, monospace;
+}</code></pre>
+
+                <h4>Font Size, Weight, Style</h4>
+                <pre><code>h1 {
+  font-size: 48px;
+  font-weight: bold;     <span class="comment">/* 400, 700 vb. de yazılabilir */</span>
+}
+
+em {
+  font-style: italic;
+}
+
+.light-text {
+  font-weight: 300;
+}
+
+.extra-bold {
+  font-weight: 900;
+}</code></pre>
+
+                <h4>Line Height ve Letter Spacing</h4>
+                <pre><code>p {
+  line-height: 1.6;             <span class="comment">/* Satır yüksekliği */</span>
+  letter-spacing: 0.05em;       <span class="comment">/* Harfler arası boşluk */</span>
+}
+
+h2 {
+  line-height: 1.2;
+  letter-spacing: -0.01em;      <span class="comment">/* Yoğun harfler */</span>
+}</code></pre>
+
+                <h3 id="modul3-5">Box Model</h3>
+                <p>CSS'de her eleman bir "box" (kutu) olarak davranır. Bu kutunun dört katmanı vardır: content, padding, border, margin.</p>
+
+                <pre><code>.box {
+  width: 300px;
+  height: 200px;
+  padding: 20px;              <span class="comment">/* İçerik etrafı boşluk */</span>
+  border: 3px solid #333;     <span class="comment">/* Kenarlık */</span>
+  margin: 30px;               <span class="comment">/* Dış boşluk */</span>
+}
+
+<span class="comment">/* Kısa yazım */</span>
+.box2 {
+  padding: 10px 20px 10px 20px;  <span class="comment">/* Top, Right, Bottom, Left */</span>
+  margin: 15px 0;                <span class="comment">/* Top/Bottom, Left/Right */</span>
+}</code></pre>
+
+                <p><strong>Box Model Görseli:</strong></p>
+                <pre><code>┌─────────────────────────────────┐
+│         Margin (Dış)            │
+│  ┌───────────────────────────┐  │
+│  │  Border (Kenarlık)        │  │
+│  │ ┌─────────────────────┐   │  │
+│  │ │ Padding (İçerik)    │   │  │
+│  │ │ ┌─────────────────┐ │   │  │
+│  │ │ │  Content        │ │   │  │
+│  │ │ └─────────────────┘ │   │  │
+│  │ └─────────────────────┘   │  │
+│  └───────────────────────────┘  │
+└─────────────────────────────────┘</code></pre>
+
+                <h3 id="modul3-6">Display Türleri</h3>
+
+                <h4>Block Display</h4>
+                <pre><code>div, p, h1 {
+  display: block;            <span class="comment">/* Tüm satırı kaplar */</span>
+}
+
+.block-element {
+  width: 100%;               <span class="comment">/* Tam genişlik */</span>
+  margin-bottom: 10px;
+}</code></pre>
+
+                <h4>Inline Display</h4>
+                <pre><code>span, a, strong {
+  display: inline;           <span class="comment">/* Sadece gereken yer */</span>
+}
+
+.inline-element {
+  margin: 0 10px;            <span class="comment">/* Top/Bottom margin çalışmaz */</span>
+}</code></pre>
+
+                <h4>Inline-Block Display</h4>
+                <pre><code>.inline-block-item {
+  display: inline-block;     <span class="comment">/* Block gibi, ama satır içi */</span>
+  width: 150px;
+  margin: 10px;
+}</code></pre>
+
+                <h4>None Display</h4>
+                <pre><code>.hidden {
+  display: none;             <span class="comment">/* Sayfada yer almaz */</span>
+}
+
+<span class="comment">/* Görünmez ama yer alır (visibility) */</span>
+.invisible {
+  visibility: hidden;
+}</code></pre>
+
+                <div class="practice-box">
+                    <strong>🎯 Pratik Alıştırma:</strong>
+                    Basit bir "Kartlar" (cards) tasarımı yapın:
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Her kartın başlık, resim ve açıklama olsun</li>
+                        <li>Renkli border ve box-shadow kullanın</li>
+                        <li>Padding ve margin'i düzgün ayarlayın</li>
+                        <li>3 kartı yan yana gösterin</li>
+                    </ul>
+                </div>
+
+                <div class="resources">
+                    <h4>Kaynaklar</h4>
+                    <ul>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps" target="_blank">MDN - CSS İlk Adımlar</a></li>
+                        <li><a href="https://www.w3schools.com/css/" target="_blank">W3Schools - CSS Öğrenin</a></li>
+                        <li><a href="https://css-tricks.com/" target="_blank">CSS-Tricks - CSS İpuçları</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- MODÜL 4: CSS ORTA SEVİYE -->
+            <section id="modul4">
+                <h2>MODÜL 4: CSS Orta Seviye</h2>
+                <p>Artık CSS temellerini biliyorsunuz. Bu modülde, modern web tasarımının temel taşları olan Flexbox, Grid, pozisyonlama ve animasyonları öğreneceksiniz.</p>
+
+                <h3 id="modul4-1">Flexbox - Esnek Kutu Düzeni</h3>
+                <p>Flexbox, ögeleri satır veya sütun halinde düzenlemeyi kolaylaştırır. Modern web tasarımı için başlıca yöntemlerden biridir.</p>
+
+                <h4>Flexbox'u Başlatma</h4>
+                <pre><code>.container {
+  display: flex;             <span class="comment">/* Flex konteyner oluştur */</span>
+  flex-direction: row;       <span class="comment">/* Yön: row, column, row-reverse, column-reverse */</span>
+  justify-content: center;   <span class="comment">/* Yatay hizalama */</span>
+  align-items: center;       <span class="comment">/* Dikey hizalama */</span>
+}</code></pre>
+
+                <h4>Justify-Content Değerleri</h4>
+                <pre><code>.container {
+  justify-content: flex-start;    <span class="comment">/* Başta */</span>
+  justify-content: center;        <span class="comment">/* Ortada */</span>
+  justify-content: flex-end;      <span class="comment">/* Sonunda */</span>
+  justify-content: space-between; <span class="comment">/* Eşit aralıklı */</span>
+  justify-content: space-around;  <span class="comment">/* Etrafında eşit boşluk */</span>
+  justify-content: space-evenly;  <span class="comment">/* Tam eşit boşluk */</span>
+}</code></pre>
+
+                <h4>Align-Items Değerleri</h4>
+                <pre><code>.container {
+  align-items: flex-start;   <span class="comment">/* Üstte */</span>
+  align-items: center;       <span class="comment">/* Ortada */</span>
+  align-items: flex-end;     <span class="comment">/* Altta */</span>
+  align-items: stretch;      <span class="comment">/* Uzat (varsayılan) */</span>
+  align-items: baseline;     <span class="comment">/* Metin tabanına hizala */</span>
+}</code></pre>
+
+                <h4>Flex Ögeleri</h4>
+                <pre><code>.container {
+  display: flex;
+  gap: 20px;                 <span class="comment">/* Öğeler arasında boşluk */</span>
+}
+
+.item {
+  flex: 1;                   <span class="comment">/* Eşit boyut */</span>
+  min-width: 100px;          <span class="comment">/* Minimum genişlik */</span>
+}
+
+.item-2 {
+  flex: 2;                   <span class="comment">/* 2 katı daha geniş */</span>
+}
+
+.item-fixed {
+  flex: 0 0 200px;           <span class="comment">/* Sabit 200px */</span>
+}</code></pre>
+
+                <h4>Wrap - Ögeleri Kaydırma</h4>
+                <pre><code>.container {
+  display: flex;
+  flex-wrap: nowrap;         <span class="comment">/* Varsayılan, kaydırma yok */</span>
+  flex-wrap: wrap;           <span class="comment">/* Kaydır */</span>
+  flex-wrap: wrap-reverse;   <span class="comment">/* Ters kaydır */</span>
+}</code></pre>
+
+                <div class="tip-box">
+                    <strong>💡 Designer'lar İçin İpucu:</strong>
+                    Flexbox, navigasyon menüleri, kartlar ve iki sütunlu düzenler için mükemmeldir. Basit ve sezgisel bir çözüm sunarak CSS'i tasarımcılar için erişilebilir hale getirir.
+                </div>
+
+                <h3 id="modul4-2">CSS Grid - Izgara Düzeni</h3>
+                <p>CSS Grid, iki boyutlu (satırlar ve sütunlar) düzenler için idealdir. Daha karmaşık sayfa yapıları oluşturmada çok güçlüdür.</p>
+
+                <h4>Grid'i Başlatma</h4>
+                <pre><code>.grid-container {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;  <span class="comment">/* 3 sütun */</span>
+  grid-template-rows: auto 1fr auto;       <span class="comment">/* 3 satır */</span>
+  gap: 20px;                               <span class="comment">/* Sütunlar ve satırlar arası boşluk */</span>
+}</code></pre>
+
+                <h4>Otomatik Sütunlar</h4>
+                <pre><code>.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}</code></pre>
+
+                <h4>Grid Elemanlarını Konumlandırma</h4>
+                <pre><code>.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 100px 200px 100px;
+}
+
+.item-1 {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.item-2 {
+  grid-column: 1 / 4;      <span class="comment">/* 3 sütunun tamamı */</span>
+  grid-row: 2 / 3;
+}
+
+.item-3 {
+  grid-column: 2 / 4;
+  grid-row: 3 / 4;
+}</code></pre>
+
+                <h4>Grid Template Areas</h4>
+                <pre><code>.layout {
+  display: grid;
+  grid-template-areas:
+    "header header header"
+    "sidebar main   right"
+    "footer footer  footer";
+  gap: 10px;
+}
+
+header { grid-area: header; }
+aside  { grid-area: sidebar; }
+main   { grid-area: main; }
+.right { grid-area: right; }
+footer { grid-area: footer; }</code></pre>
+
+                <h3 id="modul4-3">Pozisyonlama</h3>
+                <p>Pozisyonlama, ögeleri sayfada kesin konumlara yerleştirmek için kullanılır.</p>
+
+                <h4>Static (Varsayılan)</h4>
+                <pre><code>.element {
+  position: static;          <span class="comment">/* Dokuman akışında normal */</span>
+}</code></pre>
+
+                <h4>Relative</h4>
+                <pre><code>.element {
+  position: relative;        <span class="comment">/* Normal konumdan kaydır */</span>
+  top: 10px;
+  left: 20px;
+}</code></pre>
+
+                <h4>Absolute</h4>
+                <pre><code>.container {
+  position: relative;        <span class="comment">/* Referans noktası */</span>
+}
+
+.element {
+  position: absolute;        <span class="comment">/* Konteynerden bağımsız */</span>
+  top: 50px;
+  left: 100px;
+  width: 200px;
+}</code></pre>
+
+                <h4>Fixed</h4>
+                <pre><code>.sticky-header {
+  position: fixed;           <span class="comment">/* Pencereye göre sabit */</span>
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;             <span class="comment">/* Ön plana getir */</span>
+}</code></pre>
+
+                <h4>Sticky</h4>
+                <pre><code>.sticky-sidebar {
+  position: sticky;          <span class="comment">/* Kaydırıldığında yapışır */</span>
+  top: 20px;
+}</code></pre>
+
+                <h3 id="modul4-4">Pseudo-Class ve Pseudo-Element</h3>
+
+                <h4>Pseudo-Class (:)</h4>
+                <pre><code>a:hover {
+  color: #10b981;            <span class="comment">/* Fare üzerinde */</span>
+}
+
+a:active {
+  color: #6366f1;            <span class="comment">/* Tıklandığında */</span>
+}
+
+input:focus {
+  border-color: #10b981;     <span class="comment">/* Odak aldığında */</span>
+}
+
+li:first-child {
+  font-weight: bold;         <span class="comment">/* İlk öğe */</span>
+}
+
+li:last-child {
+  border-bottom: none;       <span class="comment">/* Son öğe */</span>
+}
+
+li:nth-child(2n) {
+  background: #f3f4f6;       <span class="comment">/* Çift satırları */</span>
+}</code></pre>
+
+                <h4>Pseudo-Element (::)</h4>
+                <pre><code>p::first-letter {
+  font-size: 2em;            <span class="comment">/* İlk harfi büyüt */</span>
+}
+
+p::first-line {
+  font-weight: bold;         <span class="comment">/* İlk satırı kalın */</span>
+}
+
+::before {
+  content: "▶ ";             <span class="comment">/* Önüne içerik ekle */</span>
+}
+
+::after {
+  content: " ★";             <span class="comment">/* Sonuna içerik ekle */</span>
+}
+
+::selection {
+  background: #6366f1;       <span class="comment">/* Seçilen metin */</span>
+  color: white;
+}</code></pre>
+
+                <h3 id="modul4-5">CSS Değişkenleri (Custom Properties)</h3>
+                <p>CSS değişkenleri, renk, boyut gibi değerleri merkezi olarak yönetmeyi sağlar.</p>
+
+                <pre><code>:root {
+  --primary: #6366f1;
+  --secondary: #10b981;
+  --spacing: 1rem;
+  --border-radius: 8px;
+}
+
+body {
+  --dark-bg: #1f2937;
+  --dark-text: #f3f4f6;
+}
+
+.button {
+  background: var(--primary);
+  padding: var(--spacing) calc(var(--spacing) * 2);
+  border-radius: var(--border-radius);
+}
+
+.button:hover {
+  background: var(--secondary);
+}</code></pre>
+
+                <div class="tip-box">
+                    <strong>💡 Designer'lar İçin İpucu:</strong>
+                    CSS değişkenleri tema değiştirmeyi (light/dark mode) çok kolay hale getirir. :root'ta ana renkleri tanımladıktan sonra, body'de dark-mode sınıfıyla yeni değerler atanabilir.
+                </div>
+
+                <h3 id="modul4-6">Transition ve Animasyonlar</h3>
+
+                <h4>Transition - Yumuşak Değişim</h4>
+                <pre><code>.button {
+  background: #6366f1;
+  transition: background 0.3s ease-in-out;
+}
+
+.button:hover {
+  background: #10b981;
+}
+
+<span class="comment">/* Tüm özellikleri değiştir */</span>
+.box {
+  transition: all 0.5s ease;
+}</code></pre>
+
+                <h4>Timing Functions</h4>
+                <pre><code>.element {
+  transition: all 0.3s linear;          <span class="comment">/* Sabit hız */</span>
+  transition: all 0.3s ease;            <span class="comment">/* Yavaş-hızlı-yavaş */</span>
+  transition: all 0.3s ease-in;         <span class="comment">/* Yavaş başla */</span>
+  transition: all 0.3s ease-out;        <span class="comment">/* Yavaş bitir */</span>
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}</code></pre>
+
+                <h4>Animasyonlar</h4>
+                <pre><code>@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.element {
+  animation: slide-in 0.5s ease-out forwards;
+}
+
+<span class="comment">/* Sonsuz döngü */</span>
+.spinner {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}</code></pre>
+
+                <p><strong>Animation Özellikleri:</strong></p>
+                <ul>
+                    <li><code>animation-name</code> - Animasyonun adı</li>
+                    <li><code>animation-duration</code> - Kaç saniye sürer</li>
+                    <li><code>animation-timing-function</code> - Hız fonksiyonu</li>
+                    <li><code>animation-delay</code> - Başlamadan önce gecikme</li>
+                    <li><code>animation-iteration-count</code> - Kaç kez tekrarlanır</li>
+                    <li><code>animation-direction</code> - Yön (normal, reverse, alternate)</li>
+                </ul>
+
+                <div class="practice-box">
+                    <strong>🎯 Pratik Alıştırma:</strong>
+                    Interaktif bir buton tasarımı yapın:
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Hover'da renk değişikliği (transition)</li>
+                        <li>Arka planda yumuşak animasyon</li>
+                        <li>Aktif durumda scale animasyonu</li>
+                        <li>CSS değişkenleri kullanın</li>
+                    </ul>
+                </div>
+
+                <div class="resources">
+                    <h4>Kaynaklar</h4>
+                    <ul>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout" target="_blank">MDN - Flexbox</a></li>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout" target="_blank">MDN - CSS Grid</a></li>
+                        <li><a href="https://cubic-bezier.com/" target="_blank">Cubic Bezier Editörü</a></li>
+                        <li><a href="https://web.dev/learn/css/" target="_blank">web.dev - CSS Öğrenin</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- MODÜL 5: RESPONSIVE DESIGN -->
+            <section id="modul5">
+                <h2>MODÜL 5: Responsive Design</h2>
+                <p>Responsive tasarım, web sitelerinin tüm cihazlarda (mobil, tablet, masaüstü) güzel görünmesini sağlar. Modern web tasarımında bu, artık isteğe bağlı değil gereklidir.</p>
+
+                <h3 id="modul5-1">Responsive Design Nedir?</h3>
+                <p>Responsive tasarım, sayfanın ekran boyutuna göre uyum sağlamasıdır. Flex, Grid ve media queries kullanarak bunu başarırız.</p>
+
+                <div class="tip-box">
+                    <strong>💡 Designer'lar İçin İpucu:</strong>
+                    "Mobile First" yaklaşımını kullanın. Önce mobil tasarımı yapın, sonra daha geniş ekranlar için iyileştirme yapın. Bu, temiz ve basit kod yazmanıza yardımcı olur.
+                </div>
+
+                <h3 id="modul5-2">Media Queries</h3>
+                <p>Media queries, farklı ekran boyutlarına göre farklı CSS kuralları uygulamanızı sağlar.</p>
+
+                <pre><code><span class="comment">/* Tablet ve daha geniş */</span>
+@media (min-width: 768px) {
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+<span class="comment">/* Masaüstü */</span>
+@media (min-width: 1024px) {
+  .container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+<span class="comment">/* Sadece mobil */</span>
+@media (max-width: 767px) {
+  h1 {
+    font-size: 24px;
+  }
+}
+
+<span class="comment">/* Portait ve landscape */</span>
+@media (orientation: landscape) {
+  body {
+    margin: 10px;
+  }
+}</code></pre>
+
+                <p><strong>Yaygın Breakpoint'ler:</strong></p>
+                <ul>
+                    <li>Mobil: 320px - 480px</li>
+                    <li>Tablet: 481px - 768px</li>
+                    <li>Küçük Masaüstü: 769px - 1024px</li>
+                    <li>Masaüstü: 1025px ve üstü</li>
+                </ul>
+
+                <h3 id="modul5-3">Görüntü Alanı ve Birimleri</h3>
+
+                <h4>Viewport Meta Etiketi</h4>
+                <pre><code>&lt;<span class="tag">meta</span> <span class="attr">name</span>=<span class="value">"viewport"</span>
+       <span class="attr">content</span>=<span class="value">"width=device-width, initial-scale=1.0"</span>&gt;</code></pre>
+
+                <h4>Relatif Birimler</h4>
+                <pre><code>body {
+  font-size: 16px;           <span class="comment">/* Temel boyut */</span>
+}
+
+h1 {
+  font-size: 2em;            <span class="comment">/* 32px (16 * 2) */</span>
+}
+
+h2 {
+  font-size: 1.5rem;         <span class="comment">/* 24px (her zaman 16'ya göre) */</span>
+}
+
+p {
+  font-size: 1rem;           <span class="comment">/* 16px */</span>
+  line-height: 1.5;          <span class="comment">/* 24px */</span>
+}
+
+<span class="comment">/* Viewport Birimleri */</span>
+.full-screen {
+  width: 100vw;              <span class="comment">/* Viewport genişliği */</span>
+  height: 100vh;             <span class="comment">/* Viewport yüksekliği */</span>
+}
+
+.responsive-box {
+  width: 80vw;               <span class="comment">/* Viewport'un %80'i */</span>
+  height: 50vh;              <span class="comment">/* Viewport'un %50'si */</span>
+}</code></pre>
+
+                <p><strong>Birim Karşılaştırması:</strong></p>
+                <ul>
+                    <li><code>px</code> - Sabit piksel</li>
+                    <li><code>em</code> - Ana elemanın yazı boyutuna göre</li>
+                    <li><code>rem</code> - Root (html) yazı boyutuna göre</li>
+                    <li><code>%</code> - Ana elemanın yüzdesine göre</li>
+                    <li><code>vw/vh</code> - Viewport'un yüzdesine göre</li>
+                </ul>
+
+                <h3 id="modul5-4">Responsive İçerik Stratejileri</h3>
+
+                <h4>Responsive Grid</h4>
+                <pre><code>.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+<span class="comment">/* Veya açık breakpoint'ler */</span>
+@media (max-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+}</code></pre>
+
+                <h4>Responsive Resimler</h4>
+                <pre><code><span class="comment">/* Otomatik ölçek */</span>
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+<span class="comment">/* Konteyner sorgusuyla */</span>
+@container (max-width: 400px) {
+  img {
+    width: 100%;
+  }
+}
+
+&lt;picture&gt;
+  &lt;source media="(min-width: 1024px)" srcset="desktop.jpg"&gt;
+  &lt;source media="(min-width: 768px)" srcset="tablet.jpg"&gt;
+  &lt;img src="mobile.jpg" alt="Responsive image"&gt;
+&lt;/picture&gt;</code></pre>
+
+                <h4>Responsive Tipografi</h4>
+                <pre><code>h1 {
+  font-size: clamp(24px, 5vw, 48px);
+  <span class="comment">/* Min: 24px, Tercih: 5vw, Max: 48px */</span>
+}
+
+p {
+  font-size: clamp(14px, 2vw, 18px);
+}</code></pre>
+
+                <div class="practice-box">
+                    <strong>🎯 Pratik Alıştırma:</strong>
+                    Responsive bir sayfa tasarımı yapın:
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Mobil (1 sütun), tablet (2 sütun), masaüstü (3 sütun)</li>
+                        <li>Responsive başlık ve metin</li>
+                        <li>Flexible resimler</li>
+                        <li>Mobil menü (hamburger) tasarımı (CSS ile)</li>
+                    </ul>
+                </div>
+
+                <div class="resources">
+                    <h4>Kaynaklar</h4>
+                    <ul>
+                        <li><a href="https://web.dev/responsive-web-design-basics/" target="_blank">web.dev - Responsive Web Tasarımı</a></li>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries" target="_blank">MDN - Media Queries</a></li>
+                        <li><a href="https://www.typescale.com/" target="_blank">Type Scale - Responsive Tipografi</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- MODÜL 6: İLERİ SEVİYE -->
+            <section id="modul6">
+                <h2>MODÜL 6: İleri Seviye Konular</h2>
+                <p>Web tasarımında ustalaşmak için bilmeniz gereken ileri konular: CSS metodolojileri, dark mode, modern CSS özellikleri ve daha fazlası.</p>
+
+                <h3 id="modul6-1">CSS Metodolojileri - BEM</h3>
+                <p>BEM (Block Element Modifier), CSS sınıflandırma sisteminin bir standardıdır. Büyük projelerde kodun okunabilirliğini ve yeniden kullanılabilirliğini arttırır.</p>
+
+                <pre><code><span class="comment">/* BEM Yapısı: Block__Element--Modifier */</span>
+
+<span class="comment">/* Block: Bağımsız bileşen */</span>
+.button { }
+
+<span class="comment">/* Element: Block'ın parçası */</span>
+.button__icon { }
+.button__text { }
+
+<span class="comment">/* Modifier: Değişken durum */</span>
+.button--primary { }
+.button--large { }
+.button__icon--small { }
+
+<span class="comment">/* HTML Örneği */</span>
+&lt;<span class="tag">button</span> <span class="attr">class</span>=<span class="value">"button button--primary"</span>&gt;
+  &lt;<span class="tag">span</span> <span class="attr">class</span>=<span class="value">"button__icon button__icon--small"</span>&gt;🔍&lt;/<span class="tag">span</span>&gt;
+  &lt;<span class="tag">span</span> <span class="attr">class</span>=<span class="value">"button__text"</span>&gt;Ara&lt;/<span class="tag">span</span>&gt;
+&lt;/<span class="tag">button</span>&gt;</code></pre>
+
+                <h3 id="modul6-2">Dark Mode Implementasyonu</h3>
+                <p>Dark mode, modern tasarımda standart hale geldi. CSS değişkenleriyle kolayca uygulanabilir.</p>
+
+                <pre><code>:root {
+  <span class="comment">/* Light Mode (varsayılan) */</span>
+  --bg-primary: #ffffff;
+  --text-primary: #111827;
+  --bg-secondary: #f3f4f6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    <span class="comment">/* Dark Mode */</span>
+    --bg-primary: #1f2937;
+    --text-primary: #f3f4f6;
+    --bg-secondary: #111827;
+  }
+}
+
+<span class="comment">/* Veya manuel toggle ile */</span>
+body.dark-mode {
+  --bg-primary: #1f2937;
+  --text-primary: #f3f4f6;
+  --bg-secondary: #111827;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.3s, color 0.3s;
+}</code></pre>
+
+                <h4>JavaScript ile Dark Mode Toggle</h4>
+                <pre><code>const themeToggle = document.getElementById('themeToggle');
+
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  safeStorage('set', 'theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light'
+  );
+});
+
+<span class="comment">/* Sayfa yüklendiğinde tema yükleme */</span>
+if (safeStorage('get', 'theme') === 'dark') {
+  document.body.classList.add('dark-mode');
+}</code></pre>
+
+                <h3 id="modul6-3">Modern CSS Özellikleri</h3>
+
+                <h4>clamp() - Dinamik Boyutlandırma</h4>
+                <pre><code>.responsive-text {
+  font-size: clamp(16px, 2.5vw, 32px);
+  <span class="comment">/* Minimum 16px, tercih 2.5vw, maksimum 32px */</span>
+}
+
+.flexible-padding {
+  padding: clamp(1rem, 5%, 3rem);
+}</code></pre>
+
+                <h4>has() Seçici - Ebeveyn Seçim</h4>
+                <pre><code><span class="comment">/* İçinde input olan label'ı seç */</span>
+label:has(input:checked) {
+  background: #10b981;
+  color: white;
+}
+
+<span class="comment">/* İçinde hover'da olan kartı seç */</span>
+article:has(:hover) {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}</code></pre>
+
+                <h4>Container Queries - Konteyner Responsive</h4>
+                <pre><code>.sidebar {
+  container-type: inline-size;
+}
+
+<span class="comment">/* Konteyner 400px'ten küçük olduğunda */</span>
+@container (max-width: 400px) {
+  .card {
+    flex-direction: column;
+  }
+}</code></pre>
+
+                <h4>Aspect Ratio</h4>
+                <pre><code>.video-container {
+  aspect-ratio: 16 / 9;
+  <span class="comment">/* Genişlik nasıl ayarlanırsa, yükseklik otomatik */</span>
+}
+
+.square {
+  aspect-ratio: 1;
+}</code></pre>
+
+                <div class="tip-box">
+                    <strong>💡 Designer'lar İçin İpucu:</strong>
+                    Modern CSS'in bu özellikleri, tasarımlarınızı daha esnek ve bakım yapması daha kolay hale getirir. Ancak tarayıcı desteğini her zaman kontrol edin!
+                </div>
+
+                <h3>Erişilebilirlik Derinlemesine</h3>
+                <p>Erişilebilir tasarım, herkes tarafından kullanılabilen tasarımıdır. CSS ile yapabilecekleriniz:</p>
+
+                <pre><code><span class="comment">/* Keyboard navigasyonu görünür kıl */</span>
+:focus-visible {
+  outline: 3px solid #6366f1;
+  outline-offset: 2px;
+}
+
+<span class="comment">/* Hareket duyarlılığı */</span>
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+<span class="comment">/* Kontrast iyileştirme */</span>
+@media (prefers-contrast: more) {
+  body {
+    --text-color: #000000;
+    --bg-color: #ffffff;
+  }
+}
+
+<span class="comment">/* Skip Link */</span>
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
+}</code></pre>
+
+                <div class="practice-box">
+                    <strong>🎯 Pratik Alıştırma:</strong>
+                    Tam erişilebilir bir bileşen tasarımı yapın:
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Tab navigasyonu ile çalışan form</li>
+                        <li>Dark mode desteği</li>
+                        <li>Kısaltılmış animasyonlar</li>
+                        <li>Yüksek kontrast desteği</li>
+                    </ul>
+                </div>
+
+                <div class="resources">
+                    <h4>Kaynaklar</h4>
+                    <ul>
+                        <li><a href="https://getbem.com/" target="_blank">BEM - Resmi Sitesi</a></li>
+                        <li><a href="https://web.dev/articles/has/" target="_blank">web.dev - has() Seçici</a></li>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/container_queries" target="_blank">MDN - Container Queries</a></li>
+                        <li><a href="https://www.w3.org/WAI/fundamentals/" target="_blank">W3C WAI - Erişilebilirlik Temelleri</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- MODÜL 7: PROJELER -->
+            <section id="modul7">
+                <h2>MODÜL 7: Projeler ve Uygulamalar</h2>
+                <p>Öğrendiğiniz tüm konseptleri uygulamak için 10 ana proje. Her projeyle sınıfınız ilerledikçe zorluk artar.</p>
+
+                <h3 id="modul7-1">10 Ana Proje</h3>
+
+                <h4>1. Kişisel Portfolio Sayfası</h4>
+                <p><strong>Zorluk:</strong> Başlangıç</p>
+                <p>HTML: Semantik yapı, linkler, resimler. CSS: Box model, temel layout. Hedef: Basit, temiz bir tasarımcı portfolyosu.</p>
+
+                <h4>2. Ürün Katalog Sayfası</h4>
+                <p><strong>Zorluk:</strong> Başlangıç</p>
+                <p>HTML: Tabloları ve formları. CSS: Grid, Flexbox. Hedef: Ürünleri kartlarda göstermek, filtreleme seçenekleri.</p>
+
+                <h4>3. Blog Yazısı Sayfası</h4>
+                <p><strong>Zorluk:</strong> Orta</p>
+                <p>HTML: Semantik etiketler, resimler, yorum formu. CSS: Tipografi, responsive tasarım, dark mode.</p>
+
+                <h4>4. E-Ticaret Ana Sayfası</h4>
+                <p><strong>Zorluk:</strong> Orta</p>
+                <p>HTML: Biçimli formlar, fotoğal galerisi. CSS: Kompleks grid, animasyonlar, responsiveness.</p>
+
+                <h4>5. SaaS Hizmet Sayfası</h4>
+                <p><strong>Zorluk:</strong> Orta</p>
+                <p>HTML: Çeşitli bölümler, CTA düğmeleri. CSS: Gradients, box-shadows, modern tasarım.</p>
+
+                <h4>6. İnteraktif Dashboard</h4>
+                <p><strong>Zorluk:</strong> İleri</p>
+                <p>HTML: Tablolar, göstergeler. CSS: Grid, CSS değişkenleri, dark mode, animasyonlar.</p>
+
+                <h4>7. Canlı Chat Arayüzü</h4>
+                <p><strong>Zorluk:</strong> İleri</p>
+                <p>HTML: İletiler, input alanı. CSS: Flexbox, scroll-behaviors, animasyonlar, responsive.</p>
+
+                <h4>8. Medya Galerisi</h4>
+                <p><strong>Zorluk:</strong> İleri</p>
+                <p>HTML: Video, ses, resimler. CSS: Container queries, aspect-ratio, modal tasarımı.</p>
+
+                <h4>9. Kurulum Sihirbazı</h4>
+                <p><strong>Zorluk:</strong> İleri</p>
+                <p>HTML: Multi-step form. CSS: Progress bar, step indicator, transitions.</p>
+
+                <h4>10. Tam Sayfa Uygulaması</h4>
+                <p><strong>Zorluk:</strong> Uzman</p>
+                <p>HTML: Tüm etiketler ve yapılar. CSS: Tüm konular, optimizasyon, erişilebilirlik.</p>
+
+                <div class="practice-box">
+                    <strong>🎯 Başlamak İçin:</strong>
+                    <ol style="margin-top: 0.5rem;">
+                        <li>Tasarımı Figma'da veya kâğıtta çizin</li>
+                        <li>HTML yapısını oluşturun (CSS olmadan)</li>
+                        <li>Mobile-first CSS yazın</li>
+                        <li>Tablet ve masaüstü için responsive hale getirin</li>
+                        <li>Animasyonlar ve etkileşimler ekleyin</li>
+                        <li>Erişilebilirliği kontrol edin</li>
+                    </ol>
+                </div>
+
+                <h3>Sonraki Adımlar</h3>
+                <p>Bu müfredatı tamamladıktan sonra, gözünüzü şu alanlara çevirebilirsiniz:</p>
+                <ul>
+                    <li><strong>JavaScript:</strong> Interaktif özellikleri eklemek için</li>
+                    <li><strong>CSS Preprocessor'lar:</strong> SCSS/SASS ile CSS yazımını iyileştirmek</li>
+                    <li><strong>CSS Frameworks:</strong> Tailwind CSS, Bootstrap gibi araçlar</li>
+                    <li><strong>Tasarım Sistemleri:</strong> Ölçeklenebilir bileşen kütüphaneleri</li>
+                    <li><strong>Web Performance:</strong> Sayfaları hızlandırmak</li>
+                </ul>
+
+                <div class="resources">
+                    <h4>Toplam Kaynaklar</h4>
+                    <ul>
+                        <li><a href="https://developer.mozilla.org/tr/" target="_blank">MDN - Türkçe</a></li>
+                        <li><a href="https://web.dev/" target="_blank">web.dev - Google'ın Web Kılavuzu</a></li>
+                        <li><a href="https://css-tricks.com/" target="_blank">CSS-Tricks - Güncel Yazılar</a></li>
+                        <li><a href="https://www.frontendmentor.io/" target="_blank">Frontend Mentor - Pratik Projeler</a></li>
+                        <li><a href="https://codepen.io/" target="_blank">CodePen - Kod Paylaşım Platformu</a></li>
+                    </ul>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%); padding: 2rem; border-radius: 8px; margin-top: 2rem; text-align: center;">
+                    <h3 style="color: var(--primary); margin-top: 0;">Tebrikler!</h3>
+                    <p style="font-size: 1.1rem;">Bu müfredatı tamamladınız. Artık HTML ve CSS konusunda tasarımcılar için gerekli bilgilere sahipsiniz.</p>
+                    <p style="font-size: 0.95rem; opacity: 0.8;">Unutmayın: Tasarımcılara yönelik bu eğitim, web geliştirmenin temellerini anlamalarına yardımcı olmak için hazırlanmıştır. Pratik yapmaya devam edin ve güncel kalın!</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        // Dark Mode Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // localStorage'dan tema yükle
+        if (safeStorage('get', 'theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️ Açık Tema';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            themeToggle.textContent = isDark ? '☀️ Açık Tema' : '🌙 Koyu Tema';
+            safeStorage('set', 'theme', isDark ? 'dark' : 'light');
+        });
+
+        // Sidebar Navigation
+        const sidebarLinks = document.querySelectorAll('.sidebar a');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebarLinks.forEach(l => l.parentElement.classList.remove('active'));
+                link.parentElement.classList.add('active');
+            });
+        });
+
+        // Smooth Scroll (Modern tarayıcılarda CSS tarafından yapılıyor)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

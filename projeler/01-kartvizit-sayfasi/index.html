@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dijital Kartvizit Sayfası - Profesyonel İletişim Kartı">
+    <title>Dijital Kartvizit - Ahmet Yılmaz</title>
+
+    <!-- Google Fonts - Modern ve okunabilir yazı tipleri -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ================================================
+           1. ROOT VE TEMEL DEĞİŞKENLER
+           CSS Custom Properties ile dinamik tema yönetimi
+           ================================================ */
+        :root {
+            --renkBg: #ffffff;
+            --renkMetin: #1a1a1a;
+            --renkKart: #f8f9fa;
+            --renkVurgu: #6366f1;
+            --renkVurgu2: #ec4899;
+            --renkGolge: rgba(0, 0, 0, 0.1);
+            --renkGolgeDerin: rgba(0, 0, 0, 0.2);
+            --aralık: 1.5;
+        }
+
+        /* Açık tema (light mode) */
+        [data-tema="acik"] {
+            --renkBg: #ffffff;
+            --renkMetin: #1a1a1a;
+            --renkKart: #f8f9fa;
+            --renkGolge: rgba(0, 0, 0, 0.1);
+            --renkGolgeDerin: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Koyu tema (dark mode) */
+        [data-tema="koyu"] {
+            --renkBg: #0f172a;
+            --renkMetin: #e2e8f0;
+            --renkKart: #1e293b;
+            --renkGolge: rgba(255, 255, 255, 0.1);
+            --renkGolgeDerin: rgba(255, 255, 255, 0.15);
+        }
+
+        /* ================================================
+           2. GENEL STILLER VE RESET
+           Tüm sayfaya uygulanacak temel kurallar
+           ================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--renkBg);
+            color: var(--renkMetin);
+            line-height: var(--aralık);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            /* Gradyan arka plan - çok şık görünüm! */
+            background: linear-gradient(135deg, var(--renkBg) 0%, var(--renkKart) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* ================================================
+           3. TEMA TOGGLE BUTONU
+           Kullanıcıya açık/koyu tema seçme imkanı veriyor
+           ================================================ */
+        .tema-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--renkVurgu);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px var(--renkGolgeDerin);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+            /* Erişilebilirlik - buton odak durumunda net görülsün */
+            outline: none;
+        }
+
+        .tema-toggle:hover {
+            transform: scale(1.1) rotateZ(20deg);
+            box-shadow: 0 6px 20px var(--renkVurgu);
+        }
+
+        .tema-toggle:focus {
+            outline: 3px solid var(--renkVurgu2);
+            outline-offset: 3px;
+        }
+
+        /* ================================================
+           4. ANA KONTEYNER
+           Kart tasarımı için dış yapı
+           ================================================ */
+        .konteyner {
+            width: 100%;
+            max-width: 450px;
+            background-color: var(--renkKart);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px var(--renkGolgeDerin);
+            transition: all 0.4s ease;
+            /* Semantik olarak div yerine article kullanabiliriz */
+        }
+
+        /* Tablet ve masaüstü - kart biraz daha büyüsün */
+        @media (min-width: 768px) {
+            .konteyner {
+                max-width: 520px;
+                padding: 50px;
+            }
+        }
+
+        /* ================================================
+           5. AVATAR - CSS İLE OLUŞTURULAN PROFİL FOTOĞRAFI
+           İkon veya simge kullanmadan CSS gradyan
+           ================================================ */
+        .avatar {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: white;
+            box-shadow: 0 10px 30px var(--renkGolgeDerin);
+            animation: bobbing 3s ease-in-out infinite;
+            /* Erişilebilirlik */
+            role: "img";
+            aria-label: "Profil avatarı";
+        }
+
+        /* Avatar yukarı aşağı hafif hareketi - heyecan katıyor! */
+        @keyframes bobbing {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* ================================================
+           6. KİŞİSEL BİLGİLER SEKSİYONU
+           İsim, unvan, biyografi
+           ================================================ */
+        .bilgi {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .isim {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            /* Degrade renk - çok modern görünüyor! */
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .unvan {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--renkVurgu);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .biyografi {
+            font-size: 14px;
+            color: var(--renkMetin);
+            opacity: 0.75;
+            line-height: 1.8;
+        }
+
+        /* ================================================
+           7. İLETİŞİM BİLGİLERİ
+           Email, telefon, konum bilgileri
+           ================================================ */
+        .iletisim {
+            background-color: var(--renkBg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid var(--renkGolge);
+            transition: border-color 0.3s ease;
+        }
+
+        .iletisim-baslik {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--renkVurgu);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .iletisim-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .iletisim-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* İletişim ögesine hover efekti - sağa doğru kaymak */
+        .iletisim-item:hover {
+            transform: translateX(8px);
+        }
+
+        /* İcon/emoji alanı */
+        .iletisim-ikon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 16px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        /* ================================================
+           8. SOSYAL MEDYA LİNKLERİ
+           Ikon linkler - CSS ile oluşturulmuş tasarım
+           ================================================ */
+        .sosyal {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .sosyal-link {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            /* Erişilebilirlik - odak durumunda belirgin ol */
+            outline: none;
+        }
+
+        .sosyal-link:hover {
+            transform: translateY(-5px) scale(1.15);
+            box-shadow: 0 8px 20px var(--renkGolgeDerin);
+        }
+
+        .sosyal-link:focus {
+            outline: 3px solid var(--renkVurgu2);
+            outline-offset: 3px;
+        }
+
+        /* ================================================
+           9. BUTONLAR
+           "Özgeçmiş İndir" ve "Mesaj Gönder" butonları
+           ================================================ */
+        .buton-grup {
+            display: flex;
+            gap: 12px;
+            flex-direction: column;
+        }
+
+        .buton {
+            flex: 1;
+            padding: 14px 24px;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            /* Erişilebilirlik */
+            outline: none;
+        }
+
+        /* Birincil buton - dolu gradyan */
+        .buton-birincil {
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            color: white;
+        }
+
+        .buton-birincil:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px var(--renkVurgu);
+        }
+
+        .buton-birincil:focus {
+            outline: 3px solid var(--renkVurgu2);
+            outline-offset: 2px;
+        }
+
+        /* İkincil buton - sadece kenar */
+        .buton-ikincil {
+            background-color: transparent;
+            color: var(--renkVurgu);
+            border-color: var(--renkVurgu);
+        }
+
+        .buton-ikincil:hover {
+            background-color: var(--renkVurgu);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .buton-ikincil:focus {
+            outline: 3px solid var(--renkVurgu);
+            outline-offset: 2px;
+        }
+
+        /* ================================================
+           10. FOOTER
+           Copyright ve telif hakkı bilgisi
+           ================================================ */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: var(--renkMetin);
+            opacity: 0.6;
+            padding-top: 20px;
+            border-top: 1px solid var(--renkGolge);
+        }
+
+        /* ================================================
+           11. MOBİL UYUMLULUĞU (RESPONSİV)
+           Küçük ekranlar için ayarlamalar
+           ================================================ */
+        @media (max-width: 480px) {
+            .konteyner {
+                padding: 30px;
+                border-radius: 25px;
+            }
+
+            .isim {
+                font-size: 26px;
+            }
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 50px;
+            }
+
+            .tema-toggle {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+
+            .buton-grup {
+                gap: 10px;
+            }
+
+            .buton {
+                padding: 12px 20px;
+                font-size: 13px;
+            }
+        }
+
+        /* ================================================
+           12. ERIŞILEBILIRLIK
+           Odaklanma göstergeleri ve kontrast
+           ================================================ */
+        /* Klavye navigasyonu için odak göstergesi */
+        *:focus-visible {
+            outline: 3px solid var(--renkVurgu);
+            outline-offset: 2px;
+        }
+
+        /* Azaltılmış hareket tercihine saygı göster */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body data-tema="acik">
+<a href="../../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <!-- Tema Toggle Butonu - Kullanıcının açık/koyu modu seçmesine yardımcı oluyor -->
+    <button class="tema-toggle" id="temaToggle" aria-label="Açık/Koyu temayı değiştir" title="Temayı değiştir">
+        🌙
+    </button>
+
+    <!-- Ana Kart Konteyner -->
+    <article class="konteyner">
+        <!-- Profil Avatarı - CSS ile oluşturulmuş, animasyonlu! -->
+        <div class="avatar" aria-label="Profil avatarı">👨‍💻</div>
+
+        <!-- Kişisel Bilgiler Bölümü -->
+        <section class="bilgi">
+            <h1 class="isim">Ahmet Yılmaz</h1>
+            <p class="unvan">Web Tasarımcı & Geliştirici</p>
+            <p class="biyografi">
+                Modern web teknolojilerine tutkun, kullanıcı deneyimine odaklı projeler geliştiren bir uzman. HTML, CSS ve JavaScript ile İnternet'in gücünü yakalamaktan sevgi duyarım.
+            </p>
+        </section>
+
+        <!-- İletişim Bilgileri - Erişilebilir ve düzenli layout -->
+        <section class="iletisim">
+            <h2 class="iletisim-baslik">İletişim Bilgileri</h2>
+            <div class="iletisim-item">
+                <span class="iletisim-ikon">✉️</span>
+                <a href="mailto:ahmet@example.com">ahmet@example.com</a>
+            </div>
+            <div class="iletisim-item">
+                <span class="iletisim-ikon">📱</span>
+                <a href="tel:+905551234567">+90 555 123 45 67</a>
+            </div>
+            <div class="iletisim-item">
+                <span class="iletisim-ikon">📍</span>
+                <address>İstanbul, Türkiye</address>
+            </div>
+        </section>
+
+        <!-- Sosyal Medya Linkleri - Hover efektli ikonlar -->
+        <nav class="sosyal" aria-label="Sosyal medya linkleri">
+            <a href="#" class="sosyal-link" title="LinkedIn" aria-label="LinkedIn">🔗</a>
+            <a href="#" class="sosyal-link" title="Twitter" aria-label="Twitter">𝕏</a>
+            <a href="#" class="sosyal-link" title="GitHub" aria-label="GitHub">🐙</a>
+            <a href="#" class="sosyal-link" title="Instagram" aria-label="Instagram">📷</a>
+        </nav>
+
+        <!-- Aksiyon Butonları - Gradyan ve hover efektleri -->
+        <div class="buton-grup">
+            <button class="buton buton-birincil" onclick="alert('Özgeçmiş indiriliyor...')">
+                📥 Özgeçmişi İndir
+            </button>
+            <button class="buton buton-ikincil" onclick="alert('Mesaj formu açılıyor...')">
+                ✉️ Mesaj Gönder
+            </button>
+        </div>
+
+        <!-- Footer - Telif hakkı bilgisi -->
+        <footer>
+            <p>&copy; 2024 Ahmet Yılmaz. Tüm hakları saklıdır.</p>
+        </footer>
+    </article>
+
+    <!-- JavaScript - Tema Toggle Fonksiyonalitesi -->
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        // Tema toggle butonunu seç
+        const temaToggle = document.getElementById('temaToggle');
+        const html = document.documentElement;
+
+        // Sayfa yüklendiğinde önceden kaydedilmiş temayı kontrol et
+        const kaydedilmisTema = safeStorage('get', 'tema') || 'acik';
+        html.setAttribute('data-tema', kaydedilmisTema);
+        temaToggle.textContent = kaydedilmisTema === 'acik' ? '🌙' : '☀️';
+
+        // Buton tıklandığında temayı değiştir
+        temaToggle.addEventListener('click', () => {
+            const mevcutTema = html.getAttribute('data-tema');
+            const yeniTema = mevcutTema === 'acik' ? 'koyu' : 'acik';
+
+            // Temayı güncelle
+            html.setAttribute('data-tema', yeniTema);
+            safeStorage('set', 'tema', yeniTema);
+
+            // Buton ikonunu güncelle
+            temaToggle.textContent = yeniTema === 'acik' ? '🌙' : '☀️';
+        });
+
+        // Sistem teması tercihini kontrol et (gelişmiş özellik!)
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // Kullanıcı sisteminde koyu temayı tercih ediyorsa
+            if (!safeStorage('get', 'tema')) {
+                html.setAttribute('data-tema', 'koyu');
+                temaToggle.textContent = '☀️';
+            }
+        }
+    </script>
+</body>
+</html>

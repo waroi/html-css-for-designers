@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ders 3: CSS Temelleri - HTML/CSS Eğitimi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light-bg: #f8f9fa;
+            --light-text: #1f2937;
+            --light-border: #e5e7eb;
+            --dark-bg: #1f2937;
+            --dark-text: #f3f4f6;
+            --dark-border: #374151;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--light-text);
+            background-color: var(--light-bg);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .lesson-header {
+            background: white;
+            border-bottom: 3px solid var(--primary);
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+
+        body.dark-mode .lesson-header {
+            background: #2d3748;
+            border-bottom-color: #8b5cf6;
+        }
+
+        .lesson-info {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .info-badge {
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .info-badge.level {
+            background: var(--success);
+        }
+
+        .info-badge.time {
+            background: var(--warning);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .sidebar {
+            background: #2d3748;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .sidebar h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+        }
+
+        .sidebar nav li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            padding: 8px 0;
+            display: block;
+            border-left: 3px solid transparent;
+            padding-left: 10px;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .sidebar nav a {
+            color: var(--dark-text);
+        }
+
+        .sidebar nav a:hover,
+        .sidebar nav a.active {
+            border-left-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .content {
+            background: #2d3748;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .content h2 {
+            color: var(--primary);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 28px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+        }
+
+        .content h3 {
+            color: var(--primary);
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 22px;
+        }
+
+        .content p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        body.dark-mode code {
+            background: #374151;
+            color: #fca5a5;
+        }
+
+        .code-example {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        body.dark-mode .code-example {
+            background: #1f2937;
+            border-left-color: #8b5cf6;
+        }
+
+        .code-example h4 {
+            grid-column: 1 / -1;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .preview {
+            border: 2px solid var(--light-border);
+            padding: 20px;
+            border-radius: 8px;
+            background: white;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        body.dark-mode .preview {
+            background: #374151;
+            border-color: var(--dark-border);
+        }
+
+        .tip-box, .warning-box, .exercise-box {
+            margin: 20px 0;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .tip-box {
+            background: #dbeafe;
+            border-left-color: var(--primary);
+            color: #0c4a6e;
+        }
+
+        body.dark-mode .tip-box {
+            background: #1e3a8a;
+            color: #bfdbfe;
+        }
+
+        .tip-box strong {
+            color: var(--primary);
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left-color: var(--warning);
+            color: #92400e;
+        }
+
+        body.dark-mode .warning-box {
+            background: #7c2d12;
+            color: #fcd34d;
+        }
+
+        .exercise-box {
+            background: #dcfce7;
+            border-left-color: var(--success);
+            color: #15803d;
+        }
+
+        body.dark-mode .exercise-box {
+            background: #064e3b;
+            color: #bbf7d0;
+        }
+
+        .exercise-box strong {
+            color: var(--success);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-border);
+        }
+
+        body.dark-mode table th,
+        body.dark-mode table td {
+            border-bottom-color: var(--dark-border);
+        }
+
+        table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:hover {
+            background: var(--light-bg);
+        }
+
+        body.dark-mode table tr:hover {
+            background: #374151;
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid var(--light-border);
+        }
+
+        body.dark-mode .lesson-nav {
+            border-top-color: var(--dark-border);
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .nav-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .code-example {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-nav {
+                flex-direction: column;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* CSS Demo Boxes */
+        .box-model-demo {
+            background: #dbeafe;
+            border: 2px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        body.dark-mode .box-model-demo {
+            background: #1e3a8a;
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .color-box {
+            padding: 30px 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .selector-table {
+            background: var(--light-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        body.dark-mode .selector-table {
+            background: #1f2937;
+        }
+
+        .demo-element {
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<a href="index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Tüm Dersler</a>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div>
+                <h1>HTML/CSS Eğitim Platformu</h1>
+                <p>Ders 3: CSS Temelleri</p>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Ders Başlığı -->
+        <div class="lesson-header">
+            <div>
+                <h2>Ders 3: CSS Temelleri</h2>
+                <p>Web sayfalarınızı güzelleştirmeye başlayın!</p>
+                <div class="lesson-info">
+                    <span class="info-badge">Ders 3</span>
+                    <span class="info-badge level">Orta</span>
+                    <span class="info-badge time">⏱️ 75 dakika</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <h3>Ders İçeriği</h3>
+                <nav>
+                    <ul>
+                        <li><a href="#css-nedir" class="active">CSS Nedir?</a></li>
+                        <li><a href="#baglama">Bağlama Yöntemleri</a></li>
+                        <li><a href="#seciciler">Seçiciler</a></li>
+                        <li><a href="#renkler">Renkler</a></li>
+                        <li><a href="#tipografi">Tipografi</a></li>
+                        <li><a href="#boxmodel">Box Model</a></li>
+                        <li><a href="#display">Display</a></li>
+                        <li><a href="#alistirmalar">Alıştırmalar</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="content">
+                <!-- CSS Nedir? -->
+                <section id="css-nedir">
+                    <h2>CSS Nedir? 🎨</h2>
+                    <p>
+                        <strong>CSS (Cascading Style Sheets)</strong>, HTML sayfalarını stilize etmek ve tasarlamak için
+                        kullanılan dildir. HTML yapıyı sağlar, CSS ise görünümü sağlar.
+                    </p>
+
+                    <p>
+                        CSS'in "Cascading" kelimesi, stillerin aşağıdan yukarıya uygulanması anlamına gelir.
+                        Daha sonra yazılan kurallar, daha önce yazılan kuralları geçersiz kılabilir.
+                    </p>
+
+                    <div class="tip-box">
+                        <strong>💡 Designer İpucu:</strong> HTML içerik, CSS ise sunum!
+                        Bunları birbirinden ayrı tutmak çok önemlidir.
+                    </div>
+
+                    <h3>CSS Neden Önemli?</h3>
+                    <ul>
+                        <li><strong>Tasarım:</strong> Sayfanın görünümünü kontrol eder</li>
+                        <li><strong>Tutarlılık:</strong> Tüm sayfalara aynı stil uygular</li>
+                        <li><strong>Yönetim:</strong> Tek dosyada tüm stilleri toplar</li>
+                        <li><strong>Performans:</strong> Sayfaları hızlandırır</li>
+                        <li><strong>Responsive:</strong> Farklı cihazlara uyum sağlar</li>
+                    </ul>
+                </section>
+
+                <!-- Bağlama Yöntemleri -->
+                <section id="baglama">
+                    <h2>CSS Bağlama Yöntemleri 🔗</h2>
+                    <p>HTML'e CSS eklemek için 3 farklı yöntem vardır:</p>
+
+                    <h3>1. Dış CSS Dosyası (Önerilen)</h3>
+                    <div class="code-example">
+                        <h4>Dış CSS Bağlama</h4>
+                        <div class="code-block">
+&lt;!-- HTML Dosyasında --&gt;
+&lt;head&gt;
+  &lt;link rel="stylesheet" href="stil.css"&gt;
+&lt;/head&gt;
+
+/* stil.css dosyasında */
+body {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+h1 {
+  color: #6366f1;
+}
+                        </div>
+                        <div class="preview">
+                            <div style="text-align: center;">
+                                <p style="font-weight: 600; color: var(--primary);">✓ En İyi Pratik</p>
+                                <p style="font-size: 12px; margin-top: 10px;">Ayrı dosya, kolay yönetim</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>2. İç CSS (Style Etiketi)</h3>
+                    <div class="code-example">
+                        <h4>Style Etiketi Örneği</h4>
+                        <div class="code-block">
+&lt;head&gt;
+  &lt;style&gt;
+    body {
+      background-color: #f0f0f0;
+    }
+    h1 {
+      color: #6366f1;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+                        </div>
+                        <div class="preview">
+                            <div style="text-align: center;">
+                                <p style="font-weight: 600; color: var(--warning);">⚠️ Orta Uyumluluk</p>
+                                <p style="font-size: 12px; margin-top: 10px;">HTML dosyasında tanımlanır</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>3. Satır İçi CSS (Inline)</h3>
+                    <div class="code-example">
+                        <h4>Inline Stil Örneği</h4>
+                        <div class="code-block">
+&lt;h1 style="color: #6366f1; font-size: 32px;"&gt;
+  Merhaba Dünya
+&lt;/h1&gt;
+
+&lt;p style="background-color: yellow;"&gt;
+  Sarı arka plan
+&lt;/p&gt;
+                        </div>
+                        <div class="preview">
+                            <div style="text-align: center;">
+                                <p style="font-weight: 600; color: var(--danger);">✗ Kaçınılmalı</p>
+                                <p style="font-size: 12px; margin-top: 10px;">Zorlayıcı, yönetimi zor</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warning-box">
+                        <strong>⚠️ Dikkat:</strong> Dış CSS dosyası kullanmak en iyi pratiktir!
+                        Satır içi CSS'i mümkün olduğunca kaçının.
+                    </div>
+                </section>
+
+                <!-- Seçiciler -->
+                <section id="seciciler">
+                    <h2>CSS Seçicileri 🎯</h2>
+                    <p>
+                        Seçiciler, stilini uygulamak istediğiniz HTML elemanlarını belirtir.
+                    </p>
+
+                    <h3>Temel Seçiciler</h3>
+                    <table>
+                        <tr>
+                            <th>Seçici</th>
+                            <th>Açıklama</th>
+                            <th>Örnek</th>
+                        </tr>
+                        <tr>
+                            <td><code>*</code></td>
+                            <td>Tüm elemanlar</td>
+                            <td><code>* { margin: 0; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>etiket</code></td>
+                            <td>Etiket seçici</td>
+                            <td><code>p { color: blue; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>.class</code></td>
+                            <td>Class seçici</td>
+                            <td><code>.baslik { font-size: 20px; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>#id</code></td>
+                            <td>ID seçici</td>
+                            <td><code>#logo { width: 100px; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>etiket.class</code></td>
+                            <td>Etiket + Class</td>
+                            <td><code>p.kirmizi { color: red; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>etiket > alt</code></td>
+                            <td>Direkt alt eleman</td>
+                            <td><code>ul > li { margin: 5px; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>etiket alt</code></td>
+                            <td>Tüm alt elemanlar</td>
+                            <td><code>div p { color: gray; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>:hover</code></td>
+                            <td>Fare üzerinde</td>
+                            <td><code>a:hover { color: red; }</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>:active</code></td>
+                            <td>Tıklanırken</td>
+                            <td><code>button:active { scale: 0.95; }</code></td>
+                        </tr>
+                    </table>
+
+                    <h3>Seçici Özgüllüğü (Specificity)</h3>
+                    <p>
+                        Birden fazla stil aynı elemana uygulanırsa, en özgül olan kazanır.
+                    </p>
+                    <table>
+                        <tr>
+                            <th>Seçici Tipi</th>
+                            <th>Özgüllük</th>
+                        </tr>
+                        <tr>
+                            <td>Inline Style</td>
+                            <td>1000</td>
+                        </tr>
+                        <tr>
+                            <td>ID (#)</td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>Class (.) ve Pseudo</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>Etiket</td>
+                            <td>1</td>
+                        </tr>
+                    </table>
+
+                    <div class="code-example">
+                        <h4>Seçici Örnekleri</h4>
+                        <div class="code-block">
+/* Tüm p etiketleri */
+p {
+  color: blue;
+}
+
+/* .baslik class'ına sahip tüm elemanlar */
+.baslik {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* id="logo" olan eleman */
+#logo {
+  width: 200px;
+}
+
+/* Hover efekti */
+a:hover {
+  text-decoration: underline;
+  color: red;
+}
+                        </div>
+                        <div class="preview">
+                            <div style="text-align: left;">
+                                <p style="color: blue;">Bu p etiketi mavi</p>
+                                <div class="demo-element" style="background: var(--primary); color: white;">Bu .baslik class'ı</div>
+                                <div id="logo" style="background: var(--success); color: white; padding: 10px; border-radius: 4px;">Logo (ID)</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Renkler -->
+                <section id="renkler">
+                    <h2>Renk Sistemleri 🌈</h2>
+                    <p>
+                        CSS'de renkler üç farklı şekilde tanımlanabilir: HEX, RGB, HSL
+                    </p>
+
+                    <h3>HEX (Heksadesimal)</h3>
+                    <p>En sık kullanılan yöntem. # işareti ile başlar.</p>
+                    <div class="color-palette">
+                        <div class="color-box" style="background: #FF0000;"> #FF0000 (Kırmızı)</div>
+                        <div class="color-box" style="background: #00FF00;"> #00FF00 (Yeşil)</div>
+                        <div class="color-box" style="background: #0000FF;"> #0000FF (Mavi)</div>
+                    </div>
+
+                    <h3>RGB (Red, Green, Blue)</h3>
+                    <p>0-255 arasında değer alır. Saydam renk için RGBA.</p>
+                    <div class="code-example">
+                        <h4>RGB Renk Örneği</h4>
+                        <div class="code-block">
+/* RGB */
+color: rgb(255, 0, 0); /* Kırmızı */
+background: rgb(0, 255, 0); /* Yeşil */
+
+/* RGBA (Saydam) */
+background: rgba(100, 200, 255, 0.5);
+/* Son sayı: 0 = tamamen saydam,
+   1 = tamamen opak */
+                        </div>
+                        <div class="preview">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%;">
+                                <div style="background: rgb(255, 0, 0); padding: 30px; border-radius: 4px; color: white; text-align: center;">RGB(255,0,0)</div>
+                                <div style="background: rgba(100, 200, 255, 0.5); padding: 30px; border-radius: 4px; color: white; text-align: center;">RGBA(100,200,255,0.5)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>HSL (Hue, Saturation, Lightness)</h3>
+                    <p>İnsan dostu renk sistemi. Ton, doygunluk, parlaklık.</p>
+                    <div class="code-example">
+                        <h4>HSL Renk Örneği</h4>
+                        <div class="code-block">
+/* HSL */
+color: hsl(0, 100%, 50%); /* Kırmızı */
+background: hsl(120, 100%, 50%); /* Yeşil */
+border-color: hsl(240, 100%, 50%); /* Mavi */
+
+/* HSLA (Saydam) */
+background: hsla(200, 80%, 50%, 0.7);
+                        </div>
+                        <div class="preview">
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%;">
+                                <div style="background: hsl(0, 100%, 50%); padding: 20px; border-radius: 4px; color: white; text-align: center; font-size: 12px;">Kırmızı</div>
+                                <div style="background: hsl(120, 100%, 50%); padding: 20px; border-radius: 4px; color: white; text-align: center; font-size: 12px;">Yeşil</div>
+                                <div style="background: hsl(240, 100%, 50%); padding: 20px; border-radius: 4px; color: white; text-align: center; font-size: 12px;">Mavi</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tipografi -->
+                <section id="tipografi">
+                    <h2>Tipografi 🔤</h2>
+                    <p>
+                        Metni stilize etmek, web sayfasının görünümü açısından çok önemlidir.
+                    </p>
+
+                    <h3>Font Özellikleri</h3>
+                    <table>
+                        <tr>
+                            <th>Özellik</th>
+                            <th>Açıklama</th>
+                            <th>Örnek</th>
+                        </tr>
+                        <tr>
+                            <td><code>font-family</code></td>
+                            <td>Yazı tipi</td>
+                            <td><code>Arial, Helvetica, sans-serif</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>font-size</code></td>
+                            <td>Yazı büyüklüğü</td>
+                            <td><code>16px, 1.5em, 2rem</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>font-weight</code></td>
+                            <td>Yazı kalınlığı</td>
+                            <td><code>normal, bold, 700</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>font-style</code></td>
+                            <td>Eğik yazı</td>
+                            <td><code>normal, italic</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>line-height</code></td>
+                            <td>Satır yüksekliği</td>
+                            <td><code>1.5, 1.8, 24px</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>letter-spacing</code></td>
+                            <td>Harf aralığı</td>
+                            <td><code>2px, 0.05em</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>text-align</code></td>
+                            <td>Metin hizalama</td>
+                            <td><code>left, center, right, justify</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>text-decoration</code></td>
+                            <td>Metin dekoru</td>
+                            <td><code>none, underline, overline, line-through</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>color</code></td>
+                            <td>Metin rengi</td>
+                            <td><code>#333, rgb(50,50,50)</code></td>
+                        </tr>
+                    </table>
+
+                    <h3>Tipografi Örneği</h3>
+                    <div class="code-example">
+                        <h4>Stilize Metin</h4>
+                        <div class="code-block">
+h1 {
+  font-family: Georgia, serif;
+  font-size: 36px;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.4;
+}
+
+p {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #666;
+}
+
+a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+                        </div>
+                        <div class="preview">
+                            <div style="text-align: left; width: 100%;">
+                                <h3 style="font-family: Georgia, serif; font-size: 28px; color: #333; margin-bottom: 10px;">Stilize Başlık</h3>
+                                <p style="font-size: 14px; color: #666; line-height: 1.8;">Bu metin stilize edilmiş bir paragraf örneğidir. Font tipi, boyutu ve satır yüksekliği dikkatli seçilmiştir.</p>
+                                <a href="#" style="color: #0066cc;">Bağlantı Örneği</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Box Model -->
+                <section id="boxmodel">
+                    <h2>Box Model 📦</h2>
+                    <p>
+                        CSS'deki tüm elemanlar birer kutu (box) olarak görülür.
+                        Her kutu içeriği, padding, border ve margin'den oluşur.
+                    </p>
+
+                    <h3>Box Model Parçaları</h3>
+                    <div class="box-model-demo">
+                        <div style="background: #ef4444; padding: 30px; border-radius: 4px; margin-bottom: 5px; color: white; font-weight: bold;">
+                            Margin (Dış Boşluk)
+                        </div>
+                        <div style="background: #f59e0b; padding: 20px; border-radius: 4px; margin-bottom: 5px; color: white; font-weight: bold;">
+                            Border (Çerceve)
+                        </div>
+                        <div style="background: #10b981; padding: 20px; border-radius: 4px; margin-bottom: 5px; color: white; font-weight: bold;">
+                            Padding (İç Boşluk)
+                        </div>
+                        <div style="background: #6366f1; padding: 20px; border-radius: 4px; color: white; font-weight: bold;">
+                            Content (İçerik)
+                        </div>
+                    </div>
+
+                    <h3>Box Model Örneği</h3>
+                    <div class="code-example">
+                        <h4>Kutu Örneği</h4>
+                        <div class="code-block">
+div {
+  /* İçerik */
+  width: 200px;
+  height: 100px;
+
+  /* İç boşluk */
+  padding: 20px;
+
+  /* Çerceve */
+  border: 2px solid #333;
+
+  /* Dış boşluk */
+  margin: 15px;
+
+  /* Arka plan */
+  background-color: #f0f0f0;
+}
+                        </div>
+                        <div class="preview">
+                            <div style="width: 150px; padding: 20px; border: 3px solid var(--primary); margin: 15px auto; background: #dbeafe; border-radius: 8px; text-align: center;">
+                                <div style="background: white; padding: 10px; border-radius: 4px;">Kutu İçeriği</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Box Sizing</h3>
+                    <div class="code-example">
+                        <h4>Box Sizing Türleri</h4>
+                        <div class="code-block">
+/* content-box (Varsayılan) */
+/* width = sadece içerik */
+box-sizing: content-box;
+
+/* border-box (Önerilen) */
+/* width = içerik + padding + border */
+box-sizing: border-box;
+
+/* Tüm elemanlar için */
+* {
+  box-sizing: border-box;
+}
+                        </div>
+                        <div class="preview">
+                            <div style="text-align: center;">
+                                <p style="font-weight: 600; color: var(--primary);">✓ border-box Kullanın!</p>
+                                <p style="font-size: 12px; margin-top: 5px;">Genişlik hesaplaması daha kolay</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Display -->
+                <section id="display">
+                    <h2>Display Özellikleri 🎭</h2>
+                    <p>
+                        <code>display</code> özelliği, bir elemanın sayfada nasıl davranacağını belirler.
+                    </p>
+
+                    <table>
+                        <tr>
+                            <th>Değer</th>
+                            <th>Açıklama</th>
+                            <th>Kullanım</th>
+                        </tr>
+                        <tr>
+                            <td><code>block</code></td>
+                            <td>Tam satır kaplar</td>
+                            <td>div, p, h1-h6</td>
+                        </tr>
+                        <tr>
+                            <td><code>inline</code></td>
+                            <td>Gerekli kadar yer kaplar</td>
+                            <td>span, a, strong</td>
+                        </tr>
+                        <tr>
+                            <td><code>inline-block</code></td>
+                            <td>İkisinin kombinasyonu</td>
+                            <td>img, button</td>
+                        </tr>
+                        <tr>
+                            <td><code>flex</code></td>
+                            <td>Flexbox layout</td>
+                            <td>Kompleks düzenler</td>
+                        </tr>
+                        <tr>
+                            <td><code>grid</code></td>
+                            <td>Grid layout</td>
+                            <td>İki boyutlu düzenler</td>
+                        </tr>
+                        <tr>
+                            <td><code>none</code></td>
+                            <td>Gizler (DOM'dan çıkar)</td>
+                            <td>Gizlenecek elemanlar</td>
+                        </tr>
+                    </table>
+
+                    <h3>Display Örnekleri</h3>
+                    <div class="code-example">
+                        <h4>Display Değerleri</h4>
+                        <div class="code-block">
+/* Block */
+div {
+  display: block;
+  width: 100%;
+}
+
+/* Inline */
+span {
+  display: inline;
+}
+
+/* Inline-Block */
+img {
+  display: inline-block;
+}
+
+/* Gizle */
+.gizli {
+  display: none;
+}
+                        </div>
+                        <div class="preview">
+                            <div style="width: 100%; text-align: center;">
+                                <div style="background: var(--primary); color: white; padding: 10px; margin-bottom: 10px; border-radius: 4px;">Block (Tam satır)</div>
+                                <span style="background: var(--success); color: white; padding: 5px 10px; border-radius: 4px;">Inline (Gerekli kadar)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <strong>💡 Designer İpucu:</strong> Flexbox ve Grid, modern CSS'de en sık kullanılan display değerleridir.
+                        Bunları sonraki derslerde detaylı öğreneceğiz!
+                    </div>
+                </section>
+
+                <!-- Alıştırmalar -->
+                <section id="alistirmalar">
+                    <h2>Alıştırmalar 💪</h2>
+
+                    <div class="exercise-box">
+                        <strong>🎯 Alıştırma 1:</strong> Dış CSS dosyası ile bir sayfa tasarlayın:
+                        <ul style="margin-top: 10px;">
+                            <li>Farklı başlık stilleri ekleyin</li>
+                            <li>Paragraf stillerini ayarlayın</li>
+                            <li>En az 5 farklı renkli eleman oluşturun</li>
+                        </ul>
+                    </div>
+
+                    <div class="exercise-box">
+                        <strong>🎯 Alıştırma 2:</strong> Seçici ve özgüllük pratikleri:
+                        <ul style="margin-top: 10px;">
+                            <li>Etiket, class ve ID seçicileri kullanın</li>
+                            <li>Hover efektleri ekleyin</li>
+                            <li>Çelişen stilleri çözmek için özgüllüğü kullanın</li>
+                        </ul>
+                    </div>
+
+                    <div class="exercise-box">
+                        <strong>🎯 Alıştırma 3:</strong> Renkli bir palet oluşturun:
+                        <ul style="margin-top: 10px;">
+                            <li>HEX, RGB, HSL'de renkler tanımlayın</li>
+                            <li>Saydam renkler (RGBA) kullanın</li>
+                            <li>Gradyan arka plan ekleyin (bonus)</li>
+                        </ul>
+                    </div>
+
+                    <div class="exercise-box">
+                        <strong>🎯 Alıştırma 4:</strong> Box Model pratikleri:
+                        <ul style="margin-top: 10px;">
+                            <li>Çeşitli padding ve margin değerleri deneyin</li>
+                            <li>Border stillerini özelleştirin</li>
+                            <li>Box-sizing özelliğini test edin</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Navigation -->
+                <div class="lesson-nav">
+                    <a href="ders02-html-ileri.html" class="nav-button">← Önceki Ders</a>
+                    <a href="ders04-css-layout.html" class="nav-button">Sonraki Ders →</a>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            safeStorage('set', 'theme', isDark ? 'dark' : 'light');
+            document.querySelector('.theme-toggle').textContent = isDark ? '☀️' : '🌙';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const theme = safeStorage('get', 'theme');
+            if (theme === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.querySelector('.theme-toggle').textContent = '☀️';
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                        document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

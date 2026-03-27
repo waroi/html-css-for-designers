@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fotoğraf Galerisi - İnteraktif ve Responsive Galeri Tasarımı">
+    <title>Sanat Galerisi - Fotoğraf Koleksiyonu</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=DM+Serif+Display:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ================================================
+           1. CSS CUSTOM PROPERTIES - TEMA RENKLERI
+           Açık ve koyu tema için dinamik renk sistemi
+           ================================================ */
+        :root {
+            --renkBg: #ffffff;
+            --renkMetin: #1a1a1a;
+            --renkAcikText: #666666;
+            --renkBorder: #e5e7eb;
+            --renkVurgu: #6366f1;
+            --renkVurgu2: #ec4899;
+            --renkGolge: rgba(0, 0, 0, 0.1);
+            --renkGolgeDerin: rgba(0, 0, 0, 0.2);
+            --renkSuccess: #10b981;
+        }
+
+        /* Koyu tema renkleri */
+        [data-tema="koyu"] {
+            --renkBg: #0f172a;
+            --renkMetin: #e2e8f0;
+            --renkAcikText: #cbd5e1;
+            --renkBorder: #334155;
+            --renkGolge: rgba(255, 255, 255, 0.08);
+            --renkGolgeDerin: rgba(255, 255, 255, 0.15);
+        }
+
+        /* ================================================
+           2. GENEL STİLLER - RESET VE TEMEL AYARLAR
+           Tüm sayfaya uygulanacak kurallar
+           ================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--renkBg);
+            color: var(--renkMetin);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ================================================
+           3. TEMA TOGGLE BUTONU
+           Köşede sabit - her yerde erişilebilir
+           ================================================ */
+        .tema-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px var(--renkGolgeDerin);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            outline: none;
+        }
+
+        .tema-toggle:hover {
+            transform: scale(1.15) rotateZ(30deg);
+            box-shadow: 0 8px 30px var(--renkGolgeDerin);
+        }
+
+        .tema-toggle:focus {
+            outline: 3px solid var(--renkVurgu2);
+            outline-offset: 4px;
+        }
+
+        /* ================================================
+           4. HEADER VE İÇERİK
+           Başlık, açıklama ve filtre butonları
+           ================================================ */
+        header {
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 48px;
+            margin-bottom: 12px;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-size: 16px;
+            opacity: 0.95;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ================================================
+           5. KATEGORİ FİLTRELEME BUTONLARI
+           Fotoğrafları kategoriye göre filtreleme
+           ================================================ */
+        .filtre-kontrol {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 50px;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .filtre-buton {
+            padding: 10px 24px;
+            border: 2px solid var(--renkBorder);
+            background-color: var(--renkBg);
+            color: var(--renkMetin);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+        }
+
+        /* Filtre butonu hover ve aktif durumu */
+        .filtre-buton:hover {
+            border-color: var(--renkVurgu);
+            color: var(--renkVurgu);
+        }
+
+        .filtre-buton.aktif {
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 5px 15px var(--renkGolgeDerin);
+        }
+
+        .filtre-buton:focus {
+            outline: 3px solid var(--renkVurgu2);
+            outline-offset: 2px;
+        }
+
+        /* ================================================
+           6. GALERININ KONTEYNER YAPISI
+           Max width ve merkez hizalama
+           ================================================ */
+        .galeri-kontainer {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        /* ================================================
+           7. MASONRY GRID LAYOUT
+           CSS Grid ile dinamik fotoğraf düzeni
+           Farklı boyutlarda kartlar - harika görünüm!
+           ================================================ */
+        .galeri-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        /* Büyük ekranda daha iyi görünüm */
+        @media (min-width: 1024px) {
+            .galeri-grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-auto-rows: 250px;
+            }
+
+            /* Bazı öğeleri daha büyük yap - masonry efekti */
+            .fotograf-item:nth-child(3) {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+
+            .fotograf-item:nth-child(7) {
+                grid-column: span 2;
+            }
+
+            .fotograf-item:nth-child(11) {
+                grid-row: span 2;
+            }
+        }
+
+        /* Tablet görünümü */
+        @media (max-width: 1023px) and (min-width: 768px) {
+            .galeri-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Mobil görünümü */
+        @media (max-width: 767px) {
+            .galeri-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ================================================
+           8. FOTOĞRAF KARTI
+           Her fotoğraf için card yapısı
+           ================================================ */
+        .fotograf-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            box-shadow: 0 5px 20px var(--renkGolge);
+            /* Erişilebilirlik için role tanımla */
+            role: "button";
+            tabindex: "0";
+        }
+
+        /* Fotoğraf placeholder - CSS Gradient ile renkli kareler */
+        .fotograf-item {
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+        }
+
+        /* Kategoriye göre farklı renkler */
+        .fotograf-item.manzara {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        }
+
+        .fotograf-item.portre {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .fotograf-item.sehir {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+
+        .fotograf-item.doga {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        /* ================================================
+           9. OVERLAY İŞLEMİ
+           Fotoğrafın üzerine geldiğinde bilgi göster
+           ================================================ */
+        .fotograf-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.4s ease;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .fotograf-item:hover .fotograf-overlay {
+            opacity: 1;
+        }
+
+        .fotograf-baslik {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .fotograf-kategori {
+            color: white;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ================================================
+           10. ZOOM VE TRANSFORM EFEKTLERI
+           Hover'da fotoğraf büyümesi ve hareket
+           ================================================ */
+        .fotograf-item:hover {
+            transform: scale(1.08);
+            box-shadow: 0 15px 40px var(--renkGolgeDerin);
+        }
+
+        /* Sağdan gelen fotoğraflar sola kaydığında zoom olsun */
+        .fotograf-item:hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: flare 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes flare {
+            0% {
+                left: -100%;
+                opacity: 1;
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
+        }
+
+        /* ================================================
+           11. LIGHTBOX EFEKTİ
+           Pure CSS checkbox hack ile modal açılması
+           ================================================ */
+        .fotograf-input {
+            display: none;
+        }
+
+        /* Lightbox - modal penceresi */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        /* Checkbox işaretlendiğinde lightbox göster */
+        .fotograf-input:checked ~ .lightbox {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-icerik {
+            background-color: var(--renkBg);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            animation: popIn 0.4s ease;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8) translateY(-50px);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .lightbox-resim {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            font-size: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--renkVurgu) 0%, var(--renkVurgu2) 100%);
+        }
+
+        .lightbox-baslik {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--renkMetin);
+        }
+
+        .lightbox-aciklama {
+            color: var(--renkAcikText);
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Kapatma Butonu */
+        .lightbox-kapat {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: var(--renkBorder);
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .lightbox-kapat:hover {
+            background: var(--renkVurgu);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .lightbox-kapat:focus {
+            outline: 3px solid var(--renkVurgu);
+            outline-offset: 2px;
+        }
+
+        /* ================================================
+           12. FOOTER
+           Sayfa altı bilgisi
+           ================================================ */
+        footer {
+            background-color: var(--renkBg);
+            border-top: 2px solid var(--renkBorder);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--renkAcikText);
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        /* ================================================
+           13. MOBİL UYUMLULUĞU
+           Küçük ekranlar için responsive düzenlemeler
+           ================================================ */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 36px;
+            }
+
+            header p {
+                font-size: 14px;
+            }
+
+            .filtre-buton {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+
+            .tema-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+            .lightbox-icerik {
+                padding: 30px;
+            }
+
+            .fotograf-baslik {
+                font-size: 16px;
+            }
+        }
+
+        /* ================================================
+           14. ERIŞILEBILIRLIK
+           Odak göstergeleri, klavye navigasyonu desteği
+           ================================================ */
+        *:focus-visible {
+            outline: 3px solid var(--renkVurgu);
+            outline-offset: 2px;
+        }
+
+        /* Azaltılmış hareket tercihine saygı göster */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* ================================================
+           15. YAZDIRMA UYUMLULUĞU
+           Kullanıcı galeriyi yazdırmak isterse
+           ================================================ */
+        @media print {
+            .tema-toggle,
+            .filtre-kontrol,
+            .lightbox {
+                display: none;
+            }
+
+            .fotograf-item {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body data-tema="acik">
+<a href="../../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <!-- Tema Toggle Butonu - Açık/Koyu tema seçimi -->
+    <button class="tema-toggle" id="temaToggle" aria-label="Açık/Koyu temayı değiştir" title="Temayı değiştir">
+        🌙
+    </button>
+
+    <!-- Başlık Bölümü -->
+    <header>
+        <h1>🖼️ Sanat Galerisi</h1>
+        <p>
+            Dünya'nın dört köşesinden seçilmiş fotoğraflar. Hover yaparak detayları görebilir,
+            tıklayarak büyütebilirsiniz.
+        </p>
+    </header>
+
+    <!-- Ana Galerisi Konteyner -->
+    <main class="galeri-kontainer">
+        <!-- Kategori Filtreleme Butonları - JavaScript ile çalışacak -->
+        <nav class="filtre-kontrol" aria-label="Galeri filtreleri">
+            <button class="filtre-buton aktif" data-filtre="tum" onclick="galeriFiltrele('tum')">
+                ⭐ Tümü
+            </button>
+            <button class="filtre-buton" data-filtre="manzara" onclick="galeriFiltrele('manzara')">
+                🏔️ Manzara
+            </button>
+            <button class="filtre-buton" data-filtre="portre" onclick="galeriFiltrele('portre')">
+                👤 Portre
+            </button>
+            <button class="filtre-buton" data-filtre="sehir" onclick="galeriFiltrele('sehir')">
+                🏙️ Şehir
+            </button>
+            <button class="filtre-buton" data-filtre="doga" onclick="galeriFiltrele('doga')">
+                🌿 Doğa
+            </button>
+        </nav>
+
+        <!-- Fotoğraf Galerisi Grid -->
+        <div class="galeri-grid" id="galeriGrid">
+            <!-- Fotoğraf Kartı 1 - Manzara -->
+            <label class="fotograf-item manzara" data-kategori="manzara" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto1">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Dağ Manzarası</div>
+                    <span class="fotograf-kategori">Manzara</span>
+                </div>
+                <div class="lightbox" for="foto1">
+                    <div class="lightbox-icerik">
+                        <label for="foto1" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">🏔️</div>
+                        <h2 class="lightbox-baslik">Dağ Manzarası</h2>
+                        <p class="lightbox-aciklama">
+                            Karlı dağların muhteşem manzarası. Doğanın saflığı ve güzelliğini yansıtan bu fotoğraf, kalbinizi huzura kavuşturacaktır.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Fotoğraf Kartı 2 - Portre -->
+            <label class="fotograf-item portre" data-kategori="portre" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto2">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Gülen Yüz</div>
+                    <span class="fotograf-kategori">Portre</span>
+                </div>
+                <div class="lightbox" for="foto2">
+                    <div class="lightbox-icerik">
+                        <label for="foto2" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">👤</div>
+                        <h2 class="lightbox-baslik">Gülen Yüz</h2>
+                        <p class="lightbox-aciklama">
+                            Samimi bir gülümsemeyi yakalayan bu portre, insani bağlantıların ve duyguların gücünü gösteriyor.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Fotoğraf Kartı 3 - Şehir (Geniş Kart) -->
+            <label class="fotograf-item sehir" data-kategori="sehir" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto3">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Gece Şehrinin Işıkları</div>
+                    <span class="fotograf-kategori">Şehir</span>
+                </div>
+                <div class="lightbox" for="foto3">
+                    <div class="lightbox-icerik">
+                        <label for="foto3" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">🏙️</div>
+                        <h2 class="lightbox-baslik">Gece Şehrinin Işıkları</h2>
+                        <p class="lightbox-aciklama">
+                            Gece yarısında parlayan binalar ve sokaklar, şehrin asla uyumayan ruhunu simgeliyor.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Fotoğraf Kartı 4 - Doğa -->
+            <label class="fotograf-item doga" data-kategori="doga" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto4">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Yeşil Orman</div>
+                    <span class="fotograf-kategori">Doğa</span>
+                </div>
+                <div class="lightbox" for="foto4">
+                    <div class="lightbox-icerik">
+                        <label for="foto4" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">🌿</div>
+                        <h2 class="lightbox-baslik">Yeşil Orman</h2>
+                        <p class="lightbox-aciklama">
+                            Saf ve doğal yeşillikler içinde bir yürüyüş. Huzurlu ortamında mutluluğu bulabilirsiniz.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Fotoğraf Kartı 5 - Manzara -->
+            <label class="fotograf-item manzara" data-kategori="manzara" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto5">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Çiçekli Çayır</div>
+                    <span class="fotograf-kategori">Manzara</span>
+                </div>
+                <div class="lightbox" for="foto5">
+                    <div class="lightbox-icerik">
+                        <label for="foto5" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">🌼</div>
+                        <h2 class="lightbox-baslik">Çiçekli Çayır</h2>
+                        <p class="lightbox-aciklama">
+                            Bahar aylarında rengarenk çiçekler açan bir çayır. Doğanın renkli tarafını gösteriyor.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Fotoğraf Kartı 6 - Portre -->
+            <label class="fotograf-item portre" data-kategori="portre" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto6">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Çalışkan Elleri</div>
+                    <span class="fotograf-kategori">Portre</span>
+                </div>
+                <div class="lightbox" for="foto6">
+                    <div class="lightbox-icerik">
+                        <label for="foto6" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">👐</div>
+                        <h2 class="lightbox-baslik">Çalışkan Elleri</h2>
+                        <p class="lightbox-aciklama">
+                            İşçinin çalışkan ellerinin yakından çekilmiş portesi. Emek ve çabanın sanatsal temsili.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Fotoğraf Kartı 7 - Şehir (Geniş Kart) -->
+            <label class="fotograf-item sehir" data-kategori="sehir" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto7">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Metro İstasyonu</div>
+                    <span class="fotograf-kategori">Şehir</span>
+                </div>
+                <div class="lightbox" for="foto7">
+                    <div class="lightbox-icerik">
+                        <label for="foto7" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">🚇</div>
+                        <h2 class="lightbox-baslik">Metro İstasyonu</h2>
+                        <p class="lightbox-aciklama">
+                            Modern metro istasyonunun canlı ve hareketli ortamı. Şehir hayatının ritmi burada atıyor.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Fotoğraf Kartı 8 - Doğa -->
+            <label class="fotograf-item doga" data-kategori="doga" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto8">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Kü Göl</div>
+                    <span class="fotograf-kategori">Doğa</span>
+                </div>
+                <div class="lightbox" for="foto8">
+                    <div class="lightbox-icerik">
+                        <label for="foto8" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">💧</div>
+                        <h2 class="lightbox-baslik">Kristal Göl</h2>
+                        <p class="lightbox-aciklama">
+                            Kristal gibi berrak sularıyla ünlü bu göl, doğanın saftığının sembolüdür.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Fotoğraf Kartı 9 - Manzara -->
+            <label class="fotograf-item manzara" data-kategori="manzara" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto9">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Gündoğumu</div>
+                    <span class="fotograf-kategori">Manzara</span>
+                </div>
+                <div class="lightbox" for="foto9">
+                    <div class="lightbox-icerik">
+                        <label for="foto9" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">🌅</div>
+                        <h2 class="lightbox-baslik">Gündoğumu</h2>
+                        <p class="lightbox-aciklama">
+                            Yeni bir günün başlangıcını simgeleyen bu gündoğumu fotoğrafı çok hüzünlü ve güzel.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Fotoğraf Kartı 10 - Portre -->
+            <label class="fotograf-item portre" data-kategori="portre" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto10">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Düşünceli Bakış</div>
+                    <span class="fotograf-kategori">Portre</span>
+                </div>
+                <div class="lightbox" for="foto10">
+                    <div class="lightbox-icerik">
+                        <label for="foto10" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">🤔</div>
+                        <h2 class="lightbox-baslik">Düşünceli Bakış</h2>
+                        <p class="lightbox-aciklama">
+                            Derin düşüncelere dalış bir anın portesi. Ruh halini yansıtan güçlü bir görsel.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Fotoğraf Kartı 11 - Şehir (Yüksek Kart) -->
+            <label class="fotograf-item sehir" data-kategori="sehir" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto11">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Hava Manzarası</div>
+                    <span class="fotograf-kategori">Şehir</span>
+                </div>
+                <div class="lightbox" for="foto11">
+                    <div class="lightbox-icerik">
+                        <label for="foto11" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">🛩️</div>
+                        <h2 class="lightbox-baslik">Hava Manzarası</h2>
+                        <p class="lightbox-aciklama">
+                            Uçaktan çekilmiş, şehrin kuş bakışı manzarası. Ölçek duygusunu veriyor.
+                        </p>
+                    </div>
+                </div>
+            </label>
+
+            <!-- Fotoğraf Kartı 12 - Doğa -->
+            <label class="fotograf-item doga" data-kategori="doga" tabindex="0">
+                <input type="checkbox" class="fotograf-input" id="foto12">
+                <div class="fotograf-overlay">
+                    <div class="fotograf-baslik">Yaban Hayatı</div>
+                    <span class="fotograf-kategori">Doğa</span>
+                </div>
+                <div class="lightbox" for="foto12">
+                    <div class="lightbox-icerik">
+                        <label for="foto12" class="lightbox-kapat" aria-label="Kapat">✕</label>
+                        <div class="lightbox-resim">🦁</div>
+                        <h2 class="lightbox-baslik">Yaban Hayatı</h2>
+                        <p class="lightbox-aciklama">
+                            Doğal habitatında yaşayan hayvanlar. Vahşi doğanın gücü ve güzelliği bu fotoğrafta yaşıyor.
+                        </p>
+                    </div>
+                </div>
+            </label>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Sanat Galerisi. Tüm hakları saklıdır.</p>
+        <p>Fotoğraf sanatını seven herkese açık bir dijital galeri.</p>
+    </footer>
+
+    <!-- JavaScript - Tema Toggle ve Filtreleme Fonksiyonalitesi -->
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        /* ============================
+           TEMA TOGGLE FONKSİYONALİTESİ
+           LocalStorage ile temayı kaydet
+           ============================ */
+
+        const temaToggle = document.getElementById('temaToggle');
+        const html = document.documentElement;
+
+        // Kaydedilmiş temayı yükle
+        const kaydedilmisTema = safeStorage('get', 'galeriTema') || 'acik';
+        html.setAttribute('data-tema', kaydedilmisTema);
+        temaToggle.textContent = kaydedilmisTema === 'acik' ? '🌙' : '☀️';
+
+        // Tema toggle butonuna tıklama olayı
+        temaToggle.addEventListener('click', () => {
+            const mevcutTema = html.getAttribute('data-tema');
+            const yeniTema = mevcutTema === 'acik' ? 'koyu' : 'acik';
+
+            html.setAttribute('data-tema', yeniTema);
+            safeStorage('set', 'galeriTema', yeniTema);
+            temaToggle.textContent = yeniTema === 'acik' ? '🌙' : '☀️';
+        });
+
+        // Sistem tema tercihini kontrol et
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            if (!safeStorage('get', 'galeriTema')) {
+                html.setAttribute('data-tema', 'koyu');
+                temaToggle.textContent = '☀️';
+            }
+        }
+
+        /* ============================
+           GALERI FİLTRELEME FONKSİYONU
+           Kategoriye göre fotoğraf göster/gizle
+           ============================ */
+
+        function galeriFiltrele(kategori) {
+            // Tüm fotoğraf öğelerini seç
+            const fotolar = document.querySelectorAll('.fotograf-item');
+
+            // Tüm filtre butonlarını seç
+            const butonlar = document.querySelectorAll('.filtre-buton');
+
+            // Aktif sınıfını kaldır ve yenisini ekle
+            butonlar.forEach(btn => btn.classList.remove('aktif'));
+            event.target.classList.add('aktif');
+
+            // Fotoğrafları göster/gizle
+            fotolar.forEach(foto => {
+                if (kategori === 'tum') {
+                    // Tümünü göster
+                    foto.style.display = 'flex';
+                    foto.style.opacity = '1';
+                    foto.style.pointerEvents = 'auto';
+                } else {
+                    // Kategoriye göre filtreле
+                    const fotoKategori = foto.getAttribute('data-kategori');
+                    if (fotoKategori === kategori) {
+                        foto.style.display = 'flex';
+                        foto.style.opacity = '1';
+                        foto.style.pointerEvents = 'auto';
+                    } else {
+                        foto.style.opacity = '0.3';
+                        foto.style.pointerEvents = 'none';
+                    }
+                }
+            });
+        }
+
+        /* ============================
+           KLAVYE ERIŞILEBILIĞI
+           Enter veya Space tuşuyla checkbox açılabilsin
+           ============================ */
+
+        document.querySelectorAll('label.fotograf-item').forEach(label => {
+            label.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    label.querySelector('input[type="checkbox"]').click();
+                }
+            });
+        });
+
+        /* ============================
+           ESC TUŞUyla Lightbox Kapat
+           Kullanıcı deneyimini artıran özellik
+           ============================ */
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.fotograf-input').forEach(input => {
+                    input.checked = false;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

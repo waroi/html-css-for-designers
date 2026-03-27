@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="tr" data-tema="acik">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML & CSS Eğitim Platformu | UI/UX Designer'lar İçin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-bg: #eef2ff;
+            --success: #10b981;
+            --success-bg: #ecfdf5;
+            --warning: #f59e0b;
+            --warning-bg: #fffbeb;
+            --danger: #ef4444;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+            --shadow-lg: 0 4px 20px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.04);
+        }
+        [data-tema="koyu"] {
+            --bg: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --text: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --primary-bg: #1e1b4b;
+            --success-bg: #064e3b;
+            --warning-bg: #451a03;
+            --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+            --shadow-lg: 0 4px 20px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            transition: background 0.3s, color 0.3s;
+        }
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 30%, #a855f7 60%, #10b981 100%);
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        header h1 span { color: #fbbf24; }
+        header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .badge-row {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+        .badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+        /* THEME TOGGLE */
+        .tema-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+        .tema-btn:hover { transform: scale(1.05); border-color: var(--primary); }
+        /* MAIN */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        .section-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            flex: 1;
+        }
+        .card-tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        .tag-beginner { background: var(--success-bg); color: var(--success); }
+        .tag-intermediate { background: var(--warning-bg); color: var(--warning); }
+        .tag-advanced { background: #fef2f2; color: var(--danger); }
+        [data-tema="koyu"] .tag-advanced { background: #450a0a; }
+        .section-divider {
+            margin: 3rem 0;
+            border: none;
+            border-top: 2px dashed var(--border);
+        }
+        /* STATS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0 3rem;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .stat-num {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label { color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.25rem; }
+        /* FOOTER */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            .grid { grid-template-columns: 1fr; }
+            .container { padding: 2rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <button class="tema-btn" onclick="temaToggle()" aria-label="Tema değiştir">🌙</button>
+
+    <header>
+        <div class="header-content">
+            <h1>&lt;HTML&gt; & <span>{CSS}</span> Eğitim Platformu</h1>
+            <p>UI/UX Designer'lar için sıfırdan ileri seviyeye, adım adım web geliştirme yolculuğu</p>
+            <div class="badge-row">
+                <span class="badge">7 Modül</span>
+                <span class="badge">7 Detaylı Ders</span>
+                <span class="badge">10 Uygulama Projesi</span>
+                <span class="badge">2 Cheatsheet</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-num">7</div>
+                <div class="stat-label">Eğitim Modülü</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">7</div>
+                <div class="stat-label">İnteraktif Ders</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">10</div>
+                <div class="stat-label">Uygulama Projesi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">2</div>
+                <div class="stat-label">Cheatsheet</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-num">∞</div>
+                <div class="stat-label">Kod Örneği</div>
+            </div>
+        </div>
+
+        <!-- MÜFREDAT -->
+        <h2 class="section-title">📚 Müfredat & Dersler</h2>
+        <p class="section-subtitle">Sıfırdan ileri seviyeye, adım adım ilerleyen kapsamlı eğitim içeriği</p>
+        <div class="grid">
+            <a href="mufredat/index.html" class="card">
+                <div class="card-icon" style="background: var(--primary-bg); color: var(--primary);">📖</div>
+                <h3>Müfredat Dokümanı</h3>
+                <p>7 modüllük kapsamlı müfredat: HTML temelleri, CSS temelleri, layout, responsive design, animasyonlar ve ileri konular. Bol örnekli, detaylı anlatım.</p>
+                <span class="card-tag tag-beginner">Başlangıç Noktası</span>
+            </a>
+            <a href="mufredat/dersler/index.html" class="card">
+                <div class="card-icon" style="background: var(--success-bg); color: var(--success);">🎓</div>
+                <h3>İnteraktif Dersler</h3>
+                <p>7 ayrı interaktif ders sayfası. Her derste canlı kod örnekleri, alıştırmalar, designer ipuçları ve kaynak bağlantıları.</p>
+                <span class="card-tag tag-beginner">7 Ders</span>
+            </a>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- CHEATSHEETLER -->
+        <h2 class="section-title">📋 Cheatsheet'ler</h2>
+        <p class="section-subtitle">Her zaman yanında olacak hızlı başvuru kaynakları</p>
+        <div class="grid">
+            <a href="cheatsheets/html-cheatsheet.html" class="card">
+                <div class="card-icon" style="background: #fff1f2; color: #e11d48;">🏷️</div>
+                <h3>HTML Cheatsheet</h3>
+                <p>60+ HTML etiketi, öznitelikleri, kullanım örnekleri ve erişilebilirlik ipuçları. Arama ve filtreleme özellikli, kopyalanabilir kod örnekleri.</p>
+                <span class="card-tag tag-beginner">Referans</span>
+            </a>
+            <a href="cheatsheets/css-cheatsheet.html" class="card">
+                <div class="card-icon" style="background: #f0fdf4; color: #16a34a;">🎨</div>
+                <h3>CSS Cheatsheet</h3>
+                <p>15 kategoride 320+ CSS özelliği. Flexbox, Grid, animasyonlar, modern CSS ve daha fazlası. Canlı demolar ve interaktif örnekler.</p>
+                <span class="card-tag tag-beginner">Referans</span>
+            </a>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- PROJELER -->
+        <h2 class="section-title">🚀 Uygulama Projeleri</h2>
+        <p class="section-subtitle">Kolaydan zora, 10 gerçek dünya projesi ile pratik yapın</p>
+        <div class="grid">
+            <a href="projeler/01-kartvizit-sayfasi/index.html" class="card">
+                <div class="card-icon" style="background: #ecfdf5; color: #10b981;">01</div>
+                <h3>Dijital Kartvizit</h3>
+                <p>Kişisel tanıtım kartı. Profil, iletişim bilgileri, sosyal medya linkleri. Gradient arka plan, hover efektleri.</p>
+                <span class="card-tag tag-beginner">Kolay</span>
+            </a>
+            <a href="projeler/02-kisisel-blog/index.html" class="card">
+                <div class="card-icon" style="background: #ecfdf5; color: #10b981;">02</div>
+                <h3>Kişisel Blog</h3>
+                <p>Blog sayfası. Card layout, sidebar, kategoriler, responsive grid. Semantik HTML5 yapısı.</p>
+                <span class="card-tag tag-beginner">Kolay</span>
+            </a>
+            <a href="projeler/03-fotograf-galerisi/index.html" class="card">
+                <div class="card-icon" style="background: #ecfdf5; color: #10b981;">03</div>
+                <h3>Fotoğraf Galerisi</h3>
+                <p>Masonry grid layout, kategori filtreleme, lightbox efekti, hover overlay animasyonları.</p>
+                <span class="card-tag tag-beginner">Kolay</span>
+            </a>
+            <a href="projeler/04-film-arsivi/index.html" class="card">
+                <div class="card-icon" style="background: var(--warning-bg); color: var(--warning);">04</div>
+                <h3>Film Arşivi (SinemaLog)</h3>
+                <p>Film kartları, kategori sekmeleri, detay modal, arama, sidebar. Pure CSS modal ve tab sistemi.</p>
+                <span class="card-tag tag-intermediate">Orta</span>
+            </a>
+            <a href="projeler/05-restoran-menu/index.html" class="card">
+                <div class="card-icon" style="background: var(--warning-bg); color: var(--warning);">05</div>
+                <h3>Restoran Menü (Lezzet Durağı)</h3>
+                <p>Tab navigasyonu, menü kategorileri, rezervasyon formu, elegant tipografi. Pure CSS tab sistemi.</p>
+                <span class="card-tag tag-intermediate">Orta</span>
+            </a>
+            <a href="projeler/06-tarif-defteri/index.html" class="card">
+                <div class="card-icon" style="background: var(--warning-bg); color: var(--warning);">06</div>
+                <h3>Tarif Defteri (Mutfak Günlüğü)</h3>
+                <p>Tarif kartları, detay bölümü, malzeme listesi, etiket bulutu, yazdırma CSS. Kategori filtreleme.</p>
+                <span class="card-tag tag-intermediate">Orta</span>
+            </a>
+            <a href="projeler/07-portfolio-sitesi/index.html" class="card">
+                <div class="card-icon" style="background: #fef2f2; color: #ef4444;">07</div>
+                <h3>Portfolio Sitesi</h3>
+                <p>Sticky navbar, animasyonlu hero, progress bar'lar, filtrelenebilir grid, timeline, glassmorphism. İleri CSS.</p>
+                <span class="card-tag tag-advanced">İleri</span>
+            </a>
+            <a href="projeler/08-e-ticaret/index.html" class="card">
+                <div class="card-icon" style="background: #fef2f2; color: #ef4444;">08</div>
+                <h3>E-Ticaret Sayfası</h3>
+                <p>Mega menü, ürün grid/list view, filtre sidebar, ürün detay, sepet dropdown, scroll-snap carousel.</p>
+                <span class="card-tag tag-advanced">İleri</span>
+            </a>
+            <a href="projeler/09-dashboard/index.html" class="card">
+                <div class="card-icon" style="background: #fef2f2; color: #ef4444;">09</div>
+                <h3>Admin Dashboard</h3>
+                <p>Collapsible sidebar, istatistik kartları, CSS chart'lar, veri tablosu, aktivite timeline. Kompleks Grid layout.</p>
+                <span class="card-tag tag-advanced">İleri</span>
+            </a>
+            <a href="projeler/10-haber-sitesi/index.html" class="card">
+                <div class="card-icon" style="background: #fef2f2; color: #ef4444;">10</div>
+                <h3>Haber Sitesi (GündemPlus)</h3>
+                <p>Mega navigasyon, breaking news ticker, hero grid, multi-column layout, sayfalama, mega footer. En kapsamlı proje.</p>
+                <span class="card-tag tag-advanced">İleri</span>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>HTML & CSS Eğitim Platformu — UI/UX Designer'lar İçin Tasarlandı</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Kolaydan zora, adım adım web geliştirme yolculuğunuz burada başlıyor.</p>
+    </footer>
+
+    <script>
+        function safeStorage(action, key, value) {
+            try {
+                if (action === 'get') return localStorage.getItem(key);
+                if (action === 'set') localStorage.setItem(key, value);
+            } catch (e) { return null; }
+        }
+        function temaGuncelle(tema) {
+            document.documentElement.setAttribute('data-tema', tema);
+            var btn = document.querySelector('.tema-btn');
+            if (btn) btn.textContent = tema === 'koyu' ? '☀️' : '🌙';
+        }
+        function temaToggle() {
+            var mevcut = document.documentElement.getAttribute('data-tema') || 'acik';
+            var yeni = mevcut === 'acik' ? 'koyu' : 'acik';
+            temaGuncelle(yeni);
+            safeStorage('set', 'tema', yeni);
+        }
+        (function() {
+            var kayitli = safeStorage('get', 'tema');
+            if (kayitli) temaGuncelle(kayitli);
+        })();
+    </script>
+</body>
+</html>

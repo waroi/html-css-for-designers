@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HTML-CSS Eğitimi - Kapsamlı Türkçe Eğitim Programı">
+    <meta name="keywords" content="HTML, CSS, eğitim, web tasarım, responsive design">
+    <title>HTML-CSS Eğitimi | Kapsamlı Eğitim Programı</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-light: #f3f4f6;
+            --gray-dark: #1f2937;
+            --text-light: #111827;
+            --text-lighter: #6b7280;
+            --border-light: #e5e7eb;
+
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1f2937;
+            --bg-secondary: #111827;
+            --text-primary: #f3f4f6;
+            --text-secondary: #d1d5db;
+            --border: #374151;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 1000;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(99,102,241,0.3);
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header-subtext {
+            font-size: 1rem;
+            opacity: 0.9;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .header-subtext span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .intro-section {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        .intro-section h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .intro-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(99,102,241,0.15);
+            transform: translateY(-5px);
+        }
+
+        .feature-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .lessons-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin: 3rem 0 2rem 0;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .lesson-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .lesson-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(99,102,241,0.2);
+            transform: translateY(-10px);
+        }
+
+        .lesson-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .lesson-number {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .lesson-body {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lesson-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .lesson-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-level {
+            background: rgba(99,102,241,0.15);
+            color: var(--primary);
+        }
+
+        .badge-level.beginner {
+            background: rgba(16,185,129,0.15);
+            color: var(--success);
+        }
+
+        .badge-level.intermediate {
+            background: rgba(245,158,11,0.15);
+            color: var(--warning);
+        }
+
+        .badge-level.advanced {
+            background: rgba(239,68,68,0.15);
+            color: var(--danger);
+        }
+
+        .badge-time {
+            background: rgba(99,102,241,0.1);
+            color: var(--primary);
+        }
+
+        .lesson-topics {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lesson-topics strong {
+            display: block;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .lesson-topics ul {
+            list-style: none;
+            padding: 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .lesson-topics li {
+            padding: 0.25rem 0;
+        }
+
+        .lesson-topics li:before {
+            content: "▸ ";
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        .lesson-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid var(--primary);
+            cursor: pointer;
+        }
+
+        .lesson-button:hover {
+            background: transparent;
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .curriculum-summary {
+            background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, rgba(16,185,129,0.05) 100%);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--primary);
+            margin: 3rem 0;
+        }
+
+        .curriculum-summary h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-item .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .summary-item .label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 3rem;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 3rem 1rem;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .header-subtext {
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .back-to-top {
+                width: 45px;
+                height: 45px;
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+
+            .lesson-header {
+                padding: 1.5rem;
+            }
+
+            .lesson-header h3 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<a href="../../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Koyu Tema</button>
+    <button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+    <header>
+        <h1>HTML-CSS Eğitimi</h1>
+        <p>Başlangıçtan İleri Seviyelere Kadar Kapsamlı Eğitim Programı</p>
+        <div class="header-subtext">
+            <span>📚 7 Ders</span>
+            <span>💻 Interactive Örnekler</span>
+            <span>🎯 Pratik Alıştırmalar</span>
+            <span>🌙 Dark Mode Desteği</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="intro-section">
+            <h2>Programı Hakkında</h2>
+            <p>Bu eğitim programı, HTML ve CSS'i sıfırdan öğrenmek isteyen kişiler için oluşturulmuştur. Her ders, teorik bilgiler ve pratik örneklerle desteklenmiştir. Responsive tasarım, erişilebilirlik, performans optimizasyonu gibi modern web geliştirme konseptlerini öğreneceksiniz.</p>
+            <p><strong>Hedef Kitle:</strong> Web geliştirmeye yeni başlayanlar, öğrenciler, kariyer değiştirenler ve self-taught geliştiriciler</p>
+        </section>
+
+        <section class="features-grid">
+            <div class="feature-card">
+                <div class="icon">📖</div>
+                <h3>Yapılandırılmış</h3>
+                <p>Temellerden ileri seviyelere kadar adım adım ilerleyin</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">💡</div>
+                <h3>Pratik</h3>
+                <p>Her kavram için çalışan kod örnekleri ve görseller</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🎨</div>
+                <h3>Modern</h3>
+                <p>Güncel CSS özellikleri ve best practices öğrenin</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🚀</div>
+                <h3>Responsive</h3>
+                <p>Tüm cihazlarda mükemmel görünen tasarımlar</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">♿</div>
+                <h3>Erişilebilir</h3>
+                <p>Herkes için web tasarımı prensiplerini öğrenin</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⚡</div>
+                <h3>Hızlı</h3>
+                <p>Performans optimizasyonu ve best practices</p>
+            </div>
+        </section>
+
+        <h2 class="lessons-title">Dersler</h2>
+
+        <div class="lessons-grid">
+            <!-- Ders 1 -->
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <div class="lesson-number">Ders 1</div>
+                    <h3>HTML Temelleri</h3>
+                    <p>Web'e Giriş Yapın</p>
+                </div>
+                <div class="lesson-body">
+                    <p class="lesson-description">HTML5'in temel yapısını, en sık kullanılan etiketleri, semantik HTML ve belge oluşturmayı öğrenin.</p>
+                    <div class="lesson-topics">
+                        <strong>Başlıklar:</strong>
+                        <ul>
+                            <li>HTML Yapısı ve DOCTYPE</li>
+                            <li>Temel Etiketler</li>
+                            <li>Linkler ve Görseller</li>
+                            <li>Listeler</li>
+                        </ul>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="badge badge-level beginner">Başlangıç</span>
+                        <span class="badge badge-time">⏱️ 45 dakika</span>
+                    </div>
+                    <a href="ders01-html-temelleri.html" class="lesson-button">Derse Git</a>
+                </div>
+            </div>
+
+            <!-- Ders 2 -->
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <div class="lesson-number">Ders 2</div>
+                    <h3>İleri HTML</h3>
+                    <p>HTML Mastery'ye Doğru</p>
+                </div>
+                <div class="lesson-body">
+                    <p class="lesson-description">Semantik HTML5 elemanları, formlar, tablolar, multimedya ve erişilebilirlik konularını ilerletme düzeyinde öğrenin.</p>
+                    <div class="lesson-topics">
+                        <strong>Başlıklar:</strong>
+                        <ul>
+                            <li>Semantik HTML5 Elemanları</li>
+                            <li>Formlar ve Input Türleri</li>
+                            <li>Tablolar</li>
+                            <li>Medya ve SEO</li>
+                        </ul>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="badge badge-level intermediate">Orta</span>
+                        <span class="badge badge-time">⏱️ 60 dakika</span>
+                    </div>
+                    <a href="ders02-html-ileri.html" class="lesson-button">Derse Git</a>
+                </div>
+            </div>
+
+            <!-- Ders 3 -->
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <div class="lesson-number">Ders 3</div>
+                    <h3>CSS Temelleri</h3>
+                    <p>Stilin Dünyasına Hoş Geldiniz</p>
+                </div>
+                <div class="lesson-body">
+                    <p class="lesson-description">CSS'in temelleri, seçiciler, renkler, tipografi, box model ve display özelliğini öğrenin.</p>
+                    <div class="lesson-topics">
+                        <strong>Başlıklar:</strong>
+                        <ul>
+                            <li>CSS Temelleri</li>
+                            <li>Seçiciler</li>
+                            <li>Renkler ve Tipografi</li>
+                            <li>Box Model</li>
+                        </ul>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="badge badge-level intermediate">Orta</span>
+                        <span class="badge badge-time">⏱️ 75 dakika</span>
+                    </div>
+                    <a href="ders03-css-temelleri.html" class="lesson-button">Derse Git</a>
+                </div>
+            </div>
+
+            <!-- Ders 4 -->
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <div class="lesson-number">Ders 4</div>
+                    <h3>CSS Layout</h3>
+                    <p>Sayfa Tasarımında Ustalaşın</p>
+                </div>
+                <div class="lesson-body">
+                    <p class="lesson-description">Flexbox ve CSS Grid ile modern sayfa tasarımlarını yapın, pozisyonlama ve z-index'i öğrenin.</p>
+                    <div class="lesson-topics">
+                        <strong>Başlıklar:</strong>
+                        <ul>
+                            <li>Flexbox Derinlemesine</li>
+                            <li>CSS Grid</li>
+                            <li>Pozisyonlama</li>
+                            <li>Z-Index</li>
+                        </ul>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="badge badge-level intermediate">Orta</span>
+                        <span class="badge badge-time">⏱️ 90 dakika</span>
+                    </div>
+                    <a href="ders04-css-layout.html" class="lesson-button">Derse Git</a>
+                </div>
+            </div>
+
+            <!-- Ders 5 -->
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <div class="lesson-number">Ders 5</div>
+                    <h3>Responsive Design</h3>
+                    <p>Tüm Cihazlar İçin Tasarım</p>
+                </div>
+                <div class="lesson-body">
+                    <p class="lesson-description">Media queries, viewport meta tag, responsive görseller ve fluid typography ile mobil-first tasarım yapın.</p>
+                    <div class="lesson-topics">
+                        <strong>Başlıklar:</strong>
+                        <ul>
+                            <li>Media Queries</li>
+                            <li>Responsive Görseller</li>
+                            <li>CSS Birimleri</li>
+                            <li>Mobile-First Yaklaşım</li>
+                        </ul>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="badge badge-level intermediate">Orta</span>
+                        <span class="badge badge-time">⏱️ 75 dakika</span>
+                    </div>
+                    <a href="ders05-responsive-design.html" class="lesson-button">Derse Git</a>
+                </div>
+            </div>
+
+            <!-- Ders 6 -->
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <div class="lesson-number">Ders 6</div>
+                    <h3>CSS Animasyonlar</h3>
+                    <p>Hareketli Tasarımlar Oluşturun</p>
+                </div>
+                <div class="lesson-body">
+                    <p class="lesson-description">CSS transitions ve @keyframes animasyonları, transforms ve timing functions öğrenin.</p>
+                    <div class="lesson-topics">
+                        <strong>Başlıklar:</strong>
+                        <ul>
+                            <li>CSS Transitions</li>
+                            <li>@keyframes Animasyonları</li>
+                            <li>Transform Fonksiyonları</li>
+                            <li>Pratik Örnekler</li>
+                        </ul>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="badge badge-level intermediate">Orta</span>
+                        <span class="badge badge-time">⏱️ 60 dakika</span>
+                    </div>
+                    <a href="ders06-animasyonlar.html" class="lesson-button">Derse Git</a>
+                </div>
+            </div>
+
+            <!-- Ders 7 -->
+            <div class="lesson-card">
+                <div class="lesson-header">
+                    <div class="lesson-number">Ders 7</div>
+                    <h3>İleri Konular</h3>
+                    <p>Professional Geliştirici Olmak</p>
+                </div>
+                <div class="lesson-body">
+                    <p class="lesson-description">CSS değişkenleri, BEM metodolojisi, erişilebilirlik, SEO, modern CSS ve performans optimizasyonu öğrenin.</p>
+                    <div class="lesson-topics">
+                        <strong>Başlıklar:</strong>
+                        <ul>
+                            <li>CSS Değişkenleri</li>
+                            <li>BEM Metodolojisi</li>
+                            <li>Erişilebilirlik</li>
+                            <li>Performans Optimizasyonu</li>
+                        </ul>
+                    </div>
+                    <div class="lesson-meta">
+                        <span class="badge badge-level advanced">İleri</span>
+                        <span class="badge badge-time">⏱️ 120 dakika</span>
+                    </div>
+                    <a href="ders07-ileri-konular.html" class="lesson-button">Derse Git</a>
+                </div>
+            </div>
+        </div>
+
+        <section class="curriculum-summary">
+            <h2>Eğitim Programı Özeti</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="number">7</div>
+                    <div class="label">Kapsamlı Ders</div>
+                </div>
+                <div class="summary-item">
+                    <div class="number">500+</div>
+                    <div class="label">Kod Örneği</div>
+                </div>
+                <div class="summary-item">
+                    <div class="number">40+</div>
+                    <div class="label">İnteraktif Demo</div>
+                </div>
+                <div class="summary-item">
+                    <div class="number">8+</div>
+                    <div class="label">Saat Eğitim</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="intro-section">
+            <h2>Başlamak İçin İpuçları</h2>
+            <ul style="list-style: none; padding: 0; font-size: 1.05rem;">
+                <li style="padding: 0.75rem 0; color: var(--text-secondary);">
+                    <strong style="color: var(--primary);">1. Sırasıyla ilerleyin:</strong> Dersler birbiri üzerine kurulu olup, temelden başlamanız önerilir.
+                </li>
+                <li style="padding: 0.75rem 0; color: var(--text-secondary);">
+                    <strong style="color: var(--primary);">2. Kod yazarak öğrenin:</strong> Örnekleri sadece okumayın, kendiniz yazın ve değiştirin.
+                </li>
+                <li style="padding: 0.75rem 0; color: var(--text-secondary);">
+                    <strong style="color: var(--primary);">3. Alıştırmaları yapın:</strong> Her dersin sonunda alıştırma kutuları bulunmaktadır.
+                </li>
+                <li style="padding: 0.75rem 0; color: var(--text-secondary);">
+                    <strong style="color: var(--primary);">4. Proje yapın:</strong> Öğrendiğiniz bilgileri bir proje ile birleştirin.
+                </li>
+                <li style="padding: 0.75rem 0; color: var(--text-secondary);">
+                    <strong style="color: var(--primary);">5. Tarayıcı DevTools'u öğrenin:</strong> Browser developer tools, web geliştirmenin en önemli aracıdır.
+                </li>
+            </ul>
+        </section>
+
+        <section class="intro-section">
+            <h2>Sonraki Adımlar</h2>
+            <p>Bu kursu tamamladıktan sonra şunları öğrenebilirsiniz:</p>
+            <ul style="list-style: none; padding: 0; font-size: 1.05rem;">
+                <li style="padding: 0.75rem 0; color: var(--text-secondary);">
+                    📚 <strong style="color: var(--primary);">JavaScript:</strong> Etkileşimli web sayfaları oluşturmak için
+                </li>
+                <li style="padding: 0.75rem 0; color: var(--text-secondary);">
+                    ⚛️ <strong style="color: var(--primary);">React/Vue:</strong> Modern JavaScript framework'leri
+                </li>
+                <li style="padding: 0.75rem 0; color: var(--text-secondary);">
+                    🎨 <strong style="color: var(--primary);">UI/UX Tasarımı:</strong> Kullanıcı merkezli tasarım
+                </li>
+                <li style="padding: 0.75rem 0; color: var(--text-secondary);">
+                    🚀 <strong style="color: var(--primary);">Web Performansı:</strong> Hızlı ve verimli siteler
+                </li>
+                <li style="padding: 0.75rem 0; color: var(--text-secondary);">
+                    🌐 <strong style="color: var(--primary);">Fullstack Geliştirme:</strong> Backend teknolojileri
+                </li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <p><strong>HTML-CSS Eğitimi</strong> - Yapı ve Stil ile Web Geliştirme</p>
+        <p>Tüm dersler açık kaynak kodlu ve paylaşılabilir niteliktedir.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">
+            © 2026 HTML-CSS Eğitim Programı | Tüm hakları saklıdır.
+        </p>
+    </footer>
+
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            safeStorage('set', 'theme', newTheme);
+            updateThemeButton();
+        }
+
+        function updateThemeButton() {
+            const button = document.querySelector('.theme-toggle');
+            const theme = document.documentElement.getAttribute('data-theme');
+            button.textContent = theme === 'dark' ? '☀️ Açık Tema' : '🌙 Koyu Tema';
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = safeStorage('get', 'theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeButton();
+
+            window.addEventListener('scroll', () => {
+                const button = document.querySelector('.back-to-top');
+                if (window.scrollY > 300) {
+                    button.classList.add('show');
+                } else {
+                    button.classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

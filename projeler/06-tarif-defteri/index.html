@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutfak Günlüğü - Tarif Defteri</title>
+    <meta name="description" content="Mutfak Günlüğü - Denenmiş, sevilen, heyecan verici tarifler">
+    <style>
+        /* ========== RESET VE TEMEL AYARLAR ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Scroll bar özelleştirmesi */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ========== TEMA DEĞİŞKENLERİ ========== */
+        :root {
+            /* Sıcak, davetkar renk paleti */
+            --primary-color: #d4543d;
+            --primary-dark: #b83a2e;
+            --primary-light: #e8704f;
+            --secondary-color: #f4b896;
+            --accent-color: #c9764a;
+
+            /* Açık tema */
+            --bg-primary: #fef9f3;
+            --bg-secondary: #fff5e6;
+            --bg-tertiary: #f5e6d3;
+            --text-primary: #2d2416;
+            --text-secondary: #5a4a3a;
+            --border-color: #e8dcc8;
+            --shadow: 0 2px 8px rgba(139, 69, 19, 0.1);
+            --shadow-hover: 0 8px 16px rgba(212, 84, 61, 0.15);
+        }
+
+        /* Koyu tema */
+        html[data-theme="dark"] {
+            --primary-color: #e8704f;
+            --primary-dark: #ff8565;
+            --primary-light: #ff9471;
+            --secondary-color: #ffb380;
+            --accent-color: #d9956b;
+
+            --bg-primary: #1a1410;
+            --bg-secondary: #2d241d;
+            --bg-tertiary: #3d3229;
+            --text-primary: #f5ede3;
+            --text-secondary: #d4c4b0;
+            --border-color: #4a3f35;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 8px 16px rgba(232, 112, 79, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== HEADER ========== */
+        header {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-size: 1.6rem;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo::before {
+            content: "📖";
+            font-size: 2rem;
+        }
+
+        /* Üst navigasyon */
+        .top-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .top-nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .top-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .top-nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Tema toggle */
+        .theme-toggle {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        /* ========== ARAMA BÖLÜMÜ ========== */
+        .search-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: 2px solid var(--border-color);
+            padding: 0.8rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .search-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ========== HERO KARTI ========== */
+        .hero-card {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .hero-recipe {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            box-shadow: var(--shadow-hover);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-recipe::before {
+            content: '👨‍🍳';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 150px;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .hero-info {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-info-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-info-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .hero-info-value {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .hero-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            border: 3px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-button {
+            display: inline-block;
+            background: white;
+            color: var(--primary-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+
+        .hero-button:hover {
+            background: transparent;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* ========== KATEGORİ FİLTRELERİ ========== */
+        .category-filters {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        /* ========== ANA İÇERİK ========== */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+        }
+
+        /* Tarif Grid */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Tarif Kartı */
+        .recipe-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+
+        /* Tarif Görsel */
+        .recipe-image {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recipe-card:nth-child(1) .recipe-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .recipe-card:nth-child(2) .recipe-image {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .recipe-card:nth-child(3) .recipe-image {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .recipe-card:nth-child(4) .recipe-image {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .recipe-card:nth-child(5) .recipe-image {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .recipe-card:nth-child(6) .recipe-image {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .recipe-card:nth-child(7) .recipe-image {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .recipe-card:nth-child(8) .recipe-image {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);
+        }
+
+        .recipe-card:nth-child(9) .recipe-image {
+            background: linear-gradient(135deg, #2e2e78 0%, #662d91 100%);
+        }
+
+        /* Tarif İçeriği */
+        .recipe-content {
+            padding: 1.5rem;
+        }
+
+        .recipe-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .recipe-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        /* Zorluk Seviyeleri */
+        .difficulty {
+            display: inline-flex;
+            gap: 0.2rem;
+            margin: 0.5rem 0;
+        }
+
+        .difficulty-star {
+            color: #ffd700;
+            font-size: 0.9rem;
+        }
+
+        .difficulty-empty {
+            color: var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .recipe-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .recipe-tag {
+            display: inline-block;
+            background: var(--bg-tertiary);
+            color: var(--primary-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            margin-top: 0.8rem;
+            margin-right: 0.4rem;
+        }
+
+        /* ========== TARIF DETAYı (AÇILIR BÖLÜM) ========== */
+        .recipe-detail {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border-color);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .recipe-card.expanded .recipe-detail {
+            max-height: 500px;
+        }
+
+        .detail-section h4 {
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            margin-top: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .ingredients-list {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .ingredients-list li {
+            margin-bottom: 0.4rem;
+            margin-left: 1.5rem;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar-box {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-item {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .sidebar-item:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-item:hover {
+            color: var(--primary-color);
+            padding-left: 0.5rem;
+        }
+
+        /* Etiket Bulutu */
+        .tag-cloud {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: var(--bg-tertiary);
+            color: var(--primary-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .tag:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            margin-top: 5rem;
+            border-top: 3px solid var(--primary-color);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ========== YAZDIRMA DOSTU CSS ========== */
+        @media print {
+            header,
+            footer,
+            .search-container,
+            .category-filters,
+            .sidebar,
+            .theme-toggle {
+                display: none;
+            }
+
+            .recipe-card {
+                page-break-inside: avoid;
+                border: 1px solid #000;
+                margin-bottom: 2rem;
+            }
+
+            .recipe-detail {
+                max-height: none !important;
+                overflow: visible !important;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+
+            .recipe-card {
+                background: white;
+                color: black;
+            }
+
+            .recipe-title {
+                color: #d4543d;
+            }
+
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .recipe-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========== RESPONSIVE TASARIM ========== */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-recipe {
+                grid-template-columns: 1fr;
+            }
+
+            .recipe-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 0.8rem;
+                padding: 1rem;
+            }
+
+            .top-nav {
+                gap: 1rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .top-nav a {
+                font-size: 0.9rem;
+            }
+
+            .hero-recipe {
+                padding: 2rem;
+            }
+
+            .hero-recipe h2 {
+                font-size: 1.8rem;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .recipe-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .category-filters {
+                padding: 0 1rem;
+                justify-content: center;
+            }
+
+            .main-container {
+                padding: 0 1rem;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .logo::before {
+                font-size: 1.5rem;
+            }
+
+            .top-nav {
+                gap: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .hero-recipe {
+                padding: 1.5rem;
+            }
+
+            .hero-recipe h2 {
+                font-size: 1.5rem;
+            }
+
+            .hero-info {
+                gap: 1rem;
+            }
+
+            .recipe-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .recipe-image {
+                font-size: 2.5rem;
+            }
+
+            .recipe-title {
+                font-size: 1rem;
+            }
+
+            .main-container {
+                gap: 1.5rem;
+                padding: 0 1rem;
+            }
+
+            .sidebar-box {
+                padding: 1rem;
+            }
+        }
+
+        /* ========== ERİŞİLEBİLİRLİK ========== */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* Keyboard navigasyon için focus stilleri */
+        a:focus,
+        button:focus,
+        input:focus {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+<a href="../../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <!-- Erişilebilirlik: Ana içeriğe atla -->
+    <a href="#main-content" class="skip-link">Ana içeriğe atla</a>
+
+    <!-- ========== HEADER ========== -->
+    <header role="banner">
+        <div class="header-container">
+            <a href="#" class="logo" aria-label="Mutfak Günlüğü Ana Sayfası">Mutfak Günlüğü</a>
+            <nav class="top-nav" aria-label="Ana navigasyon">
+                <a href="#" aria-current="page">Ana Sayfa</a>
+                <a href="#recipes">Tarifler</a>
+                <a href="#about">Hakkında</a>
+                <a href="#contact">İletişim</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir">🌙 Koyu Tema</button>
+        </div>
+    </header>
+
+    <!-- ========== ARAMA ========== -->
+    <section class="search-container" aria-label="Tarif arama">
+        <div class="search-box">
+            <input type="text" placeholder="Tarif adı veya malzeme arayın..." aria-label="Tarif arama kutusu">
+            <button class="search-btn" aria-label="Ara">🔍 Ara</button>
+        </div>
+    </section>
+
+    <!-- ========== HERO KARTI ========== -->
+    <section class="hero-card" aria-label="Öne çıkan tarif">
+        <div class="hero-recipe">
+            <div class="hero-content">
+                <h2>Ev Yapımı Tiramisü</h2>
+                <p>Lezzet ve kalite açısından harika olan bu İtalyan tatlısı evde kolaylıkla hazırlanabilir. Mascarpon peyniri ve kahve sosunda yapılan katman katman bir şaheser.</p>
+
+                <div class="hero-info">
+                    <div class="hero-info-item">
+                        <span class="hero-info-label">Hazırlık</span>
+                        <div class="hero-info-value">15 dk</div>
+                    </div>
+                    <div class="hero-info-item">
+                        <span class="hero-info-label">Pişirme</span>
+                        <div class="hero-info-value">0 dk</div>
+                    </div>
+                    <div class="hero-info-item">
+                        <span class="hero-info-label">Dinlenme</span>
+                        <div class="hero-info-value">4 saat</div>
+                    </div>
+                    <div class="hero-info-item">
+                        <span class="hero-info-label">Kişi Sayısı</span>
+                        <div class="hero-info-value">6-8 kişi</div>
+                    </div>
+                </div>
+
+                <a href="#recipes" class="hero-button">Başla!</a>
+            </div>
+            <div class="hero-image">🍰</div>
+        </div>
+    </section>
+
+    <!-- ========== KATEGORİ FİLTRELERİ ========== -->
+    <div class="category-filters" role="tablist" aria-label="Tarif kategorileri">
+        <button class="category-btn active" role="tab" aria-selected="true">Tümü</button>
+        <button class="category-btn" role="tab" aria-selected="false">☀️ Kahvaltı</button>
+        <button class="category-btn" role="tab" aria-selected="false">🥗 Öğle</button>
+        <button class="category-btn" role="tab" aria-selected="false">🍽️ Akşam</button>
+        <button class="category-btn" role="tab" aria-selected="false">🍰 Tatlı</button>
+        <button class="category-btn" role="tab" aria-selected="false">🥐 Atıştırmalık</button>
+    </div>
+
+    <!-- ========== ANA İÇERİK ========== -->
+    <main id="main-content">
+        <div class="main-container">
+            <!-- Tarif Grid -->
+            <section id="recipes" aria-label="Tarif listesi">
+                <div class="recipe-grid">
+                    <!-- Tarif 1 -->
+                    <article class="recipe-card">
+                        <div class="recipe-image">🍳</div>
+                        <div class="recipe-content">
+                            <h3 class="recipe-title">Kolay Omlet</h3>
+                            <div class="recipe-meta">
+                                <span class="recipe-meta-item">⏱️ 10 dk</span>
+                                <span class="recipe-meta-item">👥 1-2 kişi</span>
+                            </div>
+                            <div class="difficulty">
+                                <span class="difficulty-star">★</span>
+                                <span class="difficulty-empty">☆☆</span>
+                            </div>
+                            <p class="recipe-description">Sabah kahvaltısı için en hızlı ve lezzetli seçim. Pişirmesi sadece 5 dakika!</p>
+                            <span class="recipe-tag">Kahvaltı</span>
+
+                            <div class="recipe-detail">
+                                <div class="detail-section">
+                                    <h4>Malzemeler</h4>
+                                    <ul class="ingredients-list">
+                                        <li>3 adet yumurta</li>
+                                        <li>2 yemek kaşığı tereyağ</li>
+                                        <li>2 yemek kaşığı süt</li>
+                                        <li>Tuz ve karabiber</li>
+                                        <li>Peynir ve sebzeler (isteğe bağlı)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tarif 2 -->
+                    <article class="recipe-card">
+                        <div class="recipe-image">🥗</div>
+                        <div class="recipe-content">
+                            <h3 class="recipe-title">Mevsim Salatası</h3>
+                            <div class="recipe-meta">
+                                <span class="recipe-meta-item">⏱️ 15 dk</span>
+                                <span class="recipe-meta-item">👥 4 kişi</span>
+                            </div>
+                            <div class="difficulty">
+                                <span class="difficulty-star">★</span>
+                                <span class="difficulty-empty">☆☆</span>
+                            </div>
+                            <p class="recipe-description">Taze mevsim sebzelerinden yapılan, sağlıklı ve rengarenk bir salata.</p>
+                            <span class="recipe-tag">Öğle</span>
+
+                            <div class="recipe-detail">
+                                <div class="detail-section">
+                                    <h4>Malzemeler</h4>
+                                    <ul class="ingredients-list">
+                                        <li>2 adet domates</li>
+                                        <li>1 salatalık</li>
+                                        <li>1 soğan</li>
+                                        <li>1 kırmızı biber</li>
+                                        <li>Zeytinyağı, limon, tuz</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tarif 3 -->
+                    <article class="recipe-card">
+                        <div class="recipe-image">🍲</div>
+                        <div class="recipe-content">
+                            <h3 class="recipe-title">Domates Çorbası</h3>
+                            <div class="recipe-meta">
+                                <span class="recipe-meta-item">⏱️ 30 dk</span>
+                                <span class="recipe-meta-item">👥 6 kişi</span>
+                            </div>
+                            <div class="difficulty">
+                                <span class="difficulty-star">★★</span>
+                                <span class="difficulty-empty">☆</span>
+                            </div>
+                            <p class="recipe-description">Domates tuyu ve kremasından yapılmış, sıcak ve rahatlatıcı bir çorba.</p>
+                            <span class="recipe-tag">Akşam</span>
+
+                            <div class="recipe-detail">
+                                <div class="detail-section">
+                                    <h4>Malzemeler</h4>
+                                    <ul class="ingredients-list">
+                                        <li>1 kg domates</li>
+                                        <li>1 soğan</li>
+                                        <li>2 diş sarımsak</li>
+                                        <li>1 liter sebze suyu</li>
+                                        <li>200 ml krema, tuz, karabiber</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tarif 4 -->
+                    <article class="recipe-card">
+                        <div class="recipe-image">🍝</div>
+                        <div class="recipe-content">
+                            <h3 class="recipe-title">Pesto Makarna</h3>
+                            <div class="recipe-meta">
+                                <span class="recipe-meta-item">⏱️ 20 dk</span>
+                                <span class="recipe-meta-item">👥 2 kişi</span>
+                            </div>
+                            <div class="difficulty">
+                                <span class="difficulty-star">★★</span>
+                                <span class="difficulty-empty">☆</span>
+                            </div>
+                            <p class="recipe-description">Taze fesleğen pesto sosuyla lezziz bir İtalyan klasiği.</p>
+                            <span class="recipe-tag">Öğle</span>
+
+                            <div class="recipe-detail">
+                                <div class="detail-section">
+                                    <h4>Malzemeler</h4>
+                                    <ul class="ingredients-list">
+                                        <li>250 gr makarna</li>
+                                        <li>2 dolu fincan fesleğen</li>
+                                        <li>100 gr parmesan peyniri</li>
+                                        <li>100 ml zeytinyağı</li>
+                                        <li>50 gr fındık, 3 diş sarımsak</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tarif 5 -->
+                    <article class="recipe-card">
+                        <div class="recipe-image">🍰</div>
+                        <div class="recipe-content">
+                            <h3 class="recipe-title">Çikolata Pastası</h3>
+                            <div class="recipe-meta">
+                                <span class="recipe-meta-item">⏱️ 45 dk</span>
+                                <span class="recipe-meta-item">👥 8 kişi</span>
+                            </div>
+                            <div class="difficulty">
+                                <span class="difficulty-star">★★★</span>
+                            </div>
+                            <p class="recipe-description">Çikolata severlerin vazgeçilmez, ıslak ve lezzetli pastası.</p>
+                            <span class="recipe-tag">Tatlı</span>
+
+                            <div class="recipe-detail">
+                                <div class="detail-section">
+                                    <h4>Malzemeler</h4>
+                                    <ul class="ingredients-list">
+                                        <li>200 gr çikolata</li>
+                                        <li>150 gr tereyağ</li>
+                                        <li>4 adet yumurta</li>
+                                        <li>150 gr şeker</li>
+                                        <li>150 gr un, 1 kaşık kakao</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tarif 6 -->
+                    <article class="recipe-card">
+                        <div class="recipe-image">🥖</div>
+                        <div class="recipe-content">
+                            <h3 class="recipe-title">Ev Ekmeği</h3>
+                            <div class="recipe-meta">
+                                <span class="recipe-meta-item">⏱️ 2.5 saat</span>
+                                <span class="recipe-meta-item">👥 6 kişi</span>
+                            </div>
+                            <div class="difficulty">
+                                <span class="difficulty-star">★★★</span>
+                            </div>
+                            <p class="recipe-description">Ev ortamında yapılabilen, sıcak ve tatlı kokulu ekmek tarifi.</p>
+                            <span class="recipe-tag">Atıştırmalık</span>
+
+                            <div class="recipe-detail">
+                                <div class="detail-section">
+                                    <h4>Malzemeler</h4>
+                                    <ul class="ingredients-list">
+                                        <li>500 gr un</li>
+                                        <li>300 ml ılık su</li>
+                                        <li>7 gr tuz</li>
+                                        <li>5 gr maya</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tarif 7 -->
+                    <article class="recipe-card">
+                        <div class="recipe-image">🍪</div>
+                        <div class="recipe-content">
+                            <h3 class="recipe-title">Çikolatalı Kurabiye</h3>
+                            <div class="recipe-meta">
+                                <span class="recipe-meta-item">⏱️ 30 dk</span>
+                                <span class="recipe-meta-item">👥 20 parça</span>
+                            </div>
+                            <div class="difficulty">
+                                <span class="difficulty-star">★★</span>
+                                <span class="difficulty-empty">☆</span>
+                            </div>
+                            <p class="recipe-description">Çay saatleri için ideal, çikolata parçacıklı lezzetli kurabiye.</p>
+                            <span class="recipe-tag">Tatlı</span>
+
+                            <div class="recipe-detail">
+                                <div class="detail-section">
+                                    <h4>Malzemeler</h4>
+                                    <ul class="ingredients-list">
+                                        <li>250 gr un</li>
+                                        <li>150 gr tereyağ</li>
+                                        <li>100 gr şeker</li>
+                                        <li>1 adet yumurta</li>
+                                        <li>150 gr çikolata parçacıkları</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tarif 8 -->
+                    <article class="recipe-card">
+                        <div class="recipe-image">🍇</div>
+                        <div class="recipe-content">
+                            <h3 class="recipe-title">Meyve Smoothie'si</h3>
+                            <div class="recipe-meta">
+                                <span class="recipe-meta-item">⏱️ 5 dk</span>
+                                <span class="recipe-meta-item">👥 1-2 kişi</span>
+                            </div>
+                            <div class="difficulty">
+                                <span class="difficulty-star">★</span>
+                                <span class="difficulty-empty">☆☆</span>
+                            </div>
+                            <p class="recipe-description">Taze meyve ve yoğurttan yapılan, sağlıklı ve lezzetli içecek.</p>
+                            <span class="recipe-tag">Atıştırmalık</span>
+
+                            <div class="recipe-detail">
+                                <div class="detail-section">
+                                    <h4>Malzemeler</h4>
+                                    <ul class="ingredients-list">
+                                        <li>1 muz</li>
+                                        <li>1 bardak çilek</li>
+                                        <li>1 bardak yoğurt</li>
+                                        <li>200 ml süt</li>
+                                        <li>1 yemek kaşığı bal</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Tarif 9 -->
+                    <article class="recipe-card">
+                        <div class="recipe-image">🥔</div>
+                        <div class="recipe-content">
+                            <h3 class="recipe-title">Patates Salatası</h3>
+                            <div class="recipe-meta">
+                                <span class="recipe-meta-item">⏱️ 25 dk</span>
+                                <span class="recipe-meta-item">👥 4 kişi</span>
+                            </div>
+                            <div class="difficulty">
+                                <span class="difficulty-star">★</span>
+                                <span class="difficulty-empty">☆☆</span>
+                            </div>
+                            <p class="recipe-description">Klasik ve lezzetli, her ziyafete uygun patates salatası.</p>
+                            <span class="recipe-tag">Öğle</span>
+
+                            <div class="recipe-detail">
+                                <div class="detail-section">
+                                    <h4>Malzemeler</h4>
+                                    <ul class="ingredients-list">
+                                        <li>1 kg patates</li>
+                                        <li>1 soğan</li>
+                                        <li>3 adet yumurta</li>
+                                        <li>100 gr oliva</li>
+                                        <li>Mayonez, tuz, karabiber</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- SIDEBAR -->
+            <aside class="sidebar" aria-label="Yan panel">
+                <!-- Popüler Tarifler -->
+                <div class="sidebar-box">
+                    <h3 class="sidebar-title">⭐ Popüler Tarifler</h3>
+                    <div class="sidebar-item">Kolay Omlet</div>
+                    <div class="sidebar-item">Pesto Makarna</div>
+                    <div class="sidebar-item">Çikolata Pastası</div>
+                    <div class="sidebar-item">Domates Çorbası</div>
+                    <div class="sidebar-item">Mevsim Salatası</div>
+                </div>
+
+                <!-- Etiketler -->
+                <div class="sidebar-box">
+                    <h3 class="sidebar-title">🏷️ Popüler Etiketler</h3>
+                    <div class="tag-cloud">
+                        <span class="tag">Hızlı</span>
+                        <span class="tag">Sağlıklı</span>
+                        <span class="tag">Tatlı</span>
+                        <span class="tag">İtalyan</span>
+                        <span class="tag">Vegan</span>
+                        <span class="tag">Fırın</span>
+                        <span class="tag">Çorba</span>
+                        <span class="tag">Makarna</span>
+                        <span class="tag">Kahvaltı</span>
+                    </div>
+                </div>
+
+                <!-- İpuçları -->
+                <div class="sidebar-box">
+                    <h3 class="sidebar-title">💡 Pratik İpuçları</h3>
+                    <div class="sidebar-item">
+                        <strong>Ön hazırlık:</strong> Malzemeleri önceden ölçüp hazırlayın.
+                    </div>
+                    <div class="sidebar-item">
+                        <strong>Sıcaklık:</strong> Fırın ısısını doğru ayarlayın.
+                    </div>
+                    <div class="sidebar-item">
+                        <strong>Taze malzeme:</strong> Kaliteli malzemeleri tercih edin.
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer role="contentinfo">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Mutfak Günlüğü Hakkında</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.9rem;">Denenmiş, sevilen ve heyecan verici tarifler sunarak mutfakta yaratıcılığı teşvik ediyoruz.</p>
+                <a href="#">Biz Kimiz?</a>
+                <a href="#">İletişim</a>
+                <a href="#">Reklam</a>
+            </div>
+            <div class="footer-section">
+                <h3>Hızlı Linkler</h3>
+                <a href="#recipes">Tarifler</a>
+                <a href="#">Kategoriler</a>
+                <a href="#">En Popüler</a>
+                <a href="#">Yeni Tarifler</a>
+            </div>
+            <div class="footer-section">
+                <h3>Takip Et</h3>
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">Pinterest</a>
+                <a href="#">YouTube</a>
+            </div>
+            <div class="footer-section">
+                <h3>Yasal</h3>
+                <a href="#">Gizlilik Politikası</a>
+                <a href="#">Kullanım Şartları</a>
+                <a href="#">Çerez Aydınlatması</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Mutfak Günlüğü. Tüm hakları saklıdır. | Tasarım: HTML-CSS Öğreticisi</p>
+        </div>
+    </footer>
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        // Tema toggle işlevselliği
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // Kaydedilmiş tema tercihi
+        const savedTheme = safeStorage('get', 'theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            html.setAttribute('data-theme', newTheme);
+            safeStorage('set', 'theme', newTheme);
+            updateThemeButton(newTheme);
+        });
+
+        function updateThemeButton(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙 Koyu Tema' : '☀️ Açık Tema';
+        }
+
+        // Tarif kartı detay toggle
+        const recipeCards = document.querySelectorAll('.recipe-card');
+        recipeCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Tıklanan kartın dışında olanları kapat
+                recipeCards.forEach(otherCard => {
+                    if (otherCard !== card) {
+                        otherCard.classList.remove('expanded');
+                    }
+                });
+                // Tıklanan kartı aç/kapat
+                card.classList.toggle('expanded');
+            });
+        });
+
+        // Kategori filtresi işlevselliği
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+                categoryBtns.forEach(b => {
+                    if (b !== btn) b.setAttribute('aria-selected', 'false');
+                });
+            });
+        });
+
+        // Arama işlevselliği
+        const searchBtn = document.querySelector('.search-btn');
+        const searchInput = document.querySelector('.search-box input');
+
+        searchBtn.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                alert(`"${query}" için arama yapılıyor...`);
+                searchInput.value = '';
+            }
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
+
+        // Etiket işlevselliği
+        const tags = document.querySelectorAll('.tag');
+        tags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                alert(`"${tag.textContent}" etiketi filtrelendi.`);
+            });
+        });
+
+        // Smooth scroll navigasyon
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Yazdırma optimizasyonu
+        window.addEventListener('beforeprint', () => {
+            // Yazdırılmadan önce tüm kartları açık yap
+            recipeCards.forEach(card => {
+                card.classList.add('expanded');
+            });
+        });
+
+        window.addEventListener('afterprint', () => {
+            // Yazdırıldıktan sonra durumu sıfırla
+            recipeCards.forEach(card => {
+                card.classList.remove('expanded');
+            });
+        });
+    </script>
+</body>
+</html>

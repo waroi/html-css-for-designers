@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GündemPlus - Türkiye'nin En Güvenilir Haber Kaynağı</title>
+    <style>
+        /* ==================== RESET VE BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --text-primary: #111111;
+            --text-secondary: #666666;
+            --text-light: #999999;
+            --accent: #c4161c;
+            --accent-dark: #a00;
+            --border: #e0e0e0;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-lg: rgba(0, 0, 0, 0.15);
+        }
+
+        html[data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-light: #999999;
+            --border: #333333;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* ==================== TOP BAR ==================== */
+        .top-bar {
+            background: var(--text-primary);
+            color: white;
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .top-bar-left {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .top-bar-time {
+            font-weight: 600;
+        }
+
+        .top-bar-weather {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .top-bar-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .social-link:hover {
+            opacity: 0.7;
+        }
+
+        /* ==================== HEADER ==================== */
+        header {
+            background: var(--bg-primary);
+            padding: 1.5rem 2rem;
+            border-bottom: 3px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--accent);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* ==================== MEGA NAVIGATION ==================== */
+        .mega-nav {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            position: sticky;
+            top: 65px;
+            z-index: 99;
+        }
+
+        .mega-nav-list {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .mega-nav-item > a {
+            display: block;
+            padding: 1rem 0;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mega-nav-item > a:hover {
+            color: var(--accent);
+        }
+
+        .mega-nav-item {
+            position: relative;
+        }
+
+        .mega-submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-top: 3px solid var(--accent);
+            min-width: 180px;
+            box-shadow: 0 8px 16px var(--shadow-lg);
+            z-index: 200;
+        }
+
+        .mega-nav-item:hover .mega-submenu {
+            display: block;
+        }
+
+        .mega-submenu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .mega-submenu a:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+
+        /* ==================== BREAKING NEWS TICKER ==================== */
+        .breaking-news {
+            background: var(--accent);
+            color: white;
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            overflow: hidden;
+        }
+
+        .breaking-label {
+            background: white;
+            color: var(--accent);
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .ticker-content {
+            display: flex;
+            animation: scroll-ticker 20s linear infinite;
+            white-space: nowrap;
+            font-weight: 600;
+        }
+
+        .ticker-item {
+            margin-right: 3rem;
+            padding-right: 3rem;
+            border-right: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .ticker-item:last-child {
+            border-right: none;
+        }
+
+        @keyframes scroll-ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* ==================== HERO GRID ==================== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-main {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .hero-main:hover {
+            box-shadow: 0 10px 25px var(--shadow-lg);
+        }
+
+        .hero-image {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+        }
+
+        .breaking-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .hero-content {
+            padding: 1.5rem;
+        }
+
+        .hero-category {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-title {
+            font-size: 1.8rem;
+            line-height: 1.3;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .hero-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .hero-meta {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* Hero Side Grid */
+        .hero-side {
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .side-news {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .side-news:hover {
+            box-shadow: 0 8px 16px var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .side-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .side-info h3 {
+            font-size: 0.95rem;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+        }
+
+        .side-meta {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* ==================== HABERLER GRİDİ ==================== */
+        .news-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 4px solid var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .news-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .news-image {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .news-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--accent);
+            color: white;
+            padding: 0.3rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .news-content {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-category {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-title {
+            font-size: 1.1rem;
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .news-excerpt {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .news-author {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .read-more {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .read-more:hover {
+            gap: 0.5rem;
+        }
+
+        /* ==================== MULTI-COLUMN LAYOUT ==================== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .sidebar {
+            flex-shrink: 0;
+        }
+
+        /* ==================== SIDEBAR ==================== */
+        .sidebar-section {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .popular-item {
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .popular-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .popular-number {
+            background: var(--accent);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .popular-title {
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        .popular-item:hover .popular-title {
+            color: var(--accent);
+        }
+
+        .poll-item {
+            margin-bottom: 1rem;
+        }
+
+        .poll-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .poll-bar {
+            width: 100%;
+            height: 25px;
+            background: var(--bg-primary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .poll-fill {
+            height: 100%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 0.5rem;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .tags-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.8rem;
+            border-radius: 3px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* ==================== PAGINATION ==================== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .pagination a,
+        .pagination span {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s;
+            border-radius: 3px;
+        }
+
+        .pagination a:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .pagination .active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ==================== NEWSLETTER ==================== */
+        .newsletter {
+            background: linear-gradient(135deg, var(--accent), #a00);
+            color: white;
+            padding: 2rem;
+            margin: 3rem 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .newsletter h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .newsletter p {
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            background: white;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        .newsletter-form button {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: var(--accent);
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 1.5rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-side {
+                grid-template-rows: auto;
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .news-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mega-nav-list {
+                gap: 1rem;
+            }
+
+            .mega-nav-item > a {
+                font-size: 0.85rem;
+                padding: 0.75rem 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .top-bar-left {
+                gap: 1rem;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .mega-nav-list {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            .breaking-news {
+                font-size: 0.8rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .hero-side {
+                grid-template-columns: 1fr;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .hero-title {
+                font-size: 1.4rem;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 0.75rem;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+                letter-spacing: 1px;
+            }
+
+            .mega-nav-list {
+                gap: 0.5rem;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .mega-nav-item > a {
+                font-size: 0.75rem;
+            }
+
+            .hero-title {
+                font-size: 1.1rem;
+            }
+
+            .news-title {
+                font-size: 0.95rem;
+            }
+
+            .news-excerpt {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+            }
+
+            .sidebar-section {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<a href="../../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <!-- TOP BAR -->
+    <div class="top-bar" role="region" aria-label="Üst bilgi bar">
+        <div class="top-bar-left">
+            <span class="top-bar-time" id="currentDate">Perşembe, 27 Mart 2024</span>
+            <div class="top-bar-weather">
+                <span>🌤️</span>
+                <span>İstanbul: 18°C</span>
+            </div>
+        </div>
+        <div class="top-bar-social">
+            <a href="#" class="social-link" title="Facebook">f</a>
+            <a href="#" class="social-link" title="Twitter">𝕏</a>
+            <a href="#" class="social-link" title="Instagram">📷</a>
+            <a href="#" class="social-link" title="YouTube">▶️</a>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header role="banner">
+        <a href="#" class="logo">GündemPlus</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Tema değiştir" title="Tema değiştir">🌙</button>
+    </header>
+
+    <!-- MEGA NAVIGATION -->
+    <nav class="mega-nav" role="navigation" aria-label="Kategori navigasyonu">
+        <ul class="mega-nav-list">
+            <li class="mega-nav-item">
+                <a href="#home">Ana Sayfa</a>
+            </li>
+            <li class="mega-nav-item">
+                <a href="#politics">Politika</a>
+                <div class="mega-submenu">
+                    <a href="#">Cumhuriyet</a>
+                    <a href="#">Meclis</a>
+                    <a href="#">Yerel Yönetim</a>
+                </div>
+            </li>
+            <li class="mega-nav-item">
+                <a href="#economy">Ekonomi</a>
+                <div class="mega-submenu">
+                    <a href="#">Finans</a>
+                    <a href="#">İş Dünyası</a>
+                    <a href="#">Piyasa</a>
+                </div>
+            </li>
+            <li class="mega-nav-item">
+                <a href="#sports">Spor</a>
+                <div class="mega-submenu">
+                    <a href="#">Futbol</a>
+                    <a href="#">Basketbol</a>
+                    <a href="#">Diğer Spor</a>
+                </div>
+            </li>
+            <li class="mega-nav-item">
+                <a href="#tech">Teknoloji</a>
+                <div class="mega-submenu">
+                    <a href="#">İnternet</a>
+                    <a href="#">Bilim</a>
+                    <a href="#">Yazılım</a>
+                </div>
+            </li>
+            <li class="mega-nav-item">
+                <a href="#culture">Kültür</a>
+                <div class="mega-submenu">
+                    <a href="#">Sanat</a>
+                    <a href="#">Sinema</a>
+                    <a href="#">Kitap</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- BREAKING NEWS TICKER -->
+    <div class="breaking-news" aria-label="Son dakika haberleri">
+        <span class="breaking-label">⚡ SON DAKIKA</span>
+        <div class="ticker-content">
+            <div class="ticker-item">Devlet Bahçeli'den muhalefete çok sert sözler</div>
+            <div class="ticker-item">Çipras Türkiye'ye çağrı yaptı</div>
+            <div class="ticker-item">Merkez Bankası faiz kararını açıkladı</div>
+            <div class="ticker-item">Avrupa Ligi finaline Türk takımı yaklaştı</div>
+            <div class="ticker-item">Nobel Ödülü için oy verme başladı</div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="container">
+        <!-- HERO GRID -->
+        <div class="hero-grid">
+            <!-- Main News -->
+            <article class="hero-main" role="article">
+                <div class="hero-image">
+                    📰
+                    <span class="breaking-badge">GÜNÜN HABERİ</span>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-category">Politika</div>
+                    <h1 class="hero-title">Cumhuriyet ve demokrasi değerleri güçlendirilecek</h1>
+                    <p class="hero-subtitle">Devlet Bahçeli önemli açıklamada bulundu. Hükümet yeni adımlar atacak.</p>
+                    <div class="hero-meta">28 Mart 2024 · Mehmet Kaya</div>
+                </div>
+            </article>
+
+            <!-- Side News -->
+            <div class="hero-side">
+                <article class="side-news" role="article">
+                    <div class="side-image">🇪🇺</div>
+                    <div class="side-info">
+                        <h3>Avrupa'dan Türkiye'ye muhalefet</h3>
+                        <div class="side-meta">27 Mar · Yaşar Kunt</div>
+                    </div>
+                </article>
+
+                <article class="side-news" role="article">
+                    <div class="side-image">📈</div>
+                    <div class="side-info">
+                        <h3>Merkez Bankası faiz sabit tuttu</h3>
+                        <div class="side-meta">27 Mar · Emre Yılmaz</div>
+                    </div>
+                </article>
+
+                <article class="side-news" role="article">
+                    <div class="side-image">⚽</div>
+                    <div class="side-info">
+                        <h3>Galatasaray Avrupa finalinde</h3>
+                        <div class="side-meta">27 Mar · Ali Demir</div>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="main-grid">
+            <!-- MAIN CONTENT -->
+            <main class="main-content">
+                <!-- POLITICS SECTION -->
+                <section class="news-section">
+                    <h2 class="section-title">Politika</h2>
+                    <div class="news-grid">
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                🏛️
+                                <span class="news-badge">POLİTİKA</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Cumhuriyet</div>
+                                <h3 class="news-title">Yeni anayasa çalışmaları başlayacak</h3>
+                                <p class="news-excerpt">Hükümet yeni anayasa için hazırlıklara başladı. Tartışma süreci başlayacak.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Ahmet Yıldız</span>
+                                    <span>27 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                🗳️
+                                <span class="news-badge">SEÇİM</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Meclis</div>
+                                <h3 class="news-title">Seçim reformu için komisyon oluşturuldu</h3>
+                                <p class="news-excerpt">Meclis'te seçim sistemi reformu için özel komisyon kuruldu.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Zeynep Kara</span>
+                                    <span>26 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                🏘️
+                                <span class="news-badge">YERELİ YÖNETİM</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Yerel</div>
+                                <h3 class="news-title">İstanbul'da yeni metro hattı açılıyor</h3>
+                                <p class="news-excerpt">Başakşehir-Kayaşehir metro hattı hizmete alındı.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Mustafa Demir</span>
+                                    <span>25 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                👨‍⚖️
+                                <span class="news-badge">ADALET</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Hukuk</div>
+                                <h3 class="news-title">Yargı reformu paketinde yeni düzenlemeler</h3>
+                                <p class="news-excerpt">Adalet bakanlığından önemli paket açıklandı.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Ayşe Özdemir</span>
+                                    <span>24 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                🌍
+                                <span class="news-badge">DIŞ POLİTİKA</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Uluslararası</div>
+                                <h3 class="news-title">Türkiye-Rusya ilişkilerinde yeni dönem</h3>
+                                <p class="news-excerpt">İki ülke yeni ticaret anlaşması imzaladı.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Emre Çetin</span>
+                                    <span>23 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                💼
+                                <span class="news-badge">İKTİSADİ</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Ekonomi</div>
+                                <h3 class="news-title">Kamu kurumları özelleştirme planı açıklandı</h3>
+                                <p class="news-excerpt">Hazine'den özelleştirme kararı geldi.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Emine Aydın</span>
+                                    <span>22 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- ECONOMY SECTION -->
+                <section class="news-section">
+                    <h2 class="section-title">Ekonomi</h2>
+                    <div class="news-grid">
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                💰
+                                <span class="news-badge">FİNANS</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Finans</div>
+                                <h3 class="news-title">Dolar kuru yeni seviyelerde</h3>
+                                <p class="news-excerpt">Merkez Bankası kararı piyasaları etkiledi.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Ömer Koçak</span>
+                                    <span>27 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                📊
+                                <span class="news-badge">BORSA</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Piyasa</div>
+                                <h3 class="news-title">Borsa İstanbul yeni rekora ulaştı</h3>
+                                <p class="news-excerpt">100 bin puanı aşıp tarihî rekor kırdı.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Nida Şahin</span>
+                                    <span>26 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                🏭
+                                <span class="news-badge">SANAYİ</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">İşletme</div>
+                                <h3 class="news-title">Türkiye imalat sektöründe başarılı</h3>
+                                <p class="news-excerpt">Üretime ilişkin verileri açıklandı.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Tarık Beyaz</span>
+                                    <span>25 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                🏪
+                                <span class="news-badge">TİCARET</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">İş Dünyası</div>
+                                <h3 class="news-title">Perakende satışlarında artış bekleniyor</h3>
+                                <p class="news-excerpt">Yüksek maliye yardımı tüketim destekleyecek.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Sinem Güneş</span>
+                                    <span>24 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                🌾
+                                <span class="news-badge">TARIM</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Tarım</div>
+                                <h3 class="news-title">Buğday desteği için yeni tedbirler</h3>
+                                <p class="news-excerpt">Çiftçiler için hibe ve destek programı başlatıldı.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Kadir Kaya</span>
+                                    <span>23 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                🚗
+                                <span class="news-badge">OTOMOTİV</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Oto Sektörü</div>
+                                <h3 class="news-title">Elektrik otomobil üretimi artıyor</h3>
+                                <p class="news-excerpt">Yeşil enerji araç üretiminde liderlik var.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Seray Yaş</span>
+                                    <span>22 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- SPORTS SECTION -->
+                <section class="news-section">
+                    <h2 class="section-title">Spor</h2>
+                    <div class="news-grid">
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                ⚽
+                                <span class="news-badge">FUTBOL</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Futbol</div>
+                                <h3 class="news-title">Galatasaray Avrupa Ligi'nde tarih yazıyor</h3>
+                                <p class="news-excerpt">Son 4'te kalmayı başardı, finale kalmak istiyor.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Deniz Sözen</span>
+                                    <span>27 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                🏀
+                                <span class="news-badge">BASKETBOL</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Basketbol</div>
+                                <h3 class="news-title">Fenerbahçe Euroleague önemli maça çıkıyor</h3>
+                                <p class="news-excerpt">Play-off yarışında kritik müsabaka.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Volkan Kaya</span>
+                                    <span>26 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="news-card" role="article">
+                            <div class="news-image">
+                                🎾
+                                <span class="news-badge">TENİS</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-category">Tenis</div>
+                                <h3 class="news-title">Türk tenisçi Grand Slam'e katılıyor</h3>
+                                <p class="news-excerpt">Ümit spor insanımız uluslararası sahneye çıkıyor.</p>
+                                <div class="news-meta">
+                                    <span class="news-author">Ayla Tanrıver</span>
+                                    <span>25 Mar</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- PAGINATION -->
+                <div class="pagination" aria-label="Sayfalama">
+                    <span class="active">1</span>
+                    <a href="#page2">2</a>
+                    <a href="#page3">3</a>
+                    <a href="#page4">4</a>
+                    <a href="#page5">5</a>
+                    <a href="#page2">Sonraki »</a>
+                </div>
+
+                <!-- NEWSLETTER -->
+                <section class="newsletter" aria-label="Haber bülteni">
+                    <h3>Her Gün Haberleri Alın</h3>
+                    <p>En son gelişmelerden haberdar olmak için bültenimize abone olun</p>
+                    <form class="newsletter-form" onsubmit="return false;">
+                        <input type="email" placeholder="E-posta adresiniz..." required aria-label="E-posta">
+                        <button type="submit">Abone Ol</button>
+                    </form>
+                </section>
+            </main>
+
+            <!-- SIDEBAR -->
+            <aside class="sidebar" role="complementary" aria-label="Yan Barlar">
+                <!-- MOST READ -->
+                <section class="sidebar-section">
+                    <h3 class="sidebar-title">En Çok Okunanlar</h3>
+                    <article class="popular-item">
+                        <span class="popular-number">1</span>
+                        <div class="popular-title">Cumhuriyet ve demokrasi değerleri güçlendirilecek</div>
+                    </article>
+                    <article class="popular-item">
+                        <span class="popular-number">2</span>
+                        <div class="popular-title">Avrupa'dan Türkiye'ye muhalefet</div>
+                    </article>
+                    <article class="popular-item">
+                        <span class="popular-number">3</span>
+                        <div class="popular-title">Merkez Bankası faiz sabit tuttu</div>
+                    </article>
+                    <article class="popular-item">
+                        <span class="popular-number">4</span>
+                        <div class="popular-title">Galatasaray Avrupa finalinde</div>
+                    </article>
+                    <article class="popular-item">
+                        <span class="popular-number">5</span>
+                        <div class="popular-title">Dolar kuru yeni seviyelerde</div>
+                    </article>
+                </section>
+
+                <!-- POLL -->
+                <section class="sidebar-section">
+                    <h3 class="sidebar-title">Anket</h3>
+                    <p style="margin-bottom: 1rem; font-size: 0.95rem;">Türkiye'nin yönü doğru mudur?</p>
+                    <div class="poll-item">
+                        <div class="poll-label">
+                            <span>Evet</span>
+                            <span>45%</span>
+                        </div>
+                        <div class="poll-bar">
+                            <div class="poll-fill" style="width: 45%;">45%</div>
+                        </div>
+                    </div>
+                    <div class="poll-item">
+                        <div class="poll-label">
+                            <span>Hayır</span>
+                            <span>38%</span>
+                        </div>
+                        <div class="poll-bar">
+                            <div class="poll-fill" style="width: 38%;">38%</div>
+                        </div>
+                    </div>
+                    <div class="poll-item">
+                        <div class="poll-label">
+                            <span>Kararsızım</span>
+                            <span>17%</span>
+                        </div>
+                        <div class="poll-bar">
+                            <div class="poll-fill" style="width: 17%;">17%</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAGS -->
+                <section class="sidebar-section">
+                    <h3 class="sidebar-title">Etiketler</h3>
+                    <div class="tags-cloud">
+                        <a href="#" class="tag">Politika</a>
+                        <a href="#" class="tag">Ekonomi</a>
+                        <a href="#" class="tag">Spor</a>
+                        <a href="#" class="tag">Teknoloji</a>
+                        <a href="#" class="tag">Sağlık</a>
+                        <a href="#" class="tag">Kültür</a>
+                        <a href="#" class="tag">Eğitim</a>
+                        <a href="#" class="tag">Çevre</a>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+        <div class="footer-content">
+            <section class="footer-section">
+                <h4>Hakkımızda</h4>
+                <ul>
+                    <li><a href="#">Kurumsal Bilgiler</a></li>
+                    <li><a href="#">Kariyer</a></li>
+                    <li><a href="#">İletişim</a></li>
+                    <li><a href="#">Basında Biz</a></li>
+                </ul>
+            </section>
+
+            <section class="footer-section">
+                <h4>Haberler</h4>
+                <ul>
+                    <li><a href="#">Politika</a></li>
+                    <li><a href="#">Ekonomi</a></li>
+                    <li><a href="#">Spor</a></li>
+                    <li><a href="#">Teknoloji</a></li>
+                </ul>
+            </section>
+
+            <section class="footer-section">
+                <h4>Hizmetler</h4>
+                <ul>
+                    <li><a href="#">E-Gazete</a></li>
+                    <li><a href="#">Mobil Uygulama</a></li>
+                    <li><a href="#">RSS Akışı</a></li>
+                    <li><a href="#">Haber Uyarısı</a></li>
+                </ul>
+            </section>
+
+            <section class="footer-section">
+                <h4>Politikalar</h4>
+                <ul>
+                    <li><a href="#">Gizlilik Politikası</a></li>
+                    <li><a href="#">Kullanım Şartları</a></li>
+                    <li><a href="#">Çerez Politikası</a></li>
+                    <li><a href="#">Reklam Seçenekleri</a></li>
+                </ul>
+            </section>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 GündemPlus. Tüm hakları saklıdır. | Tasarım ve Geliştirme: Web Ekibi</p>
+        </div>
+    </footer>
+
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        // ==================== TEMA TOGGLE ====================
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        const savedTheme = safeStorage('get', 'theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            htmlElement.setAttribute('data-theme', newTheme);
+            safeStorage('set', 'theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // ==================== TARIH GÜNCELLE ====================
+        // Sayfa yüklendiğinde güncel tarihi göster
+        function updateDate() {
+            const today = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = today.toLocaleDateString('tr-TR', options);
+            document.getElementById('currentDate').textContent = dateString.charAt(0).toUpperCase() + dateString.slice(1);
+        }
+        updateDate();
+
+        // ==================== HABER KARTI İŞLEVSELLİĞİ ====================
+        // Haber kartlarına tıklanabilirlik ekle
+        document.querySelectorAll('.news-card, .hero-main, .side-news').forEach(card => {
+            card.addEventListener('click', function() {
+                console.log('Haber açılıyor');
+                // Gerçek uygulamada buraya detay sayfasına yönlendirme gelecek
+            });
+        });
+
+        // ==================== POPULAR İTEME TIKLANABİLİRLİK ====================
+        document.querySelectorAll('.popular-item').forEach(item => {
+            item.addEventListener('click', function() {
+                console.log('Popüler haber açılıyor:', this.querySelector('.popular-title').textContent);
+            });
+        });
+
+        // ==================== NEWSLETTER FORMU ====================
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            alert(`${email} adresine haber bülteni kaydınız başarıyla alındı!`);
+            this.reset();
+        });
+
+        // ==================== HABERLERİ HAREKETLENDİR ====================
+        // Sayfa aşağı kaydırıldığında haberler yavaş yavaş görünür
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.news-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

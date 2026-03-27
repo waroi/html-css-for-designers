@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HTML-CSS Eğitimi - Ders 7: İleri Konular - CSS Değişkenleri, BEM Metodolojisi, Erişilebilirlik, SEO Optimizasyonu">
+    <title>Ders 7: İleri Konular | HTML-CSS Eğitimi</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray-light: #f3f4f6;
+            --gray-dark: #1f2937;
+            --text-light: #111827;
+            --text-lighter: #6b7280;
+            --border-light: #e5e7eb;
+
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1f2937;
+            --bg-secondary: #111827;
+            --text-primary: #f3f4f6;
+            --text-secondary: #d1d5db;
+            --border: #374151;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+            color: white;
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0 1rem;
+        }
+
+        .sidebar-nav a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            display: block;
+        }
+
+        .sidebar-nav a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(5px);
+        }
+
+        .sidebar-nav a.active {
+            background: rgba(255,255,255,0.3);
+            border-left: 3px solid white;
+            padding-left: calc(1rem - 3px);
+        }
+
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            background-color: var(--bg-primary);
+            padding: 2rem;
+            transition: margin-left 0.3s;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 1rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(99,102,241,0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 1000;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+        }
+
+        section {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        section h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        section h3 {
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .tip-box, .warning-box, .exercise-box {
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+            background: rgba(99,102,241,0.05);
+        }
+
+        .tip-box {
+            border-left-color: var(--primary);
+            background: rgba(99,102,241,0.05);
+        }
+
+        .warning-box {
+            border-left-color: var(--warning);
+            background: rgba(245,158,11,0.05);
+        }
+
+        .exercise-box {
+            border-left-color: var(--success);
+            background: rgba(16,185,129,0.05);
+        }
+
+        .tip-box strong, .warning-box strong, .exercise-box strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .code-example {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .code-section {
+            padding: 1.5rem;
+            border-right: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .code-section:last-child {
+            border-right: none;
+        }
+
+        .code-section h4 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        pre {
+            background: var(--gray-light);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        [data-theme="dark"] pre {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            color: var(--text-primary);
+        }
+
+        .preview {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+
+            .code-example {
+                grid-template-columns: 1fr;
+            }
+
+            .code-section {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .code-section:last-child {
+                border-bottom: none;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .header {
+                padding: 2rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-radius: 0.75rem;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .nav-button:hover {
+            border-color: var(--primary);
+            background: var(--bg-primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-button.disabled:hover {
+            transform: none;
+            border-color: var(--border);
+        }
+
+        .responsive-demo {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .demo-box {
+            background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(16,185,129,0.1) 100%);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .bem-example {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .bem-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(99,102,241,0.15);
+            transform: translateY(-2px);
+        }
+
+        .card__title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .card__description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .card--featured {
+            border: 2px solid var(--primary);
+            background: rgba(99,102,241,0.05);
+        }
+
+        .accessibility-demo {
+            padding: 2rem;
+            background: var(--bg-secondary);
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            margin: 1.5rem 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+        }
+
+        .perf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .perf-table th, .perf-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .perf-table th {
+            background: var(--bg-primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .perf-table tr:hover {
+            background: var(--bg-primary);
+        }
+
+        .performance-metric {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .metric-bar {
+            flex: 1;
+            height: 24px;
+            background: var(--border);
+            border-radius: 0.25rem;
+            overflow: hidden;
+        }
+
+        .metric-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<a href="index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Tüm Dersler</a>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Koyu Tema</button>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Ders 7</h1>
+                <p>İleri Konular</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#css-variables" class="active">CSS Değişkenleri</a>
+                <a href="#bem-methodology">BEM Metodolojisi</a>
+                <a href="#accessibility">Erişilebilirlik</a>
+                <a href="#seo-optimization">SEO Optimizasyonu</a>
+                <a href="#modern-css">Modern CSS</a>
+                <a href="#performance">Performans</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="header">
+                <h1>İleri Konular</h1>
+                <p>CSS Değişkenleri, BEM, Erişilebilirlik, SEO ve Modern CSS Özellikleri</p>
+            </div>
+
+            <section id="css-variables">
+                <h2>1. CSS Değişkenleri (Custom Properties)</h2>
+                <p>CSS özel özellikleri (custom properties), CSS kodunuzda değerleri yeniden kullanılabilir değişkenler olarak tanımlamanıza izin verir. Bu sayede tema yönetimi, bakım ve tutarlılık çok daha kolay hale gelir.</p>
+
+                <h3>Neden CSS Değişkenleri Kullanmalıyız?</h3>
+                <ul>
+                    <li>Renk ve boyut değerlerini merkezi olarak yönetme</li>
+                    <li>Tema değişiklikleri çok daha hızlı yapma</li>
+                    <li>JavaScript ile dinamik olarak değerleri değiştirme</li>
+                    <li>Kod tekrarını azaltma</li>
+                    <li>Bakım ve güncellemeyi kolaylaştırma</li>
+                </ul>
+
+                <div class="code-example">
+                    <div class="code-section">
+                        <h4>CSS Kodu</h4>
+                        <pre><code>:root {
+  --primary: #6366f1;
+  --success: #10b981;
+  --spacing: 1rem;
+  --border-radius: 0.5rem;
+}
+
+.button {
+  background: var(--primary);
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+}
+
+.button.success {
+  background: var(--success);
+}</code></pre>
+                    </div>
+                    <div class="code-section">
+                        <h4>Sonuç</h4>
+                        <div class="preview">
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button style="background: var(--primary); color: white; padding: var(--spacing); border: none; border-radius: var(--border-radius); cursor: pointer; font-weight: 600;">Birincil Düğme</button>
+                                <button style="background: var(--success); color: white; padding: var(--spacing); border: none; border-radius: var(--border-radius); cursor: pointer; font-weight: 600;">Başarılı Düğme</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Dinamik Tema Değişimi</h3>
+                <div class="code-example">
+                    <div class="code-section">
+                        <h4>JavaScript</h4>
+                        <pre><code>function setThemeColor(color) {
+  document.documentElement.style
+    .setProperty('--primary', color);
+}
+
+// Kullanım
+setThemeColor('#ec4899');</code></pre>
+                    </div>
+                    <div class="code-section">
+                        <h4>Açıklama</h4>
+                        <div class="preview">
+                            <div style="text-align: center;">
+                                <p style="margin-bottom: 1rem;">Dinamik olarak tema rengi değiştirebilirsiniz:</p>
+                                <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                                    <button onclick="document.documentElement.style.setProperty('--primary', '#6366f1')" style="padding: 0.5rem 1rem; background: #6366f1; color: white; border: none; border-radius: 0.5rem; cursor: pointer;">İndigo</button>
+                                    <button onclick="document.documentElement.style.setProperty('--primary', '#ec4899')" style="padding: 0.5rem 1rem; background: #ec4899; color: white; border: none; border-radius: 0.5rem; cursor: pointer;">Pembe</button>
+                                    <button onclick="document.documentElement.style.setProperty('--primary', '#f59e0b')" style="padding: 0.5rem 1rem; background: #f59e0b; color: white; border: none; border-radius: 0.5rem; cursor: pointer;">Sarı</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 İpucu:</strong> CSS değişkenleri Cascade'i takip eder. Spesifik seçicilerde değişkenleri tanımlayarak lokal tema değişimleri yapabilirsiniz.
+                </div>
+            </section>
+
+            <section id="bem-methodology">
+                <h2>2. BEM Metodolojisi (Block, Element, Modifier)</h2>
+                <p>BEM, CSS sınıflarını adlandırırken kullanılan bir metodoloji olup, kodunuzu daha organize ve bakım yapılabilir hale getirir.</p>
+
+                <h3>BEM Yapısı</h3>
+                <ul>
+                    <li><strong>Block:</strong> Bağımsız bir bileşen (örn: card, button, header)</li>
+                    <li><strong>Element:</strong> Bloğun parçası, kendi başına anlamsız (örn: card__title, card__description)</li>
+                    <li><strong>Modifier:</strong> Bloğun veya Elemanın durumunu değiştirir (örn: card--featured, button--disabled)</li>
+                </ul>
+
+                <h3>BEM Örnekleri</h3>
+                <div class="bem-example">
+                    <h4>Naming Convention:</h4>
+                    <pre><code>.card { }              /* Block */
+.card__title { }        /* Element */
+.card__description { }  /* Element */
+.card--featured { }     /* Modifier */
+.card__title--large { } /* Element Modifier */</code></pre>
+
+                    <h4>Pratik Örnek:</h4>
+                    <div class="bem-demo">
+                        <div class="card">
+                            <div class="card__title">Normal Kart</div>
+                            <div class="card__description">Düzenli bir kart bileşeni</div>
+                        </div>
+                        <div class="card card--featured">
+                            <div class="card__title">Öne Çıkan Kart</div>
+                            <div class="card__description">--featured modifier'ı ile</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Dikkat:</strong> BEM güçlü bir metodoloji olmasına rağmen, başlangıçta karmaşık görünebilir. Proje büyüdükçe faydalarını göreceksiniz.
+                </div>
+            </section>
+
+            <section id="accessibility">
+                <h2>3. Erişilebilirlik (Accessibility)</h2>
+                <p>Web erişilebilirliği, engelli kişilerin web sitelerinizi etkili bir şekilde kullanmasını sağlamak anlamına gelir. Bu bir hak ve iyi bir uygulamadır.</p>
+
+                <h3>Erişilebilirlik İlkeleri</h3>
+                <ul>
+                    <li><strong>Algılanabilir (Perceivable):</strong> Kullanıcılar içeriği algılayabilmelidir</li>
+                    <li><strong>Kullanılabilir (Operable):</strong> Kullanıcılar arayüzü kullanabilmelidir</li>
+                    <li><strong>Anlaşılabilir (Understandable):</strong> İçerik ve işlemler açık olmalıdır</li>
+                    <li><strong>Güçlü (Robust):</strong> Çeşitli cihazlar ve teknolojilerle uyumlu olmalıdır</li>
+                </ul>
+
+                <h3>Erişilebilir Form Örneği</h3>
+                <div class="accessibility-demo">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Ad ve Soyadınız:</label>
+                            <input type="text" id="name" name="name" required aria-label="Ad ve Soyadınız">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-posta:</label>
+                            <input type="email" id="email" name="email" required aria-label="E-posta adresiniz">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mesajınız:</label>
+                            <textarea id="message" name="message" rows="4" aria-label="Mesajınız"></textarea>
+                        </div>
+                        <button type="submit" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600;">Gönder</button>
+                    </form>
+                </div>
+
+                <h3>Erişilebilirlik Kontrol Listesi</h3>
+                <div class="responsive-demo">
+                    <div class="demo-box">
+                        <strong>✓</strong> Uygun HTML semantik elemanlar kullanın (header, nav, main, article, footer)
+                    </div>
+                    <div class="demo-box">
+                        <strong>✓</strong> Form etiketleri her input için belirtilmiş olmalıdır
+                    </div>
+                    <div class="demo-box">
+                        <strong>✓</strong> Alternatif metin (alt) tüm anlamlı görseller için belirtilmiş olmalıdır
+                    </div>
+                    <div class="demo-box">
+                        <strong>✓</strong> Renk tek başına bilgi iletmemelidir (kör renk ayırt etme)
+                    </div>
+                    <div class="demo-box">
+                        <strong>✓</strong> Yeterli kontrast oranı (WCAG AA için 4.5:1 yazı için)
+                    </div>
+                    <div class="demo-box">
+                        <strong>✓</strong> Klavye navigasyonuna izin verin (Tab, Enter, vb.)
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <strong>🎯 Alıştırma:</strong> Sayfanızın WAVE Web Accessibility Evaluation Tool (https://wave.webaim.org/) ile kontrol edin ve hataları düzeltin.
+                </div>
+            </section>
+
+            <section id="seo-optimization">
+                <h2>4. SEO Optimizasyonu</h2>
+                <p>Arama Motoru Optimizasyonu (SEO), web sitenizin Google, Bing gibi arama motorlarında daha iyi sıralama elde etmesini sağlar.</p>
+
+                <h3>On-Page SEO Temel Pratiği</h3>
+                <div class="responsive-demo">
+                    <div class="demo-box">
+                        <strong>Meta Başlık (Title):</strong> 50-60 karakter, anahtar kelime içermeli
+                    </div>
+                    <div class="demo-box">
+                        <strong>Meta Açıklama (Description):</strong> 150-160 karakter, sayfanın içeriğini özetlemeli
+                    </div>
+                    <div class="demo-box">
+                        <strong>Başlıklar (H1, H2, H3):</strong> Hiyerarşik yapı, H1 sayfa başlığı olmalıdır
+                    </div>
+                    <div class="demo-box">
+                        <strong>URL Yapısı:</strong> Kısa, açıklayıcı, anahtar kelime içeren URL'ler tercih edin
+                    </div>
+                    <div class="demo-box">
+                        <strong>İç Linkler:</strong> Sayfalar arasında anlamlı bağlantılar oluşturun
+                    </div>
+                    <div class="demo-box">
+                        <strong>Görsel Optimizasyonu:</strong> Kompakt dosya boyutu, alt metin, responsive
+                    </div>
+                </div>
+
+                <h3>SEO Meta Etiketleri Örneği</h3>
+                <div class="code-example">
+                    <div class="code-section">
+                        <h4>HTML Head</h4>
+                        <pre><code>&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport"
+  content="width=device-width,
+           initial-scale=1.0"&gt;
+&lt;meta name="description"
+  content="İyi açıklamalar sayfa
+  sıramasını iyileştirir"&gt;
+&lt;meta name="keywords"
+  content="anahtar, kelimeler"&gt;
+&lt;title&gt;Sayfa Başlığı - Site Adı
+&lt;/title&gt;</code></pre>
+                    </div>
+                    <div class="code-section">
+                        <h4>Önemli Noktalar</h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 0.5rem 0;">📱 Responsive design gereklidir</li>
+                            <li style="padding: 0.5rem 0;">⚡ Sayfa yükleme hızı önemlidir</li>
+                            <li style="padding: 0.5rem 0;">🔗 Dış linkler referans vermelidir</li>
+                            <li style="padding: 0.5rem 0;">📝 Kaliteli içerik yazın</li>
+                            <li style="padding: 0.5rem 0;">🔄 Yapı İşaretlemesi (Schema) kullanın</li>
+                            <li style="padding: 0.5rem 0;">🛡️ HTTPS kullanın</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 İpucu:</strong> Google Search Console ve Analytics kullanarak sitenizin performansını izleyin ve iyileştirme fırsatlarını bulun.
+                </div>
+            </section>
+
+            <section id="modern-css">
+                <h2>5. Modern CSS Özellikleri</h2>
+                <p>Son yıllarda CSS çok gelişti. İşte en önemli yeni özellikleri:</p>
+
+                <h3>Container Queries</h3>
+                <p>Container queries, bir elemanın ekran boyutuna değil, ana konteynerine göre responsive olmasını sağlar.</p>
+                <pre><code>@container (min-width: 400px) {
+  .card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}</code></pre>
+
+                <h3>:has() Seçicisi</h3>
+                <p>Bir elemanın çocuklarına göre stil uygulamayı sağlar (parent selector):</p>
+                <pre><code>/* Eğer p elemanı içeriyorsa div'i renklendir */
+div:has(> p) {
+  border: 2px solid var(--primary);
+}
+
+/* Eğer hovered input içeriyorsa form'u renklendir */
+form:has(input:hover) {
+  background: rgba(99,102,241,0.05);
+}</code></pre>
+
+                <h3>clamp() Fonksiyonu</h3>
+                <p>Flexible sizing için kullanılır - minimum, tercih edilen ve maximum değerler belirtir:</p>
+                <pre><code>/* Font boyutu: en az 16px, ideal 2.5vw, en fazla 32px */
+h1 {
+  font-size: clamp(16px, 2.5vw, 32px);
+}
+
+/* Padding: en az 1rem, ideal 5%, en fazla 2rem */
+section {
+  padding: clamp(1rem, 5%, 2rem);
+}</code></pre>
+
+                <div class="responsive-demo">
+                    <h4>Modern CSS Avantajları:</h4>
+                    <div class="demo-box">
+                        <strong>⚡ Daha Az JavaScript:</strong> CSS bunu yapabildiğinde neden JS kullanıyorsunuz?
+                    </div>
+                    <div class="demo-box">
+                        <strong>🎯 Daha Responsive:</strong> Gerçek responsive tasarım yapın
+                    </div>
+                    <div class="demo-box">
+                        <strong>🚀 Performans:</strong> CSS native çalışır, daha hızlı
+                    </div>
+                    <div class="demo-box">
+                        <strong>📱 Esneklik:</strong> Herhangi bir ekran boyutu için optimize edin
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ Dikkat:</strong> Tarayıcı uyumluluğunu kontrol edin. Bazı yeni özellikler henüz tüm tarayıcılarda desteklenmeyebilir.
+                </div>
+            </section>
+
+            <section id="performance">
+                <h2>6. Performans Optimizasyonu</h2>
+                <p>Hızlı yüklenen web siteleri daha iyi dönüşüm oranlarına ve SEO sıralamasına sahiptir.</p>
+
+                <h3>Performans Kontrol Listesi</h3>
+                <table class="perf-table">
+                    <thead>
+                        <tr>
+                            <th>Optimizasyon</th>
+                            <th>Etki</th>
+                            <th>Zorluk</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CSS/JS Minifikasyon</td>
+                            <td>Dosya Boyutu ↓</td>
+                            <td>Kolay</td>
+                        </tr>
+                        <tr>
+                            <td>Görsel Optimizasyonu</td>
+                            <td>Yükleme Hızı ↑</td>
+                            <td>Orta</td>
+                        </tr>
+                        <tr>
+                            <td>Lazy Loading</td>
+                            <td>İlk Yükleme ↑</td>
+                            <td>Orta</td>
+                        </tr>
+                        <tr>
+                            <td>Caching Stratejisi</td>
+                            <td>Tekrarlayan Ziyaret ↑</td>
+                            <td>Zor</td>
+                        </tr>
+                        <tr>
+                            <td>Critical CSS</td>
+                            <td>First Contentful Paint ↑</td>
+                            <td>Orta</td>
+                        </tr>
+                        <tr>
+                            <td>Code Splitting</td>
+                            <td>JS Boyutu ↓</td>
+                            <td>Zor</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Performans Metrikleri (Core Web Vitals)</h3>
+                <div class="responsive-demo">
+                    <div style="margin-bottom: 1.5rem;">
+                        <strong>Largest Contentful Paint (LCP)</strong>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">En büyük içerik ögesinin yükleme süresi (hedef: 2.5s altı)</p>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 40%;">1.0s</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <strong>First Input Delay (FID)</strong>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Kullanıcı etkileşiminden yanıt süresine kadar (hedef: 100ms altı)</p>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 20%;">50ms</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <strong>Cumulative Layout Shift (CLS)</strong>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Beklenmeyen düzen kaymalarının toplamı (hedef: 0.1 altı)</p>
+                        <div class="metric-bar">
+                            <div class="metric-fill" style="width: 10%;">0.05</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Performans İpuçları</h3>
+                <div class="responsive-demo">
+                    <div class="demo-box">
+                        <strong>1. Görsel Optimizasyonu:</strong> WebP formatı kullanın, uygun boyut seçin, compress edin
+                    </div>
+                    <div class="demo-box">
+                        <strong>2. Kritik Kaynakları Ön Yükle:</strong> &lt;link rel="preload"&gt; kullanarak önemli kaynakları ön yükleyin
+                    </div>
+                    <div class="demo-box">
+                        <strong>3. Inline Kritik CSS:</strong> Sayfa başında gösterilen CSS'i HTML'e embed edin
+                    </div>
+                    <div class="demo-box">
+                        <strong>4. Defer JavaScript:</strong> Async veya defer özelliğini kullanarak JS yükleme süresini azaltın
+                    </div>
+                    <div class="demo-box">
+                        <strong>5. CDN Kullanın:</strong> Statik içeriği CDN'den sunarak latency azaltın
+                    </div>
+                    <div class="demo-box">
+                        <strong>6. Gzip Sıkıştırması:</strong> Server tarafında sıkıştırma etkinleştirin
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 İpucu:</strong> Google PageSpeed Insights ve Lighthouse araçlarını kullanarak sitenizi analiz edin ve iyileştirme önerileri alın.
+                </div>
+
+                <div class="exercise-box">
+                    <strong>🎯 Alıştırma:</strong> Bir web sitenizi Google PageSpeed Insights ile taratın, ekran görüntüsü alın ve en az 3 tane iyileştirme yapın.
+                </div>
+            </section>
+
+            <div class="lesson-nav">
+                <a href="ders06-animasyonlar.html" class="nav-button">← Ders 6: Animasyonlar</a>
+                <a href="index.html" class="nav-button">Ana Sayfa →</a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            safeStorage('set', 'theme', newTheme);
+            updateThemeButton();
+        }
+
+        function updateThemeButton() {
+            const button = document.querySelector('.theme-toggle');
+            const theme = document.documentElement.getAttribute('data-theme');
+            button.textContent = theme === 'dark' ? '☀️ Açık Tema' : '🌙 Koyu Tema';
+        }
+
+        function setActiveNavLink() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = safeStorage('get', 'theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeButton();
+            setActiveNavLink();
+        });
+    </script>
+</body>
+</html>

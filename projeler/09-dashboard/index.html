@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - İşletme Yönetimi</title>
+    <style>
+        /* ==================== RESET VE BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --accent: #5e72e4;
+            --accent-light: #8b9dff;
+            --accent-dark: #4c63d2;
+            --danger: #dc3545;
+            --success: #10b981;
+            --warning: #fbbf24;
+            --border: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-lg: rgba(0, 0, 0, 0.15);
+            --sidebar-width: 280px;
+        }
+
+        html[data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #252525;
+            --bg-tertiary: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --border: #444444;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-dark);
+        }
+
+        /* ==================== SIDEBAR ==================== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--bg-primary);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1rem;
+            overflow-y: auto;
+            z-index: 900;
+            transition: all 0.3s;
+        }
+
+        .sidebar-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+
+        .nav-link.active {
+            background: rgba(94, 114, 228, 0.1);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+            width: 24px;
+        }
+
+        /* Hamburger Menu Toggle - Mobil için */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 950;
+        }
+
+        /* ==================== MAIN LAYOUT ==================== */
+        .main {
+            margin-left: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ==================== HEADER / NAVBAR ==================== */
+        .header {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            color: var(--text-secondary);
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            width: 250px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1);
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.25rem;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .profile-menu {
+            position: relative;
+        }
+
+        .profile-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .profile-btn:hover {
+            background: var(--bg-secondary);
+        }
+
+        .profile-avatar {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--accent), #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* ==================== CONTENT ==================== */
+        .content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* ==================== STATS CARDS ==================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-lg);
+        }
+
+        .stat-info h3 {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+
+        /* ==================== CHARTS ==================== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .chart-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Bar Chart */
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 250px;
+            gap: 0.75rem;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(180deg, var(--accent), var(--accent-light));
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            min-width: 30px;
+            transition: all 0.3s;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+            box-shadow: 0 -5px 15px var(--shadow);
+        }
+
+        .bar-value {
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        /* Donut Chart */
+        .donut-chart {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 250px;
+            position: relative;
+        }
+
+        .donut {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--accent) 0deg 115.2deg,
+                var(--success) 115.2deg 230.4deg,
+                var(--warning) 230.4deg 360deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .donut::before {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: var(--bg-primary);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .donut-center {
+            position: absolute;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .donut-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .donut-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .donut-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-left: 2rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* ==================== TABLO ==================== */
+        .table-card {
+            background: var(--bg-primary);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .table-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr {
+            transition: background 0.3s;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-secondary);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--warning);
+        }
+
+        .status-processing {
+            background: rgba(94, 114, 228, 0.1);
+            color: var(--accent);
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .status-cancelled {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        /* ==================== ACTIVITY TIMELINE ==================== */
+        .activity-timeline {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .activity-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -35px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border: 3px solid var(--bg-primary);
+            border-radius: 50%;
+        }
+
+        .timeline-content {
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+
+        .timeline-time {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-message {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        /* ==================== QUICK ACTIONS ==================== */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: white;
+            border: none;
+            padding: 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(94, 114, 228, 0.3);
+        }
+
+        .action-icon {
+            font-size: 1.5rem;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-left: var(--sidebar-width);
+        }
+
+        /* ==================== RESPONSIVE DESIGN ==================== */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: var(--sidebar-width);
+                height: 100vh;
+                background: var(--bg-primary);
+                z-index: 900;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            footer {
+                margin-left: 0;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+
+            .search-input {
+                width: 150px;
+                font-size: 0.9rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .donut-legend {
+                margin-left: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .bar-chart {
+                height: 200px;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --sidebar-width: 0px;
+            }
+
+            .sidebar {
+                width: 250px;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .stat-card {
+                flex-direction: column;
+            }
+
+            .stat-icon {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<a href="../../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <!-- SIDEBAR - Sol navigasyon menüsü -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Ana navigasyon">
+        <div class="sidebar-logo">📊 Admin</div>
+
+        <nav>
+            <ul class="sidebar-nav">
+                <li class="nav-item">
+                    <a href="#dashboard" class="nav-link active">
+                        <span class="nav-icon">📈</span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#analytics" class="nav-link">
+                        <span class="nav-icon">📊</span>
+                        <span>Analizler</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#orders" class="nav-link">
+                        <span class="nav-icon">🛒</span>
+                        <span>Siparişler</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#products" class="nav-link">
+                        <span class="nav-icon">📦</span>
+                        <span>Ürünler</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#customers" class="nav-link">
+                        <span class="nav-icon">👥</span>
+                        <span>Müşteriler</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#reports" class="nav-link">
+                        <span class="nav-icon">📋</span>
+                        <span>Raporlar</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#settings" class="nav-link">
+                        <span class="nav-icon">⚙️</span>
+                        <span>Ayarlar</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- HAMBURGER MENU - Mobil navigasyon -->
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Menüyü aç/kapat">☰</button>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <!-- HEADER -->
+        <header class="header" role="banner">
+            <div class="breadcrumb">
+                <a href="#">Dashboard</a>
+                <span>/</span>
+                <span>Genel Bakış</span>
+            </div>
+
+            <div class="header-right">
+                <input type="text" class="search-input" placeholder="Ara..." aria-label="Dashboard'da ara">
+
+                <div class="header-icons">
+                    <button class="icon-btn" title="Bildirimler" aria-label="Bildirimler">
+                        🔔
+                        <span class="notification-badge">3</span>
+                    </button>
+
+                    <div class="profile-menu">
+                        <button class="profile-btn" title="Profil">
+                            <div class="profile-avatar">AK</div>
+                            <span style="font-size: 0.9rem;">Admin</span>
+                        </button>
+                    </div>
+
+                    <button class="theme-toggle" id="themeToggle" title="Tema değiştir" aria-label="Tema değiştir">🌙</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <main class="content" role="main">
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">İşletme metriklerinize hızlı bir bakış</p>
+
+            <!-- QUICK ACTIONS -->
+            <div class="quick-actions">
+                <button class="action-btn">
+                    <span class="action-icon">➕</span>
+                    Yeni Sipariş
+                </button>
+                <button class="action-btn">
+                    <span class="action-icon">📝</span>
+                    Rapor Oluştur
+                </button>
+                <button class="action-btn">
+                    <span class="action-icon">👤</span>
+                    Müşteri Ekle
+                </button>
+                <button class="action-btn">
+                    <span class="action-icon">📦</span>
+                    Ürün Yükle
+                </button>
+            </div>
+
+            <!-- STATISTICS CARDS -->
+            <div class="stats-grid">
+                <!-- Toplam Satış -->
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Toplam Satış</h3>
+                        <div class="stat-value">₺125.430</div>
+                        <div class="stat-change positive">↑ 12.5% Bu ay</div>
+                    </div>
+                    <div class="stat-icon">💰</div>
+                </div>
+
+                <!-- Kullanıcı Sayısı -->
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Toplam Kullanıcı</h3>
+                        <div class="stat-value">2.847</div>
+                        <div class="stat-change positive">↑ 8.2% Bu ay</div>
+                    </div>
+                    <div class="stat-icon">👥</div>
+                </div>
+
+                <!-- Siparişler -->
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Açık Siparişler</h3>
+                        <div class="stat-value">342</div>
+                        <div class="stat-change negative">↓ 3.1% Bu ay</div>
+                    </div>
+                    <div class="stat-icon">📦</div>
+                </div>
+
+                <!-- Gelir -->
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Bu Ay Gelir</h3>
+                        <div class="stat-value">₺52.800</div>
+                        <div class="stat-change positive">↑ 22.3% Önceki ay</div>
+                    </div>
+                    <div class="stat-icon">📈</div>
+                </div>
+            </div>
+
+            <!-- CHARTS GRID -->
+            <div class="dashboard-grid">
+                <!-- BAR CHART -->
+                <div class="chart-card">
+                    <h3>Haftalık Satışlar</h3>
+                    <div class="bar-chart">
+                        <div class="bar" style="height: 45%;">
+                            <span class="bar-value">₺8.2K</span>
+                        </div>
+                        <div class="bar" style="height: 62%;">
+                            <span class="bar-value">₺11.5K</span>
+                        </div>
+                        <div class="bar" style="height: 73%;">
+                            <span class="bar-value">₺13.8K</span>
+                        </div>
+                        <div class="bar" style="height: 58%;">
+                            <span class="bar-value">₺10.2K</span>
+                        </div>
+                        <div class="bar" style="height: 85%;">
+                            <span class="bar-value">₺15.6K</span>
+                        </div>
+                        <div class="bar" style="height: 92%;">
+                            <span class="bar-value">₺16.8K</span>
+                        </div>
+                        <div class="bar" style="height: 68%;">
+                            <span class="bar-value">₺12.4K</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DONUT CHART -->
+                <div class="chart-card">
+                    <h3>Sipariş Durumu Dağılımı</h3>
+                    <div class="donut-chart">
+                        <div class="donut">
+                            <div class="donut-center">
+                                <div class="donut-value">342</div>
+                                <div class="donut-label">Sipariş</div>
+                            </div>
+                        </div>
+                        <div class="donut-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: var(--accent);"></div>
+                                <span>İşleniyor (156)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: var(--success);"></div>
+                                <span>Tamamlandı (142)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: var(--warning);"></div>
+                                <span>Beklemede (44)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ORDERS TABLE -->
+            <div class="table-card">
+                <div class="table-header">
+                    <div class="table-title">Son Siparişler</div>
+                </div>
+                <table role="table" aria-label="Son sipariş listeleri">
+                    <thead>
+                        <tr>
+                            <th>Sipariş No</th>
+                            <th>Müşteri</th>
+                            <th>Tarih</th>
+                            <th>Tutar</th>
+                            <th>Durum</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD-2024-001</td>
+                            <td>Ahmet Yılmaz</td>
+                            <td>24 Mar 2024</td>
+                            <td>₺2.450</td>
+                            <td><span class="status-badge status-completed">Tamamlandı</span></td>
+                            <td><a href="#" style="color: var(--accent); text-decoration: none;">Detay →</a></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2024-002</td>
+                            <td>Zeynep Kara</td>
+                            <td>23 Mar 2024</td>
+                            <td>₺3.890</td>
+                            <td><span class="status-badge status-processing">İşleniyor</span></td>
+                            <td><a href="#" style="color: var(--accent); text-decoration: none;">Detay →</a></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2024-003</td>
+                            <td>Mustafa Demir</td>
+                            <td>22 Mar 2024</td>
+                            <td>₺1.240</td>
+                            <td><span class="status-badge status-completed">Tamamlandı</span></td>
+                            <td><a href="#" style="color: var(--accent); text-decoration: none;">Detay →</a></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2024-004</td>
+                            <td>Ayşe Özdemir</td>
+                            <td>21 Mar 2024</td>
+                            <td>₺4.560</td>
+                            <td><span class="status-badge status-pending">Beklemede</span></td>
+                            <td><a href="#" style="color: var(--accent); text-decoration: none;">Detay →</a></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2024-005</td>
+                            <td>Emre Çetin</td>
+                            <td>20 Mar 2024</td>
+                            <td>₺2.100</td>
+                            <td><span class="status-badge status-completed">Tamamlandı</span></td>
+                            <td><a href="#" style="color: var(--accent); text-decoration: none;">Detay →</a></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2024-006</td>
+                            <td>Emine Aydın</td>
+                            <td>19 Mar 2024</td>
+                            <td>₺5.320</td>
+                            <td><span class="status-badge status-processing">İşleniyor</span></td>
+                            <td><a href="#" style="color: var(--accent); text-decoration: none;">Detay →</a></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2024-007</td>
+                            <td>Ömer Koçak</td>
+                            <td>18 Mar 2024</td>
+                            <td>₺1.890</td>
+                            <td><span class="status-badge status-completed">Tamamlandı</span></td>
+                            <td><a href="#" style="color: var(--accent); text-decoration: none;">Detay →</a></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2024-008</td>
+                            <td>Nida Şahin</td>
+                            <td>17 Mar 2024</td>
+                            <td>₺3.450</td>
+                            <td><span class="status-badge status-pending">Beklemede</span></td>
+                            <td><a href="#" style="color: var(--accent); text-decoration: none;">Detay →</a></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2024-009</td>
+                            <td>Tarık Beyaz</td>
+                            <td>16 Mar 2024</td>
+                            <td>₺2.760</td>
+                            <td><span class="status-badge status-completed">Tamamlandı</span></td>
+                            <td><a href="#" style="color: var(--accent); text-decoration: none;">Detay →</a></td>
+                        </tr>
+                        <tr>
+                            <td>#ORD-2024-010</td>
+                            <td>Sinem Güneş</td>
+                            <td>15 Mar 2024</td>
+                            <td>₺4.120</td>
+                            <td><span class="status-badge status-processing">İşleniyor</span></td>
+                            <td><a href="#" style="color: var(--accent); text-decoration: none;">Detay →</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ACTIVITY TIMELINE -->
+            <div class="activity-timeline">
+                <h3 class="activity-title">Son Aktiviteler</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">Bugün 14:30</div>
+                            <div class="timeline-message">Yeni müşteri kaydı: Ayşe Özdemir</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">Bugün 12:15</div>
+                            <div class="timeline-message">Sipariş #ORD-2024-004 durum güncelleme: İşleniyor</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">Bugün 10:45</div>
+                            <div class="timeline-message">Yeni ürün ekleme: "Premium Laptop Stand"</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">Dün 16:20</div>
+                            <div class="timeline-message">Raporlanmış sorun çözümü: Ödeme sistemi güncelleme</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-time">Dün 13:00</div>
+                            <div class="timeline-message">Toplu email kampanyası gönderildi: 2.847 alıcı</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer role="contentinfo">
+        <p>&copy; 2024 Admin Dashboard. Tüm hakları saklıdır. | <a href="#" style="color: var(--accent); text-decoration: none;">Gizlilik</a> | <a href="#" style="color: var(--accent); text-decoration: none;">Şartlar</a></p>
+    </footer>
+
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        // ==================== TEMA TOGGLE ====================
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        const savedTheme = safeStorage('get', 'theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            htmlElement.setAttribute('data-theme', newTheme);
+            safeStorage('set', 'theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // ==================== SIDEBAR TOGGLE - MOBİL ====================
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+
+            // Dışarıya tıklandığında sidebar'ı kapat
+            document.addEventListener('click', (e) => {
+                if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        }
+
+        // ==================== NAV LİNK AKTİF DURUMU ====================
+        // Tıklanan nav linki aktif olur
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // ==================== ACTION BUTTON İŞLEVLERİ ====================
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const text = this.textContent;
+                alert(`"${text}" özelliği başlatılıyor...`);
+            });
+        });
+    </script>
+</body>
+</html>

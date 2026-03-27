@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Cheatsheet - Türkçe Rehber</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #10b981;
+            --dark-bg: #1f2937;
+            --light-bg: #f9fafb;
+            --text-dark: #111827;
+            --text-light: #f3f4f6;
+            --border: #e5e7eb;
+            --code-bg: #1e293b;
+        }
+
+        body.light-mode {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(255,255,255,0.3);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
+        /* Search Bar */
+        .search-container {
+            padding: 1.5rem;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-input {
+            padding: 0.8rem 1rem;
+            border: 2px solid white;
+            border-radius: 25px;
+            width: 300px;
+            max-width: 100%;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255,255,255,0.2);
+            width: 350px;
+        }
+
+        .dark-mode .search-input {
+            border-color: var(--text-light);
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--primary);
+            color: white;
+            position: sticky;
+            top: 200px;
+            height: fit-content;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+            padding: 1.5rem 0;
+        }
+
+        .dark-mode .sidebar {
+            background: #111827;
+            border-right: 1px solid var(--border);
+        }
+
+        .light-mode .sidebar {
+            background: #f3f4f6;
+            color: var(--text-dark);
+            border-right: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            padding: 0.8rem 1.5rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+            color: inherit;
+        }
+
+        .sidebar-item {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            color: inherit;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(255,255,255,0.1);
+            border-left-color: var(--secondary);
+        }
+
+        .light-mode .sidebar-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .sidebar-item.active {
+            background: rgba(255,255,255,0.2);
+            border-left-color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .light-mode .sidebar-item.active {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary);
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 0.5rem;
+        }
+
+        .section-intro {
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        /* Property Card */
+        .property {
+            background: var(--light-bg);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .dark-mode .property {
+            background: #374151;
+            border-color: #4b5563;
+        }
+
+        .property:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.1);
+        }
+
+        .property-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .property-desc {
+            color: inherit;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .property-values {
+            background: var(--code-bg);
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .value-label {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Code Example */
+        .code-example {
+            background: var(--code-bg);
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-label {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #059669;
+        }
+
+        /* Demo Box */
+        .demo-box {
+            background: var(--light-bg);
+            border: 2px dashed var(--secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .dark-mode .demo-box {
+            background: #2d3748;
+            border-color: var(--secondary);
+        }
+
+        .demo-label {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Browser Support */
+        .browser-support {
+            background: var(--secondary);
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: relative;
+                top: 0;
+                height: auto;
+                max-height: none;
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                padding: 1rem;
+                gap: 0.5rem;
+            }
+
+            .sidebar-title {
+                display: none;
+            }
+
+            .sidebar-item {
+                padding: 0.6rem 1rem;
+                border-left: none;
+                border-bottom: 2px solid transparent;
+                flex: 1;
+                min-width: 150px;
+                text-align: center;
+            }
+
+            .sidebar-item.active {
+                border-left: none;
+                border-bottom: 2px solid var(--secondary);
+            }
+
+            .content {
+                padding: 1.5rem;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .theme-toggle {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+        }
+
+        /* Syntax Colors */
+        .hljs-tag { color: #7aa2f7; }
+        .hljs-attr { color: #bb9af7; }
+        .hljs-string { color: #9ece6a; }
+        .hljs-number { color: #ff9e64; }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .gap-1 { gap: 1rem; }
+        .gap-2 { gap: 2rem; }
+        .mb-1 { margin-bottom: 1rem; }
+        .mb-2 { margin-bottom: 2rem; }
+    </style>
+</head>
+<body class="light-mode">
+<a href="../index.html" id="ana-sayfa-link" style="
+        position:fixed;top:12px;left:12px;z-index:9999;
+        background:var(--primary, #6366f1);color:#fff;
+        padding:6px 16px;border-radius:50px;text-decoration:none;
+        font-size:0.85rem;font-weight:600;font-family:sans-serif;
+        box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.3s;
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+    >← Ana Sayfa</a>
+
+    <button class="theme-toggle" id="themeToggle">🌙 Koyu Mod</button>
+
+    <header>
+        <h1>✨ CSS Cheatsheet</h1>
+        <p>UI/UX Tasarımcıları için Kapsamlı Türkçe Rehber</p>
+    </header>
+
+    <div class="search-container">
+        <input type="text" class="search-input" id="searchInput" placeholder="CSS özelliği ara... (örn: flex, grid, color)">
+    </div>
+
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-title">Kategoriler</div>
+            <div class="sidebar-item active" data-section="css-bagla">CSS Bağlama</div>
+            <div class="sidebar-item" data-section="seciciler">Seçiciler</div>
+            <div class="sidebar-item" data-section="pseudo-class">Pseudo-class</div>
+            <div class="sidebar-item" data-section="pseudo-element">Pseudo-element</div>
+            <div class="sidebar-item" data-section="box-model">Box Model</div>
+            <div class="sidebar-item" data-section="typography">Typography</div>
+            <div class="sidebar-item" data-section="renkler">Renkler & Arka Plan</div>
+            <div class="sidebar-item" data-section="display">Display & Görünürlük</div>
+            <div class="sidebar-item" data-section="flexbox">Flexbox</div>
+            <div class="sidebar-item" data-section="grid">CSS Grid</div>
+            <div class="sidebar-item" data-section="pozisyon">Pozisyonlama</div>
+            <div class="sidebar-item" data-section="animasyon">Geçişler & Animasyonlar</div>
+            <div class="sidebar-item" data-section="responsive">Responsive Design</div>
+            <div class="sidebar-item" data-section="modern">Modern CSS</div>
+            <div class="sidebar-item" data-section="specificity">Specificity & Cascade</div>
+        </aside>
+
+        <main class="content">
+            <!-- 1. CSS BAĞLAMA YÖNTEMLERİ -->
+            <section id="css-bagla" class="section active">
+                <h2>1️⃣ CSS Bağlama Yöntemleri</h2>
+                <p class="section-intro">CSS kodunuzu HTML sayfanıza entegre etmenin 4 farklı yolu</p>
+
+                <!-- Inline -->
+                <div class="property">
+                    <div class="property-name">Inline Stil</div>
+                    <div class="property-desc">HTML etiketine doğrudan yazılan CSS. Hızlı testler için iyidir, fakat profesyonel projelerde önerilmez.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <div>&lt;p style="color: red; font-size: 18px;"&gt;Kırmızı metin&lt;/p&gt;</div>
+                    </div>
+                    <div class="property-values">
+                        <div class="value-label">Kullanım: Hızlı testler, özel durumlar</div>
+                    </div>
+                </div>
+
+                <!-- Internal -->
+                <div class="property">
+                    <div class="property-name">&lt;style&gt; Etiketi (Internal)</div>
+                    <div class="property-desc">HTML dosyasının &lt;head&gt; kısmına yazılan CSS. Tek sayfalık siteler için uygun.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>&lt;head&gt;
+    &lt;style&gt;
+        p { color: blue; }
+        .highlight { background: yellow; }
+    &lt;/style&gt;
+&lt;/head&gt;</pre>
+                    </div>
+                </div>
+
+                <!-- External -->
+                <div class="property">
+                    <div class="property-name">Dış CSS Dosyası (External)</div>
+                    <div class="property-desc">Ayrı bir .css dosyasında yazılan CSS. En profesyonel ve tavsiye edilen yöntem.</div>
+                    <div class="code-example">
+                        <div class="code-label">HTML'de:</div>
+                        <pre>&lt;link rel="stylesheet" href="styles.css"&gt;</pre>
+                        <div class="code-label" style="margin-top: 1rem;">styles.css dosyasında:</div>
+                        <pre>p { color: green; }
+.container { width: 100%; }</pre>
+                    </div>
+                    <div class="browser-support">✅ Avantajları: Yeniden kullanılabilir, dosya boyutu küçük, bakım kolay</div>
+                </div>
+
+                <!-- @import -->
+                <div class="property">
+                    <div class="property-name">@import Kuralı</div>
+                    <div class="property-desc">Bir CSS dosyasından başka CSS dosyasını içeri aktarır. Dış dosyaların başında kullanılır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>@import url('reset.css');
+@import url('typography.css');
+
+body { font-family: Arial; }</pre>
+                    </div>
+                    <div class="browser-support">⚠️ Not: Dosya sayısı arttıkça sayfa yükleme hızı etkilenebilir</div>
+                </div>
+            </section>
+
+            <!-- 2. SEÇİCİLER -->
+            <section id="seciciler" class="section">
+                <h2>🎯 Seçiciler</h2>
+                <p class="section-intro">CSS'de hangi HTML öğelerine stil uygulanacağını belirten kurallar</p>
+
+                <!-- Element Selector -->
+                <div class="property">
+                    <div class="property-name">Element Seçici</div>
+                    <div class="property-desc">HTML etiket adıyla direkt seçim. Tüm aynı etiketlere etki eder.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>p { color: #333; }
+h1 { font-size: 32px; }
+button { padding: 10px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Class Selector -->
+                <div class="property">
+                    <div class="property-name">Class Seçici (.class)</div>
+                    <div class="property-desc">Bir sınıfla işaretlenmiş öğeleri seçer. Nokta (.) ile başlar. Bir sayfada birçok öğeye aynı sınıfı verebilirsiniz.</div>
+                    <div class="code-example">
+                        <div class="code-label">CSS:</div>
+                        <pre>.highlight { background: yellow; }
+.btn-primary { background: #6366f1; color: white; }</pre>
+                        <div class="code-label" style="margin-top: 1rem;">HTML:</div>
+                        <pre>&lt;p class="highlight"&gt;Vurgulanmış&lt;/p&gt;
+&lt;button class="btn-primary"&gt;Tıkla&lt;/button&gt;</pre>
+                    </div>
+                </div>
+
+                <!-- ID Selector -->
+                <div class="property">
+                    <div class="property-name">ID Seçici (#id)</div>
+                    <div class="property-desc">Bir ID'yi seçer. Hash (#) ile başlar. Her sayfada sadece bir öğeye kullanılmalıdır.</div>
+                    <div class="code-example">
+                        <div class="code-label">CSS:</div>
+                        <pre>#header { background: linear-gradient(135deg, #6366f1, #10b981); }
+#footer { margin-top: 50px; }</pre>
+                        <div class="code-label" style="margin-top: 1rem;">HTML:</div>
+                        <pre>&lt;div id="header"&gt;Logo&lt;/div&gt;</pre>
+                    </div>
+                </div>
+
+                <!-- Universal Selector -->
+                <div class="property">
+                    <div class="property-name">Evrensel Seçici (*)</div>
+                    <div class="property-desc">Sayfadaki TÜM öğeleri seçer. Sıfırlama (reset) için kullanılır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>* { margin: 0; padding: 0; box-sizing: border-box; }</pre>
+                    </div>
+                </div>
+
+                <!-- Group Selector -->
+                <div class="property">
+                    <div class="property-name">Gruplandırma (,)</div>
+                    <div class="property-desc">Birden fazla seçiciyi aynı kuralla seçer. Virgülle ayrılırlar.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>h1, h2, h3 { color: #333; font-weight: bold; }
+.btn, button { padding: 10px 20px; border: none; }</pre>
+                    </div>
+                </div>
+
+                <!-- Descendant -->
+                <div class="property">
+                    <div class="property-name">Soyundan Gelen Seçici (boşluk)</div>
+                    <div class="property-desc">Bir öğenin içindeki tüm alt öğeleri seçer (kaç katman derinse dersin).</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.container p { color: blue; }
+nav a { text-decoration: none; }</pre>
+                        <div class="code-label" style="margin-top: 1rem;">Seçer:</div>
+                        <pre>&lt;div class="container"&gt;
+    &lt;p&gt;Bu seçilir&lt;/p&gt;
+    &lt;div&gt;
+        &lt;p&gt;Bu da seçilir&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+                    </div>
+                </div>
+
+                <!-- Child -->
+                <div class="property">
+                    <div class="property-name">Doğrudan Çocuk Seçici (>)</div>
+                    <div class="property-desc">Sadece direkt alt öğeleri seçer. Derinlerdeki öğeleri seçmez.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.parent > p { color: red; }</pre>
+                        <div class="code-label" style="margin-top: 1rem;">Seçer: Sadece .parent'in direkt çocuğu olan p'ler</div>
+                    </div>
+                </div>
+
+                <!-- Adjacent Sibling -->
+                <div class="property">
+                    <div class="property-name">Bitişik Kardeş Seçici (+)</div>
+                    <div class="property-desc">Öğenin hemen sonrasında gelen kardeş öğesini seçer.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>h1 + p { font-weight: bold; margin-top: 10px; }</pre>
+                        <div class="code-label" style="margin-top: 1rem;">Seçer: h1'den hemen sonra gelen ilk p etiketi</div>
+                    </div>
+                </div>
+
+                <!-- General Sibling -->
+                <div class="property">
+                    <div class="property-name">Genel Kardeş Seçici (~)</div>
+                    <div class="property-desc">Öğenin sonrasında gelen TÜM kardeş öğeleri seçer.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.active ~ .item { opacity: 0.5; }</pre>
+                    </div>
+                </div>
+
+                <!-- Attribute Selectors -->
+                <div class="property">
+                    <div class="property-name">Öznitelik Seçicileri ([attr])</div>
+                    <div class="property-desc">HTML öznitelikleri (attributes) temelinde seçim yapar.</div>
+                    <div class="property-values">
+                        <div class="value-label">[attr]: Öznitelik var mı?</div>
+                        [disabled] { opacity: 0.5; }
+                        <div class="value-label" style="margin-top: 0.8rem;">[attr="value"]: Tam eşleşme</div>
+                        input[type="text"] { border: 1px solid #ccc; }
+                        <div class="value-label" style="margin-top: 0.8rem;">[attr^="value"]: Başlangıçta eşleşme</div>
+                        a[href^="https"] { color: green; }
+                        <div class="value-label" style="margin-top: 0.8rem;">[attr$="value"]: Sonunda eşleşme</div>
+                        img[src$=".svg"] { width: 24px; }
+                        <div class="value-label" style="margin-top: 0.8rem;">[attr*="value"]: Herhangi bir yerde eşleşme</div>
+                        a[href*="example"] { color: purple; }
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. PSEUDO-CLASS -->
+            <section id="pseudo-class" class="section">
+                <h2>🔄 Pseudo-class (:)</h2>
+                <p class="section-intro">Öğenin durumuna göre stil uygulayan seçiciler</p>
+
+                <!-- Hover -->
+                <div class="property">
+                    <div class="property-name">:hover</div>
+                    <div class="property-desc">Fare öğenin üzerine geldiğinde uygulanır. Etkileşim geri bildirimi için idealdir.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>button:hover { background-color: #059669; transform: scale(1.05); }
+a:hover { color: #6366f1; text-decoration: underline; }</pre>
+                    </div>
+                    <div class="demo-box">
+                        <div class="demo-label">Canlı Demo:</div>
+                        <button style="padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 5px; cursor: pointer; transition: all 0.3s;">
+                            Üzerine Gel
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Focus -->
+                <div class="property">
+                    <div class="property-name">:focus</div>
+                    <div class="property-desc">Öğe odaklandığında (tıklandığında veya Tab ile seçildiğinde) uygulanır. Erişilebilirlik için önemlidir.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>input:focus { outline: 2px solid #6366f1; border-color: #6366f1; }
+button:focus { box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); }</pre>
+                    </div>
+                </div>
+
+                <!-- Active -->
+                <div class="property">
+                    <div class="property-name">:active</div>
+                    <div class="property-desc">Fare düğmesi basılı tutulduğu sırada uygulanır. Tıklama geri bildirimi için kullanılır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>button:active { transform: scale(0.98); background-color: #047857; }
+a:active { color: #6366f1; }</pre>
+                    </div>
+                </div>
+
+                <!-- Visited -->
+                <div class="property">
+                    <div class="property-name">:visited</div>
+                    <div class="property-desc">Ziyaret edilmiş bağlantılar için stil. Başka öğelere uygulanamaz.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>a:visited { color: #9333ea; }</pre>
+                    </div>
+                    <div class="browser-support">📌 Güvenlik nedeniyle sınırlandırılmıştır</div>
+                </div>
+
+                <!-- First Child -->
+                <div class="property">
+                    <div class="property-name">:first-child</div>
+                    <div class="property-desc">Üst öğesinin ilk çocuğu ise seçer.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>li:first-child { font-weight: bold; }
+p:first-child { margin-top: 0; }</pre>
+                    </div>
+                </div>
+
+                <!-- Last Child -->
+                <div class="property">
+                    <div class="property-name">:last-child</div>
+                    <div class="property-desc">Üst öğesinin son çocuğu ise seçer.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>li:last-child { border-bottom: none; }
+.card:last-child { margin-right: 0; }</pre>
+                    </div>
+                </div>
+
+                <!-- Nth Child -->
+                <div class="property">
+                    <div class="property-name">:nth-child(n)</div>
+                    <div class="property-desc">Belirli bir pozisyondaki çocukları seçer. Çok esnek ve güçlü bir seçicidir.</div>
+                    <div class="property-values">
+                        <div class="value-label">:nth-child(2)</div> Sadece 2. çocuk
+                        <div class="value-label" style="margin-top: 0.8rem;">:nth-child(odd)</div> Tek sayılı çocuklar
+                        <div class="value-label" style="margin-top: 0.8rem;">:nth-child(even)</div> Çift sayılı çocuklar
+                        <div class="value-label" style="margin-top: 0.8rem;">:nth-child(3n+1)</div> Her 3.'den 1 başlayarak
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>tr:nth-child(even) { background-color: #f3f4f6; }
+.grid-item:nth-child(3n) { margin-right: 0; }</pre>
+                    </div>
+                </div>
+
+                <!-- Not -->
+                <div class="property">
+                    <div class="property-name">:not(selector)</div>
+                    <div class="property-desc">Belirtilen seçici HARIÇ tüm öğeleri seçer. Olumsuz seçim için.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>li:not(.active) { opacity: 0.5; }
+input:not([type="submit"]) { padding: 10px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Is -->
+                <div class="property">
+                    <div class="property-name">:is(selector)</div>
+                    <div class="property-desc">Birden fazla seçiciden BİRİNİ eşleşen öğeleri seçer. Specificity'yi düşük tutar.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>:is(h1, h2, h3) { color: #333; margin-bottom: 1rem; }
+:is(.btn, button) { padding: 10px 20px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Where -->
+                <div class="property">
+                    <div class="property-name">:where(selector)</div>
+                    <div class="property-desc">:is() gibi ama 0 specificity ile çalışır. Kütüphane kodları için idealdir.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>:where(.container) p { color: blue; }</pre>
+                    </div>
+                </div>
+
+                <!-- Has -->
+                <div class="property">
+                    <div class="property-name">:has(selector)</div>
+                    <div class="property-desc">İçinde belirli öğeler barındıran üst öğeleri seçer. Ön-biçem için devrim.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.card:has(img) { padding: 10px; }
+article:has(> h1) { border-top: 3px solid; }</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. PSEUDO-ELEMENT -->
+            <section id="pseudo-element" class="section">
+                <h2>✨ Pseudo-element (::)</h2>
+                <p class="section-intro">Sanal öğeler oluşturarak dekoratif efektler ekleyin</p>
+
+                <!-- Before -->
+                <div class="property">
+                    <div class="property-name">::before</div>
+                    <div class="property-desc">Öğenin BAŞINA sanal içerik ekler. content özelliği zorunludur.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.quote::before { content: '"'; color: #6366f1; font-size: 2em; }</pre>
+                    </div>
+                    <div class="demo-box">
+                        <div class="demo-label">Canlı Demo:</div>
+                        <div style="position: relative; padding-left: 2rem;">
+                            <div style="position: absolute; left: 0; top: -0.5rem; font-size: 2rem; color: #6366f1;">❝</div>
+                            <p>Güzel bir alıntı</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- After -->
+                <div class="property">
+                    <div class="property-name">::after</div>
+                    <div class="property-desc">Öğenin SONUNA sanal içerik ekler. Dekoratif çizgiler, ikonlar vb.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.required::after { content: " *"; color: red; }</pre>
+                    </div>
+                </div>
+
+                <!-- First Line -->
+                <div class="property">
+                    <div class="property-name">::first-line</div>
+                    <div class="property-desc">Metnin ilk satırını seçer. display:block olan öğelerde çalışır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>p::first-line { font-weight: bold; color: #6366f1; }</pre>
+                    </div>
+                </div>
+
+                <!-- First Letter -->
+                <div class="property">
+                    <div class="property-name">::first-letter</div>
+                    <div class="property-desc">Metnin ilk harfini seçer. Drop cap (ilk harf büyültme) efekti için ideal.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>p::first-letter { font-size: 2em; font-weight: bold; color: #6366f1; }</pre>
+                    </div>
+                </div>
+
+                <!-- Placeholder -->
+                <div class="property">
+                    <div class="property-name">::placeholder</div>
+                    <div class="property-desc">Input veya textarea placeholder metnini stiller.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>input::placeholder { color: #999; font-style: italic; }</pre>
+                    </div>
+                </div>
+
+                <!-- Selection -->
+                <div class="property">
+                    <div class="property-name">::selection</div>
+                    <div class="property-desc">Fare ile seçilen metni stiller. color, background, text-shadow kullanabilirsiniz.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>::selection { background-color: #6366f1; color: white; }
+p::selection { background: #fbbf24; color: #111; }</pre>
+                    </div>
+                    <div class="demo-box">
+                        <div class="demo-label">Canlı Demo:</div>
+                        <p style="user-select: text;">Metni seç ve rengini gözlemle</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. BOX MODEL -->
+            <section id="box-model" class="section">
+                <h2>📦 Box Model</h2>
+                <p class="section-intro">Her HTML öğesi bir kutu (box) gibi davranır. Content, Padding, Border, Margin olmak üzere 4 katmandan oluşur.</p>
+
+                <!-- Width -->
+                <div class="property">
+                    <div class="property-name">width</div>
+                    <div class="property-desc">Öğenin genişliğini belirler.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        px (piksel) | em | rem | % | vw | auto | 100px
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.box { width: 300px; }
+.container { width: 100%; }
+.sidebar { width: 25vw; }</pre>
+                    </div>
+                </div>
+
+                <!-- Height -->
+                <div class="property">
+                    <div class="property-name">height</div>
+                    <div class="property-desc">Öğenin yüksekliğini belirler.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.hero { height: 500px; }
+.card { height: auto; }</pre>
+                    </div>
+                </div>
+
+                <!-- Min/Max Width/Height -->
+                <div class="property">
+                    <div class="property-name">min-width, max-width, min-height, max-height</div>
+                    <div class="property-desc">Öğenin minimum ve maksimum boyutlarını belirler. Responsive tasarım için kritiktir.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.container { min-width: 320px; max-width: 1200px; margin: 0 auto; }
+.image { max-width: 100%; height: auto; }</pre>
+                    </div>
+                </div>
+
+                <!-- Margin -->
+                <div class="property">
+                    <div class="property-name">margin</div>
+                    <div class="property-desc">Öğenin DIŞ mesafesini (başka öğelerle arası) belirler. Kutunun etrafında boşluk yaratır.</div>
+                    <div class="property-values">
+                        <div class="value-label">Kısa yazım:</div>
+                        margin: 20px; (4 yön)
+                        margin: 20px 30px; (üst/alt, sağ/sol)
+                        margin: 10px 20px 30px 40px; (üst, sağ, alt, sol)
+                        <div class="value-label" style="margin-top: 0.8rem;">Uzun yazım:</div>
+                        margin-top, margin-right, margin-bottom, margin-left
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.card { margin: 20px; }
+h1 { margin-bottom: 1rem; }
+.centered { margin: 0 auto; } /* Yatay ortalama */</pre>
+                    </div>
+                </div>
+
+                <!-- Padding -->
+                <div class="property">
+                    <div class="property-name">padding</div>
+                    <div class="property-desc">Öğenin İÇ mesafesini belirler. Content ile border arasında boşluk yaratır.</div>
+                    <div class="property-values">
+                        <div class="value-label">Yazım Margin ile aynıdır:</div>
+                        padding: 20px;
+                        padding: 10px 20px;
+                        padding-top, padding-right, padding-bottom, padding-left
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.button { padding: 10px 20px; }
+.container { padding: 40px; }
+.card { padding: 20px 30px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Border -->
+                <div class="property">
+                    <div class="property-name">border</div>
+                    <div class="property-desc">Öğenin çevresine çerçeve (kenarlık) ekler.</div>
+                    <div class="property-values">
+                        <div class="value-label">border: [genişlik] [stil] [renk];</div>
+                        Stiller: solid | dashed | dotted | double | groove | ridge | inset | outset
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.box { border: 2px solid #6366f1; }
+.card { border: 1px dotted #ccc; }
+.danger { border-bottom: 3px solid red; }</pre>
+                    </div>
+                </div>
+
+                <!-- Border Radius -->
+                <div class="property">
+                    <div class="property-name">border-radius</div>
+                    <div class="property-desc">Köşeleri yuvarlar. Modern tasarımın anahtar özelliği.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        border-radius: 10px; (tüm köşeler)
+                        border-radius: 10px 20px; (değişken köşeler)
+                        border-radius: 50%; (tam daire)
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.card { border-radius: 8px; }
+.avatar { border-radius: 50%; }
+.button { border-radius: 25px; }</pre>
+                    </div>
+                    <div class="demo-box">
+                        <div class="demo-label">Canlı Demo:</div>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <div style="width: 80px; height: 80px; background: #6366f1; border-radius: 0;">0px</div>
+                            <div style="width: 80px; height: 80px; background: #6366f1; border-radius: 8px;">8px</div>
+                            <div style="width: 80px; height: 80px; background: #6366f1; border-radius: 20px;">20px</div>
+                            <div style="width: 80px; height: 80px; background: #6366f1; border-radius: 50%;">50%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Box Sizing -->
+                <div class="property">
+                    <div class="property-name">box-sizing</div>
+                    <div class="property-desc">Genişlik ve yüksekliğin, padding ve border'ı içerip içermediğini belirler.</div>
+                    <div class="property-values">
+                        <div class="value-label">content-box (varsayılan):</div>
+                        width = sadece content
+                        <div class="value-label" style="margin-top: 0.8rem;">border-box (önerilir):</div>
+                        width = content + padding + border
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek (sıfırlama):</div>
+                        <pre>* { box-sizing: border-box; }</pre>
+                    </div>
+                </div>
+
+                <!-- Outline -->
+                <div class="property">
+                    <div class="property-name">outline</div>
+                    <div class="property-desc">Border'ın dışında bir çizgi ekler. Erişilebilirlik için önemlidir (focus durumunda).</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>button:focus { outline: 2px solid #6366f1; outline-offset: 2px; }</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. TYPOGRAPHY -->
+            <section id="typography" class="section">
+                <h2>✍️ Typography</h2>
+                <p class="section-intro">Yazı (metin) özelliklerini kontrol edin. İyi tipografi, tasarımın %90'ıdır!</p>
+
+                <!-- Font Family -->
+                <div class="property">
+                    <div class="property-name">font-family</div>
+                    <div class="property-desc">Metnin yazı tipini (font) belirler. Yedek yazı tipleri için virgülle ayırılır.</div>
+                    <div class="property-values">
+                        <div class="value-label">Sistem fontları:</div>
+                        Arial, Helvetica, Georgia, Times New Roman, Courier New
+                        <div class="value-label" style="margin-top: 0.8rem;">Web fontları:</div>
+                        'Inter', 'Poppins', 'Roboto', 'Playfair Display'
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+.serif { font-family: Georgia, 'Times New Roman', serif; }</pre>
+                    </div>
+                </div>
+
+                <!-- Font Size -->
+                <div class="property">
+                    <div class="property-name">font-size</div>
+                    <div class="property-desc">Metnin büyüklüğünü belirler. px, em, rem, % kullanılabilir.</div>
+                    <div class="property-values">
+                        <div class="value-label">Birimler:</div>
+                        px (piksel - mutlak) | em (ebeveynin boyutu) | rem (kök boyutu) | % (yüzde)
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>body { font-size: 16px; }
+h1 { font-size: 2rem; }
+.small { font-size: 0.875em; }</pre>
+                    </div>
+                </div>
+
+                <!-- Font Weight -->
+                <div class="property">
+                    <div class="property-name">font-weight</div>
+                    <div class="property-desc">Metnin kalınlığını (inceliğini) belirler. Yazı tipinin desteklediği ağırlıklar vardır.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        normal (400) | bold (700) | lighter | bolder
+                        <div class="value-label" style="margin-top: 0.8rem;">Sayı değerleri:</div>
+                        100 (Thin) | 300 (Light) | 400 (Normal) | 500 (Medium) | 700 (Bold) | 900 (Black)
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>h1 { font-weight: 700; }
+.light-text { font-weight: 300; }
+strong { font-weight: bold; }</pre>
+                    </div>
+                </div>
+
+                <!-- Font Style -->
+                <div class="property">
+                    <div class="property-name">font-style</div>
+                    <div class="property-desc">Metni italik veya normal yapar.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        normal | italic | oblique
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>em { font-style: italic; }
+.quote { font-style: italic; color: #666; }</pre>
+                    </div>
+                </div>
+
+                <!-- Line Height -->
+                <div class="property">
+                    <div class="property-name">line-height</div>
+                    <div class="property-desc">Satırlar arasındaki mesafe. Okunabilirlik için çok önemlidir.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        normal (1.2) | sayı (1.5) | px (20px) | % (120%)
+                        <div class="value-label" style="margin-top: 0.8rem;">İdeal değer:</div>
+                        1.5 - 1.8 arasında (body metni için)
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>body { line-height: 1.6; }
+h1 { line-height: 1.2; }
+.article p { line-height: 1.8; }</pre>
+                    </div>
+                </div>
+
+                <!-- Letter Spacing -->
+                <div class="property">
+                    <div class="property-name">letter-spacing</div>
+                    <div class="property-desc">Karakterler arasındaki mesafe. Başlıklar için stil için kullanılır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.title { letter-spacing: 2px; }
+.logo { letter-spacing: 3px; text-transform: uppercase; }</pre>
+                    </div>
+                </div>
+
+                <!-- Word Spacing -->
+                <div class="property">
+                    <div class="property-name">word-spacing</div>
+                    <div class="property-desc">Sözcükler arasındaki mesafe.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.spaced-text { word-spacing: 5px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Text Align -->
+                <div class="property">
+                    <div class="property-name">text-align</div>
+                    <div class="property-desc">Metni hizalar.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        left | center | right | justify
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>h1 { text-align: center; }
+p { text-align: justify; }</pre>
+                    </div>
+                </div>
+
+                <!-- Text Decoration -->
+                <div class="property">
+                    <div class="property-name">text-decoration</div>
+                    <div class="property-desc">Metne altçizgi, üstçizgi vb. ekler.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        none | underline | overline | line-through
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>a { text-decoration: none; }
+del { text-decoration: line-through; }
+ins { text-decoration: underline; }</pre>
+                    </div>
+                </div>
+
+                <!-- Text Transform -->
+                <div class="property">
+                    <div class="property-name">text-transform</div>
+                    <div class="property-desc">Metnin büyüklüğünü değiştirir (HTML'i değiştirmeden).</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        none | uppercase | lowercase | capitalize
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.uppercase { text-transform: uppercase; }
+.title { text-transform: capitalize; }</pre>
+                    </div>
+                </div>
+
+                <!-- Text Shadow -->
+                <div class="property">
+                    <div class="property-name">text-shadow</div>
+                    <div class="property-desc">Metne gölge efekti ekler.</div>
+                    <div class="property-values">
+                        <div class="value-label">Yazım:</div>
+                        text-shadow: [x] [y] [blur] [renk];
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.title { text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+.neon { text-shadow: 0 0 10px #6366f1, 0 0 20px #6366f1; }</pre>
+                    </div>
+                </div>
+
+                <!-- Google Fonts -->
+                <div class="property">
+                    <div class="property-name">Google Fonts Kullanımı</div>
+                    <div class="property-desc">İnternet üzerinden ücretsiz yazı tipleri yükleyin. fonts.google.com'dan seçin.</div>
+                    <div class="code-example">
+                        <div class="code-label">HTML &lt;head&gt; içinde:</div>
+                        <pre>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"&gt;</pre>
+                        <div class="code-label" style="margin-top: 1rem;">CSS'de:</div>
+                        <pre>body { font-family: 'Inter', sans-serif; }</pre>
+                    </div>
+                </div>
+
+                <!-- Font Face -->
+                <div class="property">
+                    <div class="property-name">@font-face</div>
+                    <div class="property-desc">Kendi yazı dosyalarınızı yükleyin. Özel (custom) fontlar için kullanılır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>@font-face {
+    font-family: 'CustomFont';
+    src: url('fonts/custom.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. RENKLER VE ARKA PLAN -->
+            <section id="renkler" class="section">
+                <h2>🎨 Renkler & Arka Plan</h2>
+                <p class="section-intro">Renk ve arka plan özelliklerini kontrol edin. Tasarımın ruh ve hissi renkte yatar.</p>
+
+                <!-- Color -->
+                <div class="property">
+                    <div class="property-name">color</div>
+                    <div class="property-desc">Metin rengini belirler.</div>
+                    <div class="property-values">
+                        <div class="value-label">Renk Formatları:</div>
+                        Hex: #FF0000 | RGB: rgb(255, 0, 0) | HSL: hsl(0, 100%, 50%) | Renk İsmi: red, blue
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>p { color: #333333; }
+.warning { color: rgb(255, 152, 0); }
+a { color: hsl(240, 100%, 50%); }</pre>
+                    </div>
+                </div>
+
+                <!-- Background Color -->
+                <div class="property">
+                    <div class="property-name">background-color</div>
+                    <div class="property-desc">Öğenin arka plan rengini belirler.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.card { background-color: #ffffff; }
+.highlight { background-color: rgba(255, 193, 7, 0.5); }</pre>
+                    </div>
+                </div>
+
+                <!-- Background Image -->
+                <div class="property">
+                    <div class="property-name">background-image</div>
+                    <div class="property-desc">Arka plan olarak resim veya gradient ekler.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.hero { background-image: url('bg.jpg'); }
+.gradient { background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }</pre>
+                    </div>
+                </div>
+
+                <!-- Background Size -->
+                <div class="property">
+                    <div class="property-name">background-size</div>
+                    <div class="property-desc">Arka plan resminin boyutunu belirler.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        cover (kopyala) | contain (sığdır) | 100px | 50% | auto
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.hero { background-size: cover; background-position: center; }
+.pattern { background-size: 50px 50px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Background Position -->
+                <div class="property">
+                    <div class="property-name">background-position</div>
+                    <div class="property-desc">Arka plan resminin konumunu belirler.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.hero { background-position: center; }
+.banner { background-position: center top; }</pre>
+                    </div>
+                </div>
+
+                <!-- Background Repeat -->
+                <div class="property">
+                    <div class="property-name">background-repeat</div>
+                    <div class="property-desc">Arka plan resminin tekrar edip etmediğini belirler.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        repeat | no-repeat | repeat-x | repeat-y
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.pattern { background-repeat: repeat; }
+.hero { background-repeat: no-repeat; }</pre>
+                    </div>
+                </div>
+
+                <!-- Linear Gradient -->
+                <div class="property">
+                    <div class="property-name">linear-gradient()</div>
+                    <div class="property-desc">İki veya daha fazla renk arasında doğrusal geçiş yapar.</div>
+                    <div class="property-values">
+                        <div class="value-label">Yazım:</div>
+                        linear-gradient([yön], renk1, renk2, ...)
+                        <div class="value-label" style="margin-top: 0.8rem;">Yönler:</div>
+                        to right, to bottom, 135deg (açı), vb.
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.header { background: linear-gradient(to right, #6366f1, #10b981); }
+.diagonal { background: linear-gradient(135deg, red, yellow); }</pre>
+                    </div>
+                    <div class="demo-box">
+                        <div class="demo-label">Canlı Demo:</div>
+                        <div style="height: 100px; background: linear-gradient(135deg, #6366f1, #10b981); border-radius: 8px;"></div>
+                    </div>
+                </div>
+
+                <!-- Radial Gradient -->
+                <div class="property">
+                    <div class="property-name">radial-gradient()</div>
+                    <div class="property-desc">Merkezi bir noktadan dışa doğru renk geçişi yapar.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.spotlight { background: radial-gradient(circle, yellow, red); }
+.fade { background: radial-gradient(ellipse at center, #fff, #000); }</pre>
+                    </div>
+                </div>
+
+                <!-- Conic Gradient -->
+                <div class="property">
+                    <div class="property-name">conic-gradient()</div>
+                    <div class="property-desc">Dönel (huni şeklinde) renk geçişi. Pasta grafikleri için ideal.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.pie { background: conic-gradient(red 25%, yellow 25% 50%, green 50%); }</pre>
+                    </div>
+                </div>
+
+                <!-- Opacity -->
+                <div class="property">
+                    <div class="property-name">opacity</div>
+                    <div class="property-desc">Öğenin saydamlığını (şeffaflığını) belirler. 0 (tamamen saydamdır) ile 1 (opak) arasında.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.ghost { opacity: 0.5; }
+.watermark { opacity: 0.2; }
+img:hover { opacity: 1; }</pre>
+                    </div>
+                </div>
+
+                <!-- Renk Formatları -->
+                <div class="property">
+                    <div class="property-name">Renk Formatları Karşılaştırması</div>
+                    <div class="property-desc">Farklı renk tanımlama yöntemlerini karşılaştırın.</div>
+                    <div class="demo-box">
+                        <div class="demo-label">Örnek Renk (Kırmızı):</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div><strong>Hex:</strong> #FF0000</div>
+                            <div><strong>RGB:</strong> rgb(255, 0, 0)</div>
+                            <div><strong>HSL:</strong> hsl(0, 100%, 50%)</div>
+                            <div><strong>İsim:</strong> red</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. DISPLAY VE GÖRÜNÜRLÜK -->
+            <section id="display" class="section">
+                <h2>👁️ Display & Görünürlük</h2>
+                <p class="section-intro">Öğelerin sayfada nasıl gösterildiğini kontrol edin.</p>
+
+                <!-- Display Block -->
+                <div class="property">
+                    <div class="property-name">display: block</div>
+                    <div class="property-desc">Öğe yeni satırdan başlar ve tam genişliği kaplar. p, div, h1-h6 varsayılan olarak block'tur.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>div { display: block; }
+.full-width { display: block; width: 100%; }</pre>
+                    </div>
+                </div>
+
+                <!-- Display Inline -->
+                <div class="property">
+                    <div class="property-name">display: inline</div>
+                    <div class="property-desc">Öğe metinle birlikte aynı satırda yer alır. width ve height çalışmaz. span, a varsayılan olarak inline'dır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>strong { display: inline; }
+.tag { display: inline; margin-right: 5px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Display Inline Block -->
+                <div class="property">
+                    <div class="property-name">display: inline-block</div>
+                    <div class="property-desc">Block ve inline'ın karışımı. Aynı satırda yer alır ama width/height ve padding/margin çalışır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.button { display: inline-block; padding: 10px 20px; margin-right: 10px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Display None -->
+                <div class="property">
+                    <div class="property-name">display: none</div>
+                    <div class="property-desc">Öğe seçini tamamen kaldırır. Sayfada görünmez ve yer kaplamaz.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.mobile-only { display: none; }
+@media (max-width: 768px) { .mobile-only { display: block; } }</pre>
+                    </div>
+                </div>
+
+                <!-- Display Flex -->
+                <div class="property">
+                    <div class="property-name">display: flex</div>
+                    <div class="property-desc">Flexbox layout'u etkinleştirir. Hizalamayı çok kolay hale getirir.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.container { display: flex; gap: 20px; }
+.navbar { display: flex; justify-content: space-between; align-items: center; }</pre>
+                    </div>
+                </div>
+
+                <!-- Display Grid -->
+                <div class="property">
+                    <div class="property-name">display: grid</div>
+                    <div class="property-desc">CSS Grid layout'u etkinleştirir. 2D düzenleme için müthiş bir araçtır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Visibility -->
+                <div class="property">
+                    <div class="property-name">visibility</div>
+                    <div class="property-desc">Öğeyi gösterin/gizleyin. display:none'dan farklı olarak yer yine kaplar.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        visible (göster) | hidden (gizle) | collapse
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.hidden { visibility: hidden; } /* Yer hala kaplar */
+.visible { visibility: visible; }</pre>
+                    </div>
+                </div>
+
+                <!-- Overflow -->
+                <div class="property">
+                    <div class="property-name">overflow</div>
+                    <div class="property-desc">İçerik kutunun sınırlarından taşarsa ne yapılacağını belirler.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        visible (göster) | hidden (kırp) | scroll (kaydırma çubuğu ekle) | auto (gerekirse kaydırma)
+                        <div class="value-label" style="margin-top: 0.8rem;">Ayrı ayrı:</div>
+                        overflow-x | overflow-y
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.box { width: 300px; height: 200px; overflow: auto; }
+.container { overflow-x: hidden; overflow-y: scroll; }</pre>
+                    </div>
+                </div>
+
+                <!-- Clip Path -->
+                <div class="property">
+                    <div class="property-name">clip-path</div>
+                    <div class="property-desc">Öğeyi belirli bir şekille kırpar. Yaratıcı şekiller oluşturur.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.circle { clip-path: circle(50%); }
+.triangle { clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.image { clip-path: inset(10% 20% 30% 40%); }</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Flexbox Section -->
+            <section id="flexbox" class="section">
+                <h2>💪 Flexbox</h2>
+                <p class="section-intro">1D (tek boyutlu) düzenleme için güçlü ve esnek bir araçtır. Navigasyon, kartlar, form elemanları için idealdir.</p>
+
+                <!-- Display Flex -->
+                <div class="property">
+                    <div class="property-name">display: flex</div>
+                    <div class="property-desc">Öğeyi flex container'a dönüştürür. Çocuklarına güçlü hizalama seçenekleri verir.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.container { display: flex; }</pre>
+                    </div>
+                </div>
+
+                <!-- Flex Direction -->
+                <div class="property">
+                    <div class="property-name">flex-direction</div>
+                    <div class="property-desc">Çocuk öğelerin yönünü belirler.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        row (sol-sağ) | column (üst-alt) | row-reverse | column-reverse
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.navbar { display: flex; flex-direction: row; }
+.sidebar { display: flex; flex-direction: column; }</pre>
+                    </div>
+                </div>
+
+                <!-- Justify Content -->
+                <div class="property">
+                    <div class="property-name">justify-content</div>
+                    <div class="property-desc">Ana eksen (row ise yatay, column ise dikey) üzerinde öğeleri hizalar.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        flex-start (başlangıç) | flex-end (bitiş) | center (orta) | space-between (aralar açık) | space-around (etraf açık) | space-evenly (eşit)
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.header { display: flex; justify-content: space-between; }
+.centered { display: flex; justify-content: center; }</pre>
+                    </div>
+                </div>
+
+                <!-- Align Items -->
+                <div class="property">
+                    <div class="property-name">align-items</div>
+                    <div class="property-desc">Çapraz eksen (row ise dikey, column ise yatay) üzerinde öğeleri hizalar.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        flex-start | flex-end | center | stretch | baseline
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.card { display: flex; align-items: center; }
+.banner { display: flex; align-items: flex-start; }</pre>
+                    </div>
+                </div>
+
+                <!-- Gap -->
+                <div class="property">
+                    <div class="property-name">gap</div>
+                    <div class="property-desc">Çocuk öğeler arasındaki boşluğu belirler. Margin'den daha esnek.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.grid { display: flex; gap: 20px; }
+.flex { display: flex; gap: 10px 20px; } /* row gap, column gap */</pre>
+                    </div>
+                </div>
+
+                <!-- Flex Wrap -->
+                <div class="property">
+                    <div class="property-name">flex-wrap</div>
+                    <div class="property-desc">Çocuklar yer yetersiz olduğunda sıraya başlangıç mi, yoksa taşması mı gerekir?</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        nowrap (sarmama) | wrap (sarmama) | wrap-reverse
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.flex { display: flex; flex-wrap: wrap; gap: 10px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Flex Grow/Shrink/Basis -->
+                <div class="property">
+                    <div class="property-name">flex-grow, flex-shrink, flex-basis</div>
+                    <div class="property-desc">Çocuk öğelerin boyut davranışını kontrol eder.</div>
+                    <div class="property-values">
+                        <div class="value-label">flex-grow:</div> Boş alan paylaşı (0-1 arası)
+                        <div class="value-label" style="margin-top: 0.8rem;">flex-shrink:</div> Daralma oranı
+                        <div class="value-label" style="margin-top: 0.8rem;">flex-basis:</div> Başlangıç boyutu
+                        <div class="value-label" style="margin-top: 0.8rem;">Kısa:</div> flex: grow shrink basis
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.item { flex: 1; } /* Eşit büyülüş */
+.sidebar { flex: 0 0 300px; } /* Sabit genişlik */
+.main { flex: 1 1 0; } /* Esnek */</pre>
+                    </div>
+                </div>
+
+                <!-- Flex Demo -->
+                <div class="property">
+                    <div class="property-name">Flexbox Kaynakları</div>
+                    <div class="property-desc">Flexbox öğrenmek için etkileşimli oyunlar ve araçlar</div>
+                    <div class="browser-support">
+                        ✅ <a href="https://flexboxfroggy.com/" target="_blank">Flexbox Froggy</a> - Eğlenceli oyunla öğrenin<br>
+                        ✅ <a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank">CSS-Tricks Flexbox Rehberi</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CSS Grid Section -->
+            <section id="grid" class="section">
+                <h2>🎯 CSS Grid</h2>
+                <p class="section-intro">2D (iki boyutlu) düzenleme için en güçlü CSS özelliği. Web sayfalarını tam olarak kontrol edin.</p>
+
+                <!-- Display Grid -->
+                <div class="property">
+                    <div class="property-name">display: grid</div>
+                    <div class="property-desc">Öğeyi grid container'a dönüştürür.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.container { display: grid; }</pre>
+                    </div>
+                </div>
+
+                <!-- Grid Template Columns -->
+                <div class="property">
+                    <div class="property-name">grid-template-columns</div>
+                    <div class="property-desc">Sütun sayısını ve genişliklerini belirler.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.grid { grid-template-columns: 1fr 1fr 1fr; } /* 3 eşit sütun */
+.layout { grid-template-columns: 300px 1fr 200px; } /* Sabit, esnek, sabit */
+.responsive { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }</pre>
+                    </div>
+                </div>
+
+                <!-- Grid Template Rows -->
+                <div class="property">
+                    <div class="property-name">grid-template-rows</div>
+                    <div class="property-desc">Satır sayısını ve yüksekliklerini belirler.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.page { grid-template-rows: auto 1fr auto; } /* Header, Main, Footer */</pre>
+                    </div>
+                </div>
+
+                <!-- Grid Gap -->
+                <div class="property">
+                    <div class="property-name">gap / grid-gap</div>
+                    <div class="property-desc">Satır ve sütun arasındaki boşluk.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.grid { gap: 20px; } /* Tüm taraflar */
+.grid { gap: 20px 30px; } /* Satır 20px, Sütun 30px */</pre>
+                    </div>
+                </div>
+
+                <!-- Grid Column/Row -->
+                <div class="property">
+                    <div class="property-name">grid-column, grid-row</div>
+                    <div class="property-desc">Çocuk öğelerin kaç sütun/satır kaplayacağını belirler.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.hero { grid-column: 1 / -1; } /* Tüm genişlik */
+.sidebar { grid-column: 1 / 2; grid-row: 1 / 3; }</pre>
+                    </div>
+                </div>
+
+                <!-- Fr Unit -->
+                <div class="property">
+                    <div class="property-name">fr (Fraction) Birimi</div>
+                    <div class="property-desc">Kalan alanı orantılı olarak böler. Grid'in kalbidir.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.grid { grid-template-columns: 1fr 1fr 1fr; } /* Eşit */
+.layout { grid-template-columns: 1fr 2fr 1fr; } /* 1:2:1 oranı */</pre>
+                    </div>
+                </div>
+
+                <!-- Repeat Function -->
+                <div class="property">
+                    <div class="property-name">repeat() Fonksiyonu</div>
+                    <div class="property-desc">Tekrar eden grid tanımlarını kısaltır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.grid { grid-template-columns: repeat(3, 1fr); }
+.flex { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }</pre>
+                    </div>
+                </div>
+
+                <!-- Grid Demo -->
+                <div class="property">
+                    <div class="property-name">Grid Kaynakları</div>
+                    <div class="property-desc">CSS Grid öğrenmek için etkileşimli araçlar</div>
+                    <div class="browser-support">
+                        ✅ <a href="https://cssgridgarden.com/" target="_blank">Grid Garden</a> - Oyunla Grid öğrenin<br>
+                        ✅ <a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank">CSS-Tricks Grid Rehberi</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pozisyon Section -->
+            <section id="pozisyon" class="section">
+                <h2>📍 Pozisyonlama</h2>
+                <p class="section-intro">Öğeleri sayfada tam istediğiniz yere yerleştirin.</p>
+
+                <!-- Position Static -->
+                <div class="property">
+                    <div class="property-name">position: static</div>
+                    <div class="property-desc">Varsayılan konum. Belge akışı içinde yer alır. top, right vb. çalışmaz.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>div { position: static; } /* Varsayılan */</pre>
+                    </div>
+                </div>
+
+                <!-- Position Relative -->
+                <div class="property">
+                    <div class="property-name">position: relative</div>
+                    <div class="property-desc">Normal konumundan göre yer değiştirir. Yer yine kaplar.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.box { position: relative; top: 10px; left: 20px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Position Absolute -->
+                <div class="property">
+                    <div class="property-name">position: absolute</div>
+                    <div class="property-desc">Belge akışından çıkar. En yakın positioned (position:relative vb.) üst öğesine göre konumlanır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.container { position: relative; }
+.badge { position: absolute; top: 0; right: 0; }</pre>
+                    </div>
+                </div>
+
+                <!-- Position Fixed -->
+                <div class="property">
+                    <div class="property-name">position: fixed</div>
+                    <div class="property-desc">Ekrana göre sabittir. Sayfanın diğer kısımları kaydırıldığında hareketsiz kalır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.navbar { position: fixed; top: 0; left: 0; right: 0; }
+.chat-btn { position: fixed; bottom: 20px; right: 20px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Position Sticky -->
+                <div class="property">
+                    <div class="property-name">position: sticky</div>
+                    <div class="property-desc">Kayan (floating) öğe. Normal aktış izler, ardından sabitlenir.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.header { position: sticky; top: 0; }
+.sidebar { position: sticky; top: 20px; height: calc(100vh - 20px); }</pre>
+                    </div>
+                </div>
+
+                <!-- Z Index -->
+                <div class="property">
+                    <div class="property-name">z-index</div>
+                    <div class="property-desc">Öğelerin üst üste sırasını belirler. Yüksek değer öne gelir. Position relative/absolute/fixed gereklidir.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.modal { position: fixed; z-index: 1000; }
+.backdrop { position: fixed; z-index: 999; }
+.tooltip { position: absolute; z-index: 10; }</pre>
+                    </div>
+                </div>
+
+                <!-- Top/Right/Bottom/Left -->
+                <div class="property">
+                    <div class="property-name">top, right, bottom, left</div>
+                    <div class="property-desc">Konumlandırılmış öğelerin kenar mesafelerini belirler.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.corner { position: absolute; top: 0; right: 0; }</pre>
+                    </div>
+                </div>
+
+                <!-- Float -->
+                <div class="property">
+                    <div class="property-name">float</div>
+                    <div class="property-desc">Öğeyi sola/sağa hizalar. Metni otomat olarak etrafında akar. (Eski yöntem, Flexbox tercihlidir)</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        none | left | right
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek (eski):</div>
+                        <pre>.image { float: left; margin-right: 20px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Clear -->
+                <div class="property">
+                    <div class="property-name">clear</div>
+                    <div class="property-desc">Float öğeleri temizler. (Eski yöntem)</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.footer { clear: both; }</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Geçişler ve Animasyonlar Section -->
+            <section id="animasyon" class="section">
+                <h2>✨ Geçişler & Animasyonlar</h2>
+                <p class="section-intro">Harekete ve heyecana dönüştürün! Tasarımınızı canlı hale getirin.</p>
+
+                <!-- Transition -->
+                <div class="property">
+                    <div class="property-name">transition</div>
+                    <div class="property-desc">Değişikleri düzgün bir şekilde geçiş yapar. Basit animasyonlar için idealdir.</div>
+                    <div class="property-values">
+                        <div class="value-label">Yazım:</div>
+                        transition: [property] [duration] [timing-function] [delay];
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.button { background: blue; transition: background 0.3s ease; }
+.button:hover { background: darkblue; }</pre>
+                    </div>
+                </div>
+
+                <!-- Transition Properties -->
+                <div class="property">
+                    <div class="property-name">transition-property, transition-duration, transition-timing-function, transition-delay</div>
+                    <div class="property-desc">Geçişi kontrol etmek için ayrı ayrı özellikler.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.card {
+    transition-property: transform, box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0.1s;
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Keyframes -->
+                <div class="property">
+                    <div class="property-name">@keyframes</div>
+                    <div class="property-desc">Özel animasyonlar tanımlar. Başlangıç (0%) ve bitiş (100%) arasında adımlar belirtirsiniz.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+@keyframes slide {
+    0% { transform: translateX(-100px); }
+    100% { transform: translateX(0); }
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Animation -->
+                <div class="property">
+                    <div class="property-name">animation</div>
+                    <div class="property-desc">@keyframes animasyonunu uygulatır.</div>
+                    <div class="property-values">
+                        <div class="value-label">Yazım:</div>
+                        animation: [name] [duration] [timing] [delay] [iteration] [direction];
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.box { animation: fadeIn 1s ease-in-out; }
+.bounce { animation: jump 0.5s ease-out infinite alternate; }</pre>
+                    </div>
+                </div>
+
+                <!-- Transform -->
+                <div class="property">
+                    <div class="property-name">transform</div>
+                    <div class="property-desc">Öğeyi dönüş, ölçek, kaydırma ile değiştir. GPU hızlandırmalı, verimli.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        translate() | rotate() | scale() | skew() | matrix()
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.button:hover { transform: scale(1.05); }
+.spin { animation: rotate 2s linear infinite; }
+@keyframes rotate { to { transform: rotate(360deg); } }</pre>
+                    </div>
+                </div>
+
+                <!-- Transition Demo -->
+                <div class="property">
+                    <div class="property-name">Timing Functions</div>
+                    <div class="property-desc">Animasyonun hızını kontrol eden eğriler.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        linear | ease | ease-in | ease-out | ease-in-out | cubic-bezier()
+                    </div>
+                </div>
+            </section>
+
+            <!-- Responsive Section -->
+            <section id="responsive" class="section">
+                <h2>📱 Responsive Design</h2>
+                <p class="section-intro">Her ekran boyutunda güzel görünen tasarımlar oluşturun.</p>
+
+                <!-- Media Queries -->
+                <div class="property">
+                    <div class="property-name">@media Queries</div>
+                    <div class="property-desc">Ekran boyutuna göre farklı CSS kuralları uygular. Responsive tasarımın temelini oluşturur.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>/* Mobil (varsayılan) */
+.container { width: 100%; padding: 20px; }
+
+/* Tablet */
+@media (min-width: 768px) {
+    .container { width: 750px; margin: 0 auto; }
+}
+
+/* Masaüstü */
+@media (min-width: 1024px) {
+    .container { width: 960px; }
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Viewport Meta -->
+                <div class="property">
+                    <div class="property-name">Viewport Meta Etiketi</div>
+                    <div class="property-desc">Mobil cihazlar için ölçeği ayarlar. MUTLAKA header'a ekleyin!</div>
+                    <div class="code-example">
+                        <div class="code-label">HTML &lt;head&gt; içinde:</div>
+                        <pre>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</pre>
+                    </div>
+                </div>
+
+                <!-- Min/Max Width Media -->
+                <div class="property">
+                    <div class="property-name">min-width vs max-width</div>
+                    <div class="property-desc">Responsive davranışı kontrol eder.</div>
+                    <div class="property-values">
+                        <div class="value-label">min-width:</div> "Bu boyuttan BÜYÜKSE uygula"
+                        <div class="value-label" style="margin-top: 0.8rem;">max-width:</div> "Bu boyuttan KÜÇÜKSEThen uygula"
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>/* Mobil cihazlar için */
+@media (max-width: 767px) { ... }
+
+/* Tablet ve üzeri */
+@media (min-width: 768px) { ... }
+
+/* Büyük ekranlar */
+@media (min-width: 1200px) { ... }</pre>
+                    </div>
+                </div>
+
+                <!-- Viewport Units -->
+                <div class="property">
+                    <div class="property-name">Viewport Birimleri (vw, vh, vmin, vmax)</div>
+                    <div class="property-desc">Ekran boyutuna göre dinamik ölçüler.</div>
+                    <div class="property-values">
+                        <div class="value-label">vw (Viewport Width):</div> Ekran genişliğinin % oranı
+                        <div class="value-label" style="margin-top: 0.8rem;">vh (Viewport Height):</div> Ekran yüksekliğinin % oranı
+                        <div class="value-label" style="margin-top: 0.8rem;">vmin:</div> vw ve vh'den küçük olanı
+                        <div class="value-label" style="margin-top: 0.8rem;">vmax:</div> vw ve vh'den büyük olanı
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.hero { height: 100vh; } /* Full ekran */
+.title { font-size: 5vw; } /* Ekran genişliğine göre */
+.box { width: 50vmin; height: 50vmin; } /* Kare, ekrana göre</pre>
+                    </div>
+                </div>
+
+                <!-- Em/Rem -->
+                <div class="property">
+                    <div class="property-name">em ve rem Birimleri</div>
+                    <div class="property-desc">Göreceli ölçüler. Responsive ve esnek tasarım için idealdir.</div>
+                    <div class="property-values">
+                        <div class="value-label">em:</div> Ebeveyn öğenin font-size'ına göreceli
+                        <div class="value-label" style="margin-top: 0.8rem;">rem:</div> Kök (&lt;html&gt;) font-size'ına göreceli (önerilir)
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>html { font-size: 16px; }
+body { font-size: 1rem; } /* 16px */
+h1 { font-size: 2rem; } /* 32px */
+.small { font-size: 0.875rem; } /* 14px */</pre>
+                    </div>
+                </div>
+
+                <!-- Clamp -->
+                <div class="property">
+                    <div class="property-name">clamp() Fonksiyonu</div>
+                    <div class="property-desc">Minimum ve maksimum arasında responsif değer. Fluid typography için muhteşem.</div>
+                    <div class="property-values">
+                        <div class="value-label">Yazım:</div>
+                        clamp(MIN, PREF, MAX)
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>h1 { font-size: clamp(1.5rem, 5vw, 3rem); }
+.container { width: clamp(300px, 90%, 1200px); }</pre>
+                    </div>
+                </div>
+
+                <!-- Min/Max Functions -->
+                <div class="property">
+                    <div class="property-name">min() ve max() Fonksiyonları</div>
+                    <div class="property-desc">En küçük/büyük değeri seçer. Responsive bir çok durumda kullanılır.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.box { width: min(100%, 500px); } /* Maksimum 500px, ama daha az olabilir */
+.padding { padding: max(1rem, 5vw); } /* Minimum 1rem */</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Modern CSS Section -->
+            <section id="modern" class="section">
+                <h2>🚀 Modern CSS</h2>
+                <p class="section-intro">CSS'in en yeni ve en güçlü özellikleri. Geleceği şimdi inşa edin!</p>
+
+                <!-- CSS Variables -->
+                <div class="property">
+                    <div class="property-name">CSS Değişkenleri (Custom Properties)</div>
+                    <div class="property-desc">Tekrar kullabilir değerler tanımlayın. Tema değişmesi çok kolay hale gelir.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>:root {
+    --primary: #6366f1;
+    --secondary: #10b981;
+    --spacing: 1rem;
+    --radius: 8px;
+}
+
+.button {
+    background: var(--primary);
+    padding: var(--spacing);
+    border-radius: var(--radius);
+}</pre>
+                    </div>
+                </div>
+
+                <!-- Calc Function -->
+                <div class="property">
+                    <div class="property-name">calc() Fonksiyonu</div>
+                    <div class="property-desc">Matematiksel işlemler yapar. Responsive tasarımda vazgeçilmez.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.container { width: calc(100% - 40px); }
+.gap { margin: calc(1rem + 2vw); }
+.aspect { height: calc(100vw * 9 / 16); } /* 16:9 aspect ratio */</pre>
+                    </div>
+                </div>
+
+                <!-- Filter -->
+                <div class="property">
+                    <div class="property-name">filter</div>
+                    <div class="property-desc">Görsel efektler ekler: bulanıklık, parlaklık, kontrast vb.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        brightness() | contrast() | blur() | grayscale() | sepia() | hue-rotate() | invert() | saturate() | drop-shadow()
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.image:hover { filter: brightness(1.2) contrast(1.1); }
+.grayscale { filter: grayscale(100%); }
+.shadow { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); }</pre>
+                    </div>
+                </div>
+
+                <!-- Backdrop Filter -->
+                <div class="property">
+                    <div class="property-name">backdrop-filter</div>
+                    <div class="property-desc">Arkaplanda filter uygular. Cam blur (frosted glass) efekti için ideal.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.modal { backdrop-filter: blur(5px); }
+.navbar { backdrop-filter: blur(10px); background: rgba(255,255,255,0.8); }</pre>
+                    </div>
+                </div>
+
+                <!-- Mix Blend Mode -->
+                <div class="property">
+                    <div class="property-name">mix-blend-mode</div>
+                    <div class="property-desc">Öğeyi altındaki öğeyle nasıl karıştıracağını belirler. Tasarımda yaratıcı efektler için.</div>
+                    <div class="property-values">
+                        <div class="value-label">Değerler:</div>
+                        multiply | screen | overlay | darken | lighten | color-dodge | vb.
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.image { mix-blend-mode: multiply; }
+.overlay { mix-blend-mode: screen; }</pre>
+                    </div>
+                </div>
+
+                <!-- Aspect Ratio -->
+                <div class="property">
+                    <div class="property-name">aspect-ratio</div>
+                    <div class="property-desc">Sabit en-boy oranı. Video ve görsel konteynerleri için mükemmel.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.video { aspect-ratio: 16 / 9; width: 100%; height: auto; }
+.square { aspect-ratio: 1; width: 200px; }</pre>
+                    </div>
+                </div>
+
+                <!-- Container Queries -->
+                <div class="property">
+                    <div class="property-name">Container Queries</div>
+                    <div class="property-desc">Viewport yerine konteyner boyutuna göre stil uygula. Bileşen tabanlı tasarımda devrim!</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>@container (min-width: 400px) {
+    .card { display: grid; grid-template-columns: 1fr 1fr; }
+}</pre>
+                    </div>
+                    <div class="browser-support">⚠️ Chrome 105+, Safari 16+</div>
+                </div>
+
+                <!-- Has Selector -->
+                <div class="property">
+                    <div class="property-name">:has() Selector (Parent Selector)</div>
+                    <div class="property-desc">İçinde belirli öğeler olan üst öğeleri seçer. CSS'de ana öğeyi seçme artık mümkün!</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.card:has(img) { padding: 10px; }
+.item:has(input:checked) { background: #f0f0f0; }</pre>
+                    </div>
+                </div>
+
+                <!-- CSS Nesting -->
+                <div class="property">
+                    <div class="property-name">CSS Nesting</div>
+                    <div class="property-desc">Saçsan CSS kurallarını iç içe yazma. Sass/LESS gibi bileşik stil yazma!</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.card {
+    padding: 20px;
+
+    &:hover {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    p {
+        margin: 0 0 10px 0;
+    }
+}</pre>
+                    </div>
+                    <div class="browser-support">⚠️ Tarayıcı desteği artıyor (2024+)</div>
+                </div>
+            </section>
+
+            <!-- Specificity Section -->
+            <section id="specificity" class="section">
+                <h2>⚖️ Specificity & Cascade</h2>
+                <p class="section-intro">CSS kurallarının hangisinin uygulanacağını belirleyen kurallar. "Açık stilin sırrı"!</p>
+
+                <!-- Specificity -->
+                <div class="property">
+                    <div class="property-name">Specificity (Belirlilik)</div>
+                    <div class="property-desc">Hangi CSS kuralının uygulanacağını belirler. Daha spesifik olan kazanır.</div>
+                    <div class="property-values">
+                        <div class="value-label">Sıra (düşükten yükseğe):</div>
+                        1. Eleman seçici (1 puan)
+                        2. Sınıf seçici (10 puan)
+                        3. ID seçici (100 puan)
+                        4. İnline stil (1000 puan)
+                        5. !important (10000 puan - son çare!)
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>p { color: blue; } /* 1 puan */
+.highlight { color: red; } /* 10 puan (kazanır) */
+#special { color: green; } /* 100 puan (kazanır) */
+&lt;p style="color: yellow;"&gt; /* 1000 puan (kazanır) */</pre>
+                    </div>
+                </div>
+
+                <!-- Cascade -->
+                <div class="property">
+                    <div class="property-name">Cascade (Basamak)</div>
+                    <div class="property-desc">Aynı specificity'de, SON kural kazanır. Dosyanın sırası önemlidir.</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.box { color: blue; }
+.box { color: red; } /* ← Bu uygulanır */</pre>
+                    </div>
+                </div>
+
+                <!-- Inheritance -->
+                <div class="property">
+                    <div class="property-name">Inheritance (Kalıtım)</div>
+                    <div class="property-desc">Bazı CSS özellikleri ebeveynden çocuğa aktarılır.</div>
+                    <div class="property-values">
+                        <div class="value-label">Kalıtım YAPAN özellikler:</div>
+                        color, font-family, font-size, line-height, text-align
+                        <div class="value-label" style="margin-top: 0.8rem;">Kalıtım YAPMAYAN özellikler:</div>
+                        width, height, margin, padding, border, background
+                    </div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.container { color: blue; } /* Tüm çocuklar blue metne sahip */
+.container { padding: 20px; } /* Çocuklar bu padding'i almaz */</pre>
+                    </div>
+                </div>
+
+                <!-- Important -->
+                <div class="property">
+                    <div class="property-name">!important Kuralı</div>
+                    <div class="property-desc">Her şeyi geçersiz kılar. SADECE SON ÇARE olarak kullanın!</div>
+                    <div class="code-example">
+                        <div class="code-label">Örnek:</div>
+                        <pre>.primary { background: blue !important; }</pre>
+                    </div>
+                    <div class="browser-support">⚠️ Kötü bir alışkanlıktır! Arkaplan kod bakım yapmayı zorlaştırır</div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <div style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border); text-align: center; color: #666;">
+                <p style="margin-bottom: 1rem;">🎓 Bu rehber UI/UX tasarımcıları için hazırlanmıştır. Eğlenerek öğrenin!</p>
+                <p style="font-size: 0.9rem;">
+                    📚 Kaynaklar:
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" style="color: var(--primary);">MDN Web Docs</a> |
+                    <a href="https://css-tricks.com" target="_blank" style="color: var(--primary);">CSS-Tricks</a> |
+                    <a href="https://caniuse.com" target="_blank" style="color: var(--primary);">Can I Use</a>
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    function safeStorage(action, key, value) {
+        try {
+            if (action === 'get') return localStorage.getItem(key);
+            if (action === 'set') localStorage.setItem(key, value);
+        } catch(e) { return null; }
+    }
+
+        // Tema Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // Kaydedilmiş temayı kontrol et
+        const savedTheme = safeStorage('get', 'theme') || 'light';
+        body.classList.remove('light-mode', 'dark-mode');
+        body.classList.add(savedTheme + '-mode');
+        updateThemeButton();
+
+        themeToggle.addEventListener('click', () => {
+            const isLight = body.classList.contains('light-mode');
+            const newTheme = isLight ? 'dark' : 'light';
+            body.classList.remove('light-mode', 'dark-mode');
+            body.classList.add(newTheme + '-mode');
+            safeStorage('set', 'theme', newTheme);
+            updateThemeButton();
+        });
+
+        function updateThemeButton() {
+            const isDark = body.classList.contains('dark-mode');
+            themeToggle.textContent = isDark ? '☀️ Açık Mod' : '🌙 Koyu Mod';
+        }
+
+        // Sidebar Navigation
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        const sections = document.querySelectorAll('.section');
+
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Remove active from all
+                sidebarItems.forEach(i => i.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+
+                // Add active to clicked
+                item.classList.add('active');
+                const sectionId = item.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keyup', (e) => {
+            const query = e.target.value.toLowerCase();
+
+            if (query.length === 0) {
+                // Reset
+                sections.forEach(s => s.style.display = 'none');
+                document.getElementById('css-bagla').style.display = 'block';
+                return;
+            }
+
+            // Search in all sections
+            sections.forEach(section => {
+                const sectionText = section.textContent.toLowerCase();
+                if (sectionText.includes(query)) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        });
+
+        // Copy to Clipboard
+        document.querySelectorAll('.code-example').forEach(codeBlock => {
+            if (!codeBlock.querySelector('.copy-btn')) {
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.textContent = 'Kopyala';
+                copyBtn.addEventListener('click', () => {
+                    const text = codeBlock.textContent.replace('Kopyala', '').trim();
+                    navigator.clipboard.writeText(text).then(() => {
+                        copyBtn.textContent = '✓ Kopyalandı';
+                        setTimeout(() => {
+                            copyBtn.textContent = 'Kopyala';
+                        }, 2000);
+                    });
+                });
+                codeBlock.appendChild(copyBtn);
+            }
+        });
+
+        // Smooth Scrolling
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const section = document.getElementById(item.getAttribute('data-section'));
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
